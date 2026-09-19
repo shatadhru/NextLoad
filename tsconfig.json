@@ -24,10 +24,10 @@
     ],
     "paths": {
       "@/*": [
-        "./src/*"
+        "./*"
       ],
       "@payload-config": [
-        "./src/payload.config.ts"
+        "./payload/payload.config.ts"
       ]
     },
     "target": "ES2022"
