@@ -1,3 +1,11 @@
+
+
+
+
+
+<img width="2752" height="1536" alt="Gemini_Generated_Image_2jc8oz2jc8oz2jc8" src="https://github.com/user-attachments/assets/04779f74-a1d6-4606-bc78-e6edd72c5d76" />
+
+
 # NextLoad
 
 A production-ready web application template integrating **Next.js 16 (App Router)** with **Payload CMS 3.0**, **Better Auth**, **MongoDB**, and an **SMTP email delivery service** with responsive HTML templates.
