@@ -24,6 +24,8 @@ import {
   ChevronDown,
   Search,
   Check,
+  ImageIcon,
+  X,
 } from "lucide-react"
 
 type TargetType = "all" | "specific" | "role" | "bulk"
@@ -42,6 +44,7 @@ interface BroadcastItem {
   status: "delivered" | "partial" | "failed"
   actionUrl?: string
   actionText?: string
+  imageUrl?: string
   sentAt: string
 }
 
@@ -62,6 +65,8 @@ export function NotificationBroadcastView() {
   const [channels, setChannels] = useState<ChannelType[]>(["in_app", "email"])
   const [actionUrl, setActionUrl] = useState("")
   const [actionText, setActionText] = useState("View Details")
+  const [imageUrl, setImageUrl] = useState("")
+  const [imagePreviewError, setImagePreviewError] = useState(false)
 
   // UI & Feedback State
   const [previewMode, setPreviewMode] = useState<"in_app" | "email">("in_app")
@@ -199,6 +204,7 @@ export function NotificationBroadcastView() {
           channels,
           actionUrl: actionUrl.trim() || undefined,
           actionText: actionText.trim() || undefined,
+          imageUrl: imageUrl.trim() || undefined,
         }),
       })
 
@@ -230,6 +236,7 @@ export function NotificationBroadcastView() {
     setChannels(b.channels)
     if (b.actionUrl) setActionUrl(b.actionUrl)
     if (b.actionText) setActionText(b.actionText)
+    if (b.imageUrl) { setImageUrl(b.imageUrl); setImagePreviewError(false) }
     setFeedback({ type: "success", text: `Loaded "${b.title}" into the composer.` })
     window.scrollTo({ top: 0, behavior: "smooth" })
   }
@@ -916,6 +923,70 @@ export function NotificationBroadcastView() {
                 </div>
               </div>
 
+              {/* Notification Image (Optional) */}
+              <div style={{ marginBottom: "16px" }}>
+                <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "13px", fontWeight: 600, marginBottom: "6px" }}>
+                  <ImageIcon size={14} style={{ color: "#0d9488" }} />
+                  Notification Image URL
+                  <span style={{ fontWeight: 400, color: "var(--theme-elevation-500, #777)", fontSize: "11px" }}>(optional)</span>
+                </label>
+                <div style={{ position: "relative" }}>
+                  <input
+                    type="url"
+                    value={imageUrl}
+                    onChange={(e) => { setImageUrl(e.target.value); setImagePreviewError(false) }}
+                    placeholder="https://res.cloudinary.com/... or any public image URL"
+                    style={{
+                      width: "100%",
+                      padding: "10px 36px 10px 14px",
+                      borderRadius: "6px",
+                      border: "1px solid var(--theme-elevation-250, #ccc)",
+                      backgroundColor: "var(--theme-elevation-100, #fff)",
+                      fontSize: "13px",
+                      color: "inherit",
+                      boxSizing: "border-box",
+                    }}
+                  />
+                  {imageUrl && (
+                    <button
+                      type="button"
+                      onClick={() => { setImageUrl(""); setImagePreviewError(false) }}
+                      style={{
+                        position: "absolute",
+                        right: "10px",
+                        top: "50%",
+                        transform: "translateY(-50%)",
+                        background: "none",
+                        border: "none",
+                        cursor: "pointer",
+                        color: "var(--theme-elevation-500, #777)",
+                        padding: 0,
+                        display: "flex",
+                      }}
+                    >
+                      <X size={14} />
+                    </button>
+                  )}
+                </div>
+                {/* Inline image preview */}
+                {imageUrl && !imagePreviewError && (
+                  <div style={{ marginTop: "10px", borderRadius: "8px", overflow: "hidden", border: "1px solid var(--theme-elevation-200, #e2e8f0)", maxHeight: "160px" }}>
+                    <img
+                      src={imageUrl}
+                      alt="Preview"
+                      onError={() => setImagePreviewError(true)}
+                      style={{ display: "block", width: "100%", height: "160px", objectFit: "cover" }}
+                    />
+                  </div>
+                )}
+                {imagePreviewError && (
+                  <p style={{ margin: "6px 0 0 0", fontSize: "11px", color: "#dc2626" }}>⚠ Image could not be loaded — check the URL.</p>
+                )}
+                <p style={{ margin: "4px 0 0 0", fontSize: "11px", color: "var(--theme-elevation-500, #777)" }}>
+                  Displayed above message body in both in-app card and email. Use Cloudinary, Imgur, or any public CDN URL.
+                </p>
+              </div>
+
               {/* Delivery Channels */}
               <div>
                 <label style={{ display: "block", fontSize: "13px", fontWeight: 600, marginBottom: "8px" }}>
@@ -1138,6 +1209,16 @@ export function NotificationBroadcastView() {
                     {title || "Untitled Notification"}
                   </h4>
 
+                  {imageUrl && !imagePreviewError && (
+                    <div style={{ margin: "0 0 12px 0", borderRadius: "8px", overflow: "hidden" }}>
+                      <img
+                        src={imageUrl}
+                        alt="Notification"
+                        style={{ display: "block", width: "100%", height: "120px", objectFit: "cover", borderRadius: "8px" }}
+                      />
+                    </div>
+                  )}
+
                   <p
                     style={{
                       margin: "0 0 14px 0",
@@ -1234,6 +1315,16 @@ export function NotificationBroadcastView() {
                     <h3 style={{ fontSize: "14px", fontWeight: 700, color: "#0f172a", margin: "0 0 8px 0" }}>
                       {title || "Untitled Notification"}
                     </h3>
+
+                    {imageUrl && !imagePreviewError && (
+                      <div style={{ margin: "0 0 12px 0", borderRadius: "8px", overflow: "hidden" }}>
+                        <img
+                          src={imageUrl}
+                          alt="Notification"
+                          style={{ display: "block", width: "100%", height: "140px", objectFit: "cover", borderRadius: "8px" }}
+                        />
+                      </div>
+                    )}
 
                     <div style={{ color: "#334155", fontSize: "12px", lineHeight: "1.6", whiteSpace: "pre-wrap", marginBottom: "16px" }}>
                       {message || "Your notification body will be formatted and rendered beautifully here."}

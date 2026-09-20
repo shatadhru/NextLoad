@@ -28,6 +28,15 @@ const customViewsRecord = customAdminViews.reduce((acc, view) => {
 export default buildConfig({
   admin: {
     user: Users.slug,
+    meta: {
+      icons: [
+        {
+          rel: 'icon',
+          type: 'image/svg+xml',
+          url: '/api/site-settings/icon',
+        },
+      ],
+    },
     importMap: {
       baseDir: path.resolve(dirname),
     },

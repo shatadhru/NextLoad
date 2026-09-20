@@ -95,16 +95,10 @@ export interface Config {
   fallbackLocale: null;
   globals: {
     'site-settings': SiteSetting;
-    analytics: Analytics;
-    'email-logs': EmailLog;
-    'storage-manager': StorageManager;
     notifications: Notification;
   };
   globalsSelect: {
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
-    analytics: AnalyticsSelect<false> | AnalyticsSelect<true>;
-    'email-logs': EmailLogsSelect<false> | EmailLogsSelect<true>;
-    'storage-manager': StorageManagerSelect<false> | StorageManagerSelect<true>;
     notifications: NotificationsSelect<false> | NotificationsSelect<true>;
   };
   locale: null;
@@ -539,33 +533,6 @@ export interface SiteSetting {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "analytics".
- */
-export interface Analytics {
-  id: string;
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "email-logs".
- */
-export interface EmailLog {
-  id: string;
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "storage-manager".
- */
-export interface StorageManager {
-  id: string;
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "notifications".
  */
 export interface Notification {
@@ -585,33 +552,6 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   logo?: T;
   logoDark?: T;
   favicon?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "analytics_select".
- */
-export interface AnalyticsSelect<T extends boolean = true> {
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "email-logs_select".
- */
-export interface EmailLogsSelect<T extends boolean = true> {
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "storage-manager_select".
- */
-export interface StorageManagerSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

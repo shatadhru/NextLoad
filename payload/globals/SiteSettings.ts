@@ -19,7 +19,7 @@ export const SiteSettings: GlobalConfig = {
       name: "siteName",
       type: "text",
       label: "Brand / Site Name",
-      defaultValue: "NextLoad",
+      defaultValue: "Shatadhru",
       required: true,
       admin: {
         description: "The primary brand name displayed across header, sidebar, and emails.",
@@ -29,7 +29,7 @@ export const SiteSettings: GlobalConfig = {
       name: "siteTitle",
       type: "text",
       label: "Site Title / Tagline",
-      defaultValue: "NextLoad - The Production-Ready Full-Stack Boilerplate",
+      defaultValue: "Shatadhru Acharjee",
       admin: {
         description: "Displayed on the home page and in browser title tabs.",
       },
@@ -47,7 +47,7 @@ export const SiteSettings: GlobalConfig = {
       name: "logoText",
       type: "text",
       label: "Logo Badge Initials",
-      defaultValue: "NL",
+      defaultValue: "SH",
       admin: {
         description: "Initials displayed in the brand badge when no image logo is uploaded (e.g. NL).",
       },

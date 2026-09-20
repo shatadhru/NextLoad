@@ -13,6 +13,7 @@ export interface BroadcastRecord {
   status: "delivered" | "partial" | "failed"
   actionUrl?: string
   actionText?: string
+  imageUrl?: string
   sentAt: string
   recipientEmails?: string[]
   readBy?: string[]

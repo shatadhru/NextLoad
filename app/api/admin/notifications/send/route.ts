@@ -19,6 +19,7 @@ interface SendNotificationBody {
   channels: ("in_app" | "email")[]
   actionUrl?: string
   actionText?: string
+  imageUrl?: string
 }
 
 export async function GET() {
@@ -97,6 +98,7 @@ export async function POST(req: NextRequest) {
       channels = ["in_app"],
       actionUrl,
       actionText,
+      imageUrl,
     } = body
 
     if (!title || !title.trim()) {
@@ -242,6 +244,7 @@ export async function POST(req: NextRequest) {
                 priority,
                 actionUrl,
                 actionText,
+                imageUrl,
               })
               if (res.success) {
                 emailDeliveredCount++
@@ -277,6 +280,7 @@ export async function POST(req: NextRequest) {
       status: broadcastStatus,
       actionUrl,
       actionText,
+      imageUrl,
       sentAt: new Date().toISOString(),
       recipientEmails: recipients.map((r) => r.email.toLowerCase()),
       readBy: [],

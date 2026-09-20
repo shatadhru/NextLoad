@@ -1,7 +1,7 @@
 {
-  "name": "nextload",
+  "name": "shatadhru",
   "version": "1.1.0",
-  "description": "NextLoad — Production-Ready Full-Stack Boilerplate (Next.js 16 + Payload CMS 3 + Better Auth)",
+  "description": "Shatadhru — built with NextLoad boilerplate",
   "license": "MIT",
   "type": "module",
   "scripts": {
@@ -80,6 +80,9 @@
       "sharp",
       "esbuild",
       "unrs-resolver"
-    ]
+    ],
+    "patchedDependencies": {
+      "payload-theme": "patches/payload-theme.patch"
+    }
   }
 }

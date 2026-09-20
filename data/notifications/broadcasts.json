@@ -1,31 +1,31 @@
 [
   {
-    "id": "bc-1789880834716-9de8d",
-    "title": "Welcome to NextLoad 2.0",
-    "message": "We're excited to announce our major platform update with faster Cloudinary CDN sync, enhanced Better Auth security, and upgraded Payload CMS admin tools.",
+    "id": "bc-1789887535447-1qnii",
+    "title": "Announchment",
+    "message": "Announchment Announchment Announchment Announchment Announchment Announchment",
     "priority": "announcement",
-    "target": "specific",
-    "targetValue": "shatadhru@gmail.com",
+    "target": "all",
+    "targetValue": "All Platform Users",
     "channels": [
       "in_app",
       "email"
     ],
-    "recipientCount": 1,
+    "recipientCount": 3,
     "status": "delivered",
-    "actionUrl": "/dashboard",
-    "actionText": "Explore Features",
-    "sentAt": "2026-09-20T05:07:14.716Z",
+    "actionUrl": "/sweet",
+    "actionText": "View Details",
+    "sentAt": "2026-09-20T06:58:55.447Z",
     "recipientEmails": [
+      "ssnmggs@gmail.com",
+      "codemantrabangla@gmail.com",
       "shatadhru@gmail.com"
     ],
-    "readBy": [
-      "shatadhru@gmail.com"
-    ]
+    "readBy": []
   },
   {
-    "id": "bc-1789880494800-qign4",
-    "title": "jghckhnjv",
-    "message": "kunfuyub",
+    "id": "bc-1789886081309-snedo",
+    "title": "6aaf7bd94d8e9c2ca42ff241",
+    "message": "6aaf7bd94d8e9c2ca42ff241",
     "priority": "info",
     "target": "all",
     "targetValue": "All Platform Users",
@@ -35,88 +35,41 @@
     ],
     "recipientCount": 3,
     "status": "delivered",
+    "actionUrl": "/sweet",
     "actionText": "View Details",
-    "sentAt": "2026-09-20T05:01:34.800Z",
-    "readBy": [
+    "imageUrl": "https://www.canto.com/cdn/en/2023/04/07185018/url-for-a-picture-feature-1.jpg",
+    "sentAt": "2026-09-20T06:34:41.309Z",
+    "recipientEmails": [
+      "ssnmggs@gmail.com",
+      "codemantrabangla@gmail.com",
       "shatadhru@gmail.com"
-    ]
-  },
-  {
-    "id": "bc-1789880417616-rwwsy",
-    "title": "Test Notification",
-    "message": "Hello from Payload Admin Notification Broadcast!",
-    "priority": "info",
-    "target": "specific",
-    "targetValue": "shatadhru@gmail.com",
-    "channels": [
-      "in_app"
     ],
-    "recipientCount": 1,
-    "status": "delivered",
-    "actionUrl": "/dashboard",
-    "actionText": "Check Dashboard",
-    "sentAt": "2026-09-20T05:00:17.616Z",
     "readBy": [
-      "shatadhru@gmail.com"
+      "ssnmggs@gmail.com"
     ]
   },
   {
-    "id": "bc-init-1",
-    "title": "Welcome to NextLoad 2.0",
-    "message": "We're excited to announce our major platform update with faster Cloudinary CDN sync, enhanced Better Auth security, and upgraded Payload CMS admin tools.",
+    "id": "bc-1789885039006-h8v9t",
+    "title": "Hello",
+    "message": "Sent from admin",
     "priority": "announcement",
     "target": "all",
-    "targetValue": "All Users",
+    "targetValue": "All Platform Users",
     "channels": [
       "in_app",
       "email"
     ],
-    "recipientCount": 1284,
+    "recipientCount": 2,
     "status": "delivered",
-    "actionUrl": "/dashboard",
-    "actionText": "Explore Features",
-    "sentAt": "2026-09-18T05:00:13.108Z",
-    "readBy": [
+    "actionText": "View Details",
+    "sentAt": "2026-09-20T06:17:19.006Z",
+    "recipientEmails": [
+      "codemantrabangla@gmail.com",
       "shatadhru@gmail.com"
-    ]
-  },
-  {
-    "id": "bc-init-2",
-    "title": "Scheduled Maintenance Notification",
-    "message": "NextLoad will undergo scheduled infrastructure upgrades this Sunday from 02:00 UTC to 03:00 UTC. Temporary service degradation may occur.",
-    "priority": "urgent",
-    "target": "all",
-    "targetValue": "All Users",
-    "channels": [
-      "in_app",
-      "email"
     ],
-    "recipientCount": 1284,
-    "status": "delivered",
-    "actionUrl": "/dashboard",
-    "actionText": "Check Status",
-    "sentAt": "2026-09-19T17:00:13.108Z",
     "readBy": [
-      "shatadhru@gmail.com"
-    ]
-  },
-  {
-    "id": "bc-init-3",
-    "title": "Security Notice: Verify Your Recovery Email",
-    "message": "Please ensure your account recovery email and credentials are up to date in your dashboard settings.",
-    "priority": "security",
-    "target": "role",
-    "targetValue": "Admin Role",
-    "channels": [
-      "email"
-    ],
-    "recipientCount": 4,
-    "status": "delivered",
-    "actionUrl": "/dashboard/settings",
-    "actionText": "Review Security",
-    "sentAt": "2026-09-20T02:00:13.108Z",
-    "readBy": [
-      "shatadhru@gmail.com"
+      "codemantrabangla@gmail.com",
+      "ssnmggs@gmail.com"
     ]
   }
 ]

@@ -39,40 +39,7 @@ export interface CustomAdminViewConfig {
 }
 
 export const customAdminViews: CustomAdminViewConfig[] = [
-  {
-    id: "analytics",
-    title: "Platform Analytics",
-    path: "/analytics",
-    componentPath: "./admin/views/AnalyticsView#AnalyticsView",
-    icon: "BarChart3",
-    badge: "Live",
-    description: "System metrics, user traffic, and storage analytics.",
-    group: "Custom Tools",
-    exact: true,
-  },
-  {
-    id: "email-logs",
-    title: "Email Delivery Logs",
-    path: "/email-logs",
-    componentPath: "./admin/views/EmailLogsView#EmailLogsView",
-    icon: "Mail",
-    badge: "SMTP",
-    description: "Audit trail of outbound transactional and verification emails.",
-    group: "Custom Tools",
-    exact: true,
-  },
-  {
-    id: "storage-manager",
-    title: "Cloudinary Manager",
-    path: "/storage-manager",
-    componentPath: "./admin/views/StorageManagerView#StorageManagerView",
-    icon: "HardDrive",
-    badge: "CDN",
-    description: "Cloudinary media assets, folders, and storage optimization.",
-    group: "Custom Tools",
-    exact: true,
-  },
-
+ 
   {
     id: "notifications",
     title: "Notification Broadcast",
@@ -131,10 +98,6 @@ export function generateThemeNavIcons(): Record<string, string> {
   })
 
   // Ensure explicit overrides for any special Lucide icon names
-  icons["analytics"] = "bar-chart-3"
-  icons["email-logs"] = "mail"
-  icons["storage-manager"] = "hard-drive"
-  icons["readme"] = "file-text"
   icons["notifications"] = "bell"
 
   return icons

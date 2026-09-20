@@ -38,6 +38,7 @@ interface UserNotification {
   priority: "info" | "announcement" | "security" | "urgent"
   actionUrl?: string
   actionText?: string
+  imageUrl?: string
   sentAt: string
   isRead: boolean
 }
@@ -302,6 +303,16 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
                                 </div>
                               )}
                             </div>
+                            {notif.imageUrl && (
+                              <div className="shrink-0 size-11 rounded-lg overflow-hidden border border-border/60 bg-muted/40 self-center">
+                                <img
+                                  src={notif.imageUrl}
+                                  alt=""
+                                  className="w-full h-full object-cover"
+                                  loading="lazy"
+                                />
+                              </div>
+                            )}
                             {!notif.isRead && (
                               <span className="size-2 rounded-full bg-teal-500 shrink-0 mt-1.5" />
                             )}

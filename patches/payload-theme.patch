@@ -1,0 +1,13 @@
+diff --git a/dist/components/Icon/index.js b/dist/components/Icon/index.js
+index 90d052207180677b2a4ab67be9764a4f76e5e8d4..5c343911eddb385cbf7577092133fd31452abd69 100644
+--- a/dist/components/Icon/index.js
++++ b/dist/components/Icon/index.js
+@@ -21,7 +21,7 @@ const load = (name)=>{
+     if (existing) return existing;
+     const importer = dynamicIconImports[name];
+     const promise = importer ? importer().then((mod)=>{
+-        loaded.set(name, mod.__iconNode);
++        loaded.set(name, mod.__iconNode ?? mod.__iconData?.node ?? mod.default?.__iconData?.node);
+     }).catch(()=>{
+     // Chunk failed to load: keep the placeholder rather than taking the
+     // whole panel down over an icon.

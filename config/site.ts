@@ -49,11 +49,11 @@ export interface SiteConfigType {
 
 export const SiteConfig: SiteConfigType = {
   site: {
-    name: "NextLoad",
-    title: "NextLoad - The Production-Ready Full-Stack Boilerplate",
+    name: "Shatadhru",
+    title: "Shatadhru Acharjee",
     description: "Enterprise-grade full-stack web application with Next.js 16, Payload CMS 3.0, and Better Auth.",
     url: process.env.NEXT_PUBLIC_APP_URL || process.env.BETTER_AUTH_URL || "http://localhost:3000",
-    logoText: "NL",
+    logoText: "SH",
   },
 
   pages: {
@@ -71,8 +71,8 @@ export const SiteConfig: SiteConfigType = {
 
   seo: {
     title: {
-      default: "NextLoad",
-      template: "%s | NextLoad",
+      default: "Shatadhru",
+      template: "%s | Shatadhru",
     },
     description: "A production-ready web application template integrating Next.js 16 with Payload CMS 3.0, Better Auth, and MongoDB.",
     keywords: ["Next.js", "Payload CMS", "Better Auth", "MongoDB", "Cloudinary", "SMTP"],

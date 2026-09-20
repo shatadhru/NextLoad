@@ -8,7 +8,9 @@ export interface BroadcastEmailOptions {
   actionUrl?: string
   actionText?: string
   recipientName?: string | null
+  imageUrl?: string
 }
+
 
 export function getBroadcastEmailTemplate({
   title,
@@ -17,6 +19,7 @@ export function getBroadcastEmailTemplate({
   actionUrl,
   actionText,
   recipientName,
+  imageUrl,
 }: BroadcastEmailOptions) {
   const siteName = SiteConfig.site.name || "NextLoad"
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.BETTER_AUTH_URL || "http://localhost:3000"
@@ -85,6 +88,16 @@ export function getBroadcastEmailTemplate({
     </h2>
 
     ${recipientName ? `<p style="margin: 0 0 16px 0; font-weight: 500; color: #475569;">Hello ${recipientName},</p>` : ""}
+
+    ${imageUrl ? `
+    <div style="margin: 0 0 20px 0; border-radius: 10px; overflow: hidden;">
+      <img
+        src="${imageUrl}"
+        alt="Notification image"
+        style="display: block; width: 100%; max-width: 100%; height: auto; border-radius: 10px;"
+      />
+    </div>
+    ` : ""}
 
     <div style="color: #334155; font-size: 15px;">
       ${messageHtml}

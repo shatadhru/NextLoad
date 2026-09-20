@@ -23,6 +23,7 @@ interface NotificationItem {
   priority: "info" | "announcement" | "security" | "urgent"
   actionUrl?: string
   actionText?: string
+  imageUrl?: string
   sentAt: string
   isRead: boolean
 }
@@ -233,6 +234,19 @@ export default function NotificationsPage() {
                     <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">
                       {notif.message}
                     </p>
+
+                    {notif.imageUrl && (
+                      <div className="pt-2 pb-1">
+                        <div className="relative overflow-hidden rounded-xl border border-border/60 bg-muted/20 max-w-lg">
+                          <img
+                            src={notif.imageUrl}
+                            alt={notif.title}
+                            className="w-full max-h-72 object-cover transition-transform duration-300 hover:scale-[1.02]"
+                            loading="lazy"
+                          />
+                        </div>
+                      </div>
+                    )}
 
                     {notif.actionUrl && (
                       <div className="pt-2">

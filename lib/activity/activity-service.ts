@@ -4,126 +4,29 @@ import { Activity, ActivityStats } from "./types"
 const STORAGE_KEY = "nextload_activities_log"
 const ACTIVITY_EVENT = "nextload:activity_updated"
 
-// Initial seed activities matching platform events
-const SEED_ACTIVITIES: Activity[] = [
-  {
-    id: "act-init-1",
-    title: "Avatar updated",
-    description: "High-definition profile picture processed and optimized with auto face-detection.",
-    category: "Account",
-    type: "avatar_update",
-    status: "success",
-    timestamp: new Date(Date.now() - 1000 * 60 * 12).toISOString(), // 12 mins ago
-    device: "Chrome / Windows",
-    metadata: {
-      provider: "Cloudinary CDN",
-      format: "auto (WebP)",
-    },
-  },
-  {
-    id: "act-init-2",
-    title: "Appearance theme switched",
-    description: "System interface theme preference updated in Settings.",
-    category: "Settings",
-    type: "settings_update",
-    status: "info",
-    timestamp: new Date(Date.now() - 1000 * 60 * 45).toISOString(), // 45 mins ago
-    device: "Desktop Browser",
-  },
-  {
-    id: "act-init-3",
-    title: "Session authenticated via Better Auth",
-    description: "Secure login validated with 30-day session lifetime.",
-    category: "Security",
-    type: "login",
-    status: "success",
-    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(), // 2 hours ago
-    ipAddress: "127.0.0.1",
-    device: "Chrome on Windows 11",
-  },
-  {
-    id: "act-init-4",
-    title: "File 'invoice_march_2026.pdf' uploaded",
-    description: "Stored in cloud workspace with encrypted file metadata.",
-    category: "Files",
-    type: "file_upload",
-    status: "success",
-    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 5).toISOString(), // 5 hours ago
-    metadata: {
-      filename: "invoice_march_2026.pdf",
-      size: "2.4 MB",
-      access: "Private",
-    },
-  },
-  {
-    id: "act-init-5",
-    title: "Security credential check passed",
-    description: "Password strength and active session tokens validated.",
-    category: "Security",
-    type: "system_event",
-    status: "info",
-    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 18).toISOString(), // 18 hours ago
-  },
-  {
-    id: "act-init-6",
-    title: "Payload CMS collection 'Media' updated",
-    description: "Schema validation and database indices synchronized.",
-    category: "Admin",
-    type: "admin_action",
-    status: "success",
-    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 26).toISOString(), // Yesterday
-    adminOnly: true,
-  },
-  {
-    id: "act-init-7",
-    title: "Password changed successfully",
-    description: "Account credentials updated and other active sessions notified.",
-    category: "Security",
-    type: "password_change",
-    status: "success",
-    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 48).toISOString(), // 2 days ago
-    device: "Desktop Browser",
-  },
-  {
-    id: "act-init-8",
-    title: "Project documentation exported",
-    description: "Archive bundle generated and downloaded to local machine.",
-    category: "Files",
-    type: "file_download",
-    status: "info",
-    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 72).toISOString(), // 3 days ago
-    metadata: {
-      filesCount: 14,
-    },
-  },
-]
-
-// Get all activities from localStorage merged with seeds
+// Get all authentic activities from localStorage
 export function getActivities(isAdmin = false): Activity[] {
   if (typeof window === "undefined") {
-    return SEED_ACTIVITIES.filter((a) => !a.adminOnly || isAdmin)
+    return []
   }
 
   try {
     const stored = localStorage.getItem(STORAGE_KEY)
     let userActivities: Activity[] = []
     if (stored) {
-      userActivities = JSON.parse(stored)
+      const parsed: Activity[] = JSON.parse(stored)
+      // Filter out any legacy fake/seed activities
+      userActivities = parsed.filter(
+        (a) => a && a.id && !a.id.startsWith("act-init-") && !a.id.startsWith("act-seed-")
+      )
     }
 
-    // Merge custom activities with seeds (avoiding duplicate IDs)
-    const existingIds = new Set(userActivities.map((a) => a.id))
-    const merged = [
-      ...userActivities,
-      ...SEED_ACTIVITIES.filter((seed) => !existingIds.has(seed.id)),
-    ]
-
     // Sort descending by timestamp
-    merged.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
+    userActivities.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
 
-    return merged.filter((a) => !a.adminOnly || isAdmin)
+    return userActivities.filter((a) => !a.adminOnly || isAdmin)
   } catch {
-    return SEED_ACTIVITIES.filter((a) => !a.adminOnly || isAdmin)
+    return []
   }
 }
 

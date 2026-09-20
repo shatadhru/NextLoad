@@ -44,6 +44,7 @@ export async function GET(req: NextRequest) {
         priority: b.priority,
         actionUrl: b.actionUrl,
         actionText: b.actionText,
+        imageUrl: b.imageUrl,
         sentAt: b.sentAt,
         isRead: email ? b.readBy?.includes(email) ?? false : false,
       }))

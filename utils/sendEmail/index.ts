@@ -160,6 +160,7 @@ export async function sendBroadcastEmail({
   priority = "info",
   actionUrl,
   actionText,
+  imageUrl,
 }: {
   to: string
   recipientName?: string | null
@@ -168,6 +169,7 @@ export async function sendBroadcastEmail({
   priority?: "info" | "announcement" | "security" | "urgent"
   actionUrl?: string
   actionText?: string
+  imageUrl?: string
 }) {
   const { subject, html, text } = getBroadcastEmailTemplate({
     title,
@@ -176,6 +178,7 @@ export async function sendBroadcastEmail({
     actionUrl,
     actionText,
     recipientName,
+    imageUrl,
   })
 
   return sendEmail({

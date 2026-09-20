@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  payload-theme:
+    hash: 883f19d08c3b9aeba2dee2d4ffb72dde7410158a9838848f59ad59c5b3638618
+    path: patches/payload-theme.patch
+
 importers:
 
   .:
@@ -85,7 +90,7 @@ importers:
         version: 2.3.0(@types/react@19.2.14)(monaco-editor@0.56.0)(next@16.3.3(@babel/core@7.29.7)(@playwright/test@1.58.2)(@types/node@22.19.9)(babel-plugin-macros@3.1.0)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(sass@1.77.4))(payload@3.90.1(graphql@16.14.2)(typescript@5.7.3))(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(typescript@5.7.3)
       payload-theme:
         specifier: ^0.9.4
-        version: 0.9.4(3c952bfc39510d5c92cc39c09b5d661b)
+        version: 0.9.4(patch_hash=883f19d08c3b9aeba2dee2d4ffb72dde7410158a9838848f59ad59c5b3638618)(3c952bfc39510d5c92cc39c09b5d661b)
       postcss:
         specifier: ^8.5.28
         version: 8.5.28
@@ -11594,7 +11599,7 @@ snapshots:
       lucide-react: 1.47.0(react@19.2.6)
       next: 16.3.3(@babel/core@7.29.7)(@playwright/test@1.58.2)(@types/node@22.19.9)(babel-plugin-macros@3.1.0)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(sass@1.77.4)
       payload: 3.90.1(graphql@16.14.2)(typescript@5.7.3)
-      payload-theme: 0.9.4(3c952bfc39510d5c92cc39c09b5d661b)
+      payload-theme: 0.9.4(patch_hash=883f19d08c3b9aeba2dee2d4ffb72dde7410158a9838848f59ad59c5b3638618)(3c952bfc39510d5c92cc39c09b5d661b)
       react: 19.2.6
       react-dom: 19.2.6(react@19.2.6)
     transitivePeerDependencies:
@@ -11614,7 +11619,7 @@ snapshots:
       - react-dom
       - supports-color
 
-  payload-theme@0.9.4(3c952bfc39510d5c92cc39c09b5d661b):
+  payload-theme@0.9.4(patch_hash=883f19d08c3b9aeba2dee2d4ffb72dde7410158a9838848f59ad59c5b3638618)(3c952bfc39510d5c92cc39c09b5d661b):
     dependencies:
       '@payloadcms/next': 3.90.1(@types/react@19.2.14)(graphql@16.14.2)(monaco-editor@0.56.0)(next@16.3.3(@babel/core@7.29.7)(@playwright/test@1.58.2)(@types/node@22.19.9)(babel-plugin-macros@3.1.0)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(sass@1.77.4))(payload@3.90.1(graphql@16.14.2)(typescript@5.7.3))(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(typescript@5.7.3)
       '@payloadcms/translations': 3.90.1
