@@ -1,8 +1,15 @@
 import { BoolCell as BoolCell_f436cf2a4719114d9e44505773a04007 } from 'payload-theme/client'
 import { MediaListToggle as MediaListToggle_f436cf2a4719114d9e44505773a04007 } from 'payload-theme/client'
+import { AnalyticsView as AnalyticsView_347380aaa2113afa5d2e20c339dead39 } from '../../../payload/admin/views/AnalyticsView'
+import { EmailLogsView as EmailLogsView_488b0a610c78ff4423c1e7d0e6a1c803 } from '../../../payload/admin/views/EmailLogsView'
+import { StorageManagerView as StorageManagerView_5cc4c1a738bfd234424d007382ac66c3 } from '../../../payload/admin/views/StorageManagerView'
+import { NotificationBroadcastView as NotificationBroadcastView_7945e368d16ef9b83be2507961167f3a } from '../../../payload/admin/views/NotificationBroadcastView'
 import { Nav as Nav_f436cf2a4719114d9e44505773a04007 } from 'payload-theme/client'
 import { LogoutButton as LogoutButton_aa8e4427b70b37c7820895ace344eb78 } from '@delmaredigital/payload-better-auth/components'
+import { AdminIcon as AdminIcon_1f0c171ee6d846234d57ba5f49c87614 } from '../../../payload/admin/components/AdminIcon'
+import { AdminLogo as AdminLogo_e60bb267b55a6580a619311d484cc34c } from '../../../payload/admin/components/AdminLogo'
 import { HeaderActions as HeaderActions_f436cf2a4719114d9e44505773a04007 } from 'payload-theme/client'
+import { CustomAdminNavLinks as CustomAdminNavLinks_93c668a10d6556d4c346d0daefb6cb19 } from '../../../payload/admin/components/CustomAdminNavLinks'
 import { LoginHero as LoginHero_37fe5310e1c82b2fade6b239ca4c79e5 } from 'payload-theme/rsc'
 import { AvatarProvider as AvatarProvider_37fe5310e1c82b2fade6b239ca4c79e5 } from 'payload-theme/rsc'
 import { ThemeProvider as ThemeProvider_f436cf2a4719114d9e44505773a04007 } from 'payload-theme/client'
@@ -15,9 +22,16 @@ import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } f
 export const importMap = {
   "payload-theme/client#BoolCell": BoolCell_f436cf2a4719114d9e44505773a04007,
   "payload-theme/client#MediaListToggle": MediaListToggle_f436cf2a4719114d9e44505773a04007,
+  "./admin/views/AnalyticsView#AnalyticsView": AnalyticsView_347380aaa2113afa5d2e20c339dead39,
+  "./admin/views/EmailLogsView#EmailLogsView": EmailLogsView_488b0a610c78ff4423c1e7d0e6a1c803,
+  "./admin/views/StorageManagerView#StorageManagerView": StorageManagerView_5cc4c1a738bfd234424d007382ac66c3,
+  "./admin/views/NotificationBroadcastView#NotificationBroadcastView": NotificationBroadcastView_7945e368d16ef9b83be2507961167f3a,
   "payload-theme/client#Nav": Nav_f436cf2a4719114d9e44505773a04007,
   "@delmaredigital/payload-better-auth/components#LogoutButton": LogoutButton_aa8e4427b70b37c7820895ace344eb78,
+  "./admin/components/AdminIcon#AdminIcon": AdminIcon_1f0c171ee6d846234d57ba5f49c87614,
+  "./admin/components/AdminLogo#AdminLogo": AdminLogo_e60bb267b55a6580a619311d484cc34c,
   "payload-theme/client#HeaderActions": HeaderActions_f436cf2a4719114d9e44505773a04007,
+  "./admin/components/CustomAdminNavLinks#CustomAdminNavLinks": CustomAdminNavLinks_93c668a10d6556d4c346d0daefb6cb19,
   "payload-theme/rsc#LoginHero": LoginHero_37fe5310e1c82b2fade6b239ca4c79e5,
   "payload-theme/rsc#AvatarProvider": AvatarProvider_37fe5310e1c82b2fade6b239ca4c79e5,
   "payload-theme/client#ThemeProvider": ThemeProvider_f436cf2a4719114d9e44505773a04007,

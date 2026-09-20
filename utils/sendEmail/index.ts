@@ -3,6 +3,7 @@ import { SiteConfig } from "@/config/site"
 import { getResetPasswordEmailTemplate } from "./templates/reset-password"
 import { getVerifyEmailTemplate } from "./templates/verify-email"
 import { getPasswordChangedEmailTemplate } from "./templates/password-changed"
+import { getBroadcastEmailTemplate } from "./templates/broadcast"
 
 // Create nodemailer SMTP transporter using environment variables
 export const transporter = nodemailer.createTransport({
@@ -148,8 +149,46 @@ export async function sendPasswordChangedEmail({
   })
 }
 
+/**
+ * Helper: Send Broadcast Notification Email
+ */
+export async function sendBroadcastEmail({
+  to,
+  recipientName,
+  title,
+  message,
+  priority = "info",
+  actionUrl,
+  actionText,
+}: {
+  to: string
+  recipientName?: string | null
+  title: string
+  message: string
+  priority?: "info" | "announcement" | "security" | "urgent"
+  actionUrl?: string
+  actionText?: string
+}) {
+  const { subject, html, text } = getBroadcastEmailTemplate({
+    title,
+    message,
+    priority,
+    actionUrl,
+    actionText,
+    recipientName,
+  })
+
+  return sendEmail({
+    to,
+    subject,
+    html,
+    text,
+  })
+}
+
 export * from "./templates/base"
 export * from "./templates/reset-password"
 export * from "./templates/verify-email"
 export * from "./templates/password-changed"
+export * from "./templates/broadcast"
 export * from "./payloadAdapter"

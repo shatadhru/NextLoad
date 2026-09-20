@@ -93,8 +93,20 @@ export interface Config {
     defaultIDType: string;
   };
   fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'site-settings': SiteSetting;
+    analytics: Analytics;
+    'email-logs': EmailLog;
+    'storage-manager': StorageManager;
+    notifications: Notification;
+  };
+  globalsSelect: {
+    'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
+    analytics: AnalyticsSelect<false> | AnalyticsSelect<true>;
+    'email-logs': EmailLogsSelect<false> | EmailLogsSelect<true>;
+    'storage-manager': StorageManagerSelect<false> | StorageManagerSelect<true>;
+    notifications: NotificationsSelect<false> | NotificationsSelect<true>;
+  };
   locale: null;
   widgets: {
     collections: CollectionsWidget;
@@ -145,6 +157,67 @@ export interface User {
 export interface Media {
   id: string;
   alt: string;
+  /**
+   * Cloudinary Media Information
+   */
+  cloudinary?: {
+    /**
+     * Cloudinary Public ID (used for transformations)
+     */
+    public_id?: string | null;
+    /**
+     * Type of the resource (image, video, raw)
+     */
+    resource_type?: string | null;
+    /**
+     * File format
+     */
+    format?: string | null;
+    /**
+     * Secure delivery URL
+     */
+    secure_url?: string | null;
+    /**
+     * File size in bytes
+     */
+    bytes?: number | null;
+    /**
+     * Creation timestamp
+     */
+    created_at?: string | null;
+    /**
+     * Current version number
+     */
+    version?: string | null;
+    /**
+     * Unique version identifier
+     */
+    version_id?: string | null;
+    /**
+     * Width in pixels
+     */
+    width?: number | null;
+    /**
+     * Height in pixels
+     */
+    height?: number | null;
+    /**
+     * Duration in seconds (for videos)
+     */
+    duration?: number | null;
+    /**
+     * Number of pages (for PDFs)
+     */
+    pages?: number | null;
+    /**
+     * Which page of the PDF to use for thumbnails (changes will apply after saving)
+     */
+    selected_page?: number | null;
+    /**
+     * URL for the thumbnail image (automatically generated for PDFs)
+     */
+    thumbnail_url?: string | null;
+  };
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -313,6 +386,24 @@ export interface UsersSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
+  cloudinary?:
+    | T
+    | {
+        public_id?: T;
+        resource_type?: T;
+        format?: T;
+        secure_url?: T;
+        bytes?: T;
+        created_at?: T;
+        version?: T;
+        version_id?: T;
+        width?: T;
+        height?: T;
+        duration?: T;
+        pages?: T;
+        selected_page?: T;
+        thumbnail_url?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -406,6 +497,133 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * Manage brand identity, upload custom logo, and update site titles.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings".
+ */
+export interface SiteSetting {
+  id: string;
+  /**
+   * The primary brand name displayed across header, sidebar, and emails.
+   */
+  siteName: string;
+  /**
+   * Displayed on the home page and in browser title tabs.
+   */
+  siteTitle?: string | null;
+  /**
+   * Primary metadata description for SEO and social sharing.
+   */
+  siteDescription?: string | null;
+  /**
+   * Initials displayed in the brand badge when no image logo is uploaded (e.g. NL).
+   */
+  logoText?: string | null;
+  /**
+   * Upload your custom brand logo. When empty, defaults to normal NextLoad badge.
+   */
+  logo?: (string | null) | Media;
+  /**
+   * Optional logo version specifically tailored for dark mode.
+   */
+  logoDark?: (string | null) | Media;
+  /**
+   * Upload a square icon for the browser tab favicon.
+   */
+  favicon?: (string | null) | Media;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "analytics".
+ */
+export interface Analytics {
+  id: string;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "email-logs".
+ */
+export interface EmailLog {
+  id: string;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "storage-manager".
+ */
+export interface StorageManager {
+  id: string;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "notifications".
+ */
+export interface Notification {
+  id: string;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings_select".
+ */
+export interface SiteSettingsSelect<T extends boolean = true> {
+  siteName?: T;
+  siteTitle?: T;
+  siteDescription?: T;
+  logoText?: T;
+  logo?: T;
+  logoDark?: T;
+  favicon?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "analytics_select".
+ */
+export interface AnalyticsSelect<T extends boolean = true> {
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "email-logs_select".
+ */
+export interface EmailLogsSelect<T extends boolean = true> {
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "storage-manager_select".
+ */
+export interface StorageManagerSelect<T extends boolean = true> {
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "notifications_select".
+ */
+export interface NotificationsSelect<T extends boolean = true> {
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

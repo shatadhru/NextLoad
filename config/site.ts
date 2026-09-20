@@ -1,31 +1,104 @@
-export const SiteConfig = {
+/**
+ * Centralized Site & Branding Configuration
+ * 
+ * Single source of truth for site name, titles, descriptions, page titles,
+ * and branding assets. Modify values here to safely update the entire application.
+ */
+
+export interface SiteConfigType {
   site: {
-    name: 'My Site',
-    title: 'My Site',
-    description: '...',
+    name: string
+    title: string
+    description: string
+    url: string
+    logoText: string
+  }
+  pages: {
+    dashboard: string
+    profile: string
+    settings: string
+    activity: string
+    notifications: string
+    files: string
+    support: string
+    login: string
+    signup: string
+    forget: string
+  }
+  seo: {
+    title: {
+      default: string
+      template: string
+    }
+    description: string
+    keywords: string[]
+    image: string
+  }
+  appearance: {
+    theme: "system" | "light" | "dark"
+    logo: {
+      light: string
+      dark: string
+    }
+    favicon: {
+      light: string
+      dark: string
+    }
+  }
+}
+
+export const SiteConfig: SiteConfigType = {
+  site: {
+    name: "NextLoad",
+    title: "NextLoad - The Production-Ready Full-Stack Boilerplate",
+    description: "Enterprise-grade full-stack web application with Next.js 16, Payload CMS 3.0, and Better Auth.",
+    url: process.env.NEXT_PUBLIC_APP_URL || process.env.BETTER_AUTH_URL || "http://localhost:3000",
+    logoText: "NL",
+  },
+
+  pages: {
+    dashboard: "Dashboard",
+    profile: "Profile & Settings",
+    settings: "Settings",
+    activity: "Activity Log",
+    notifications: "Notifications",
+    files: "Files & Media",
+    support: "Help & Support",
+    login: "Sign In",
+    signup: "Create Account",
+    forget: "Reset Password",
   },
 
   seo: {
     title: {
-      default: 'My Site',
-      template: '%s | My Site',
+      default: "NextLoad",
+      template: "%s | NextLoad",
     },
-    description: '...',
-    keywords: [],
-    image: '/og-image.png',
+    description: "A production-ready web application template integrating Next.js 16 with Payload CMS 3.0, Better Auth, and MongoDB.",
+    keywords: ["Next.js", "Payload CMS", "Better Auth", "MongoDB", "Cloudinary", "SMTP"],
+    image: "/og-image.png",
   },
 
   appearance: {
-    theme: 'system',
-
+    theme: "system",
     logo: {
-      light: '/logo-light.svg',
-      dark: '/logo-dark.svg',
+      light: "/logo-light.svg",
+      dark: "/logo-dark.svg",
     },
-
     favicon: {
-      light: '/favicon-light.ico',
-      dark: '/favicon-dark.ico',
+      light: "/favicon-light.ico",
+      dark: "/favicon-dark.ico",
     },
   },
 }
+
+/**
+ * Type-safe helper to format a page title with the site name
+ * @param pageKey The key from SiteConfig.pages or a custom title string
+ */
+export function getPageTitle(pageKeyOrTitle: keyof typeof SiteConfig.pages | string): string {
+  const pageTitle = (SiteConfig.pages as Record<string, string>)[pageKeyOrTitle] || pageKeyOrTitle
+  return `${pageTitle} | ${SiteConfig.site.name}`
+}
+
+export default SiteConfig

@@ -9,6 +9,9 @@ import {
 import { betterAuthOptions } from '@/payload/auth/config'
 import { trustedOrigins } from '@/config/trustedOrigins'
 import { roles } from '@/config/roles'
+import { generateThemeNavIcons } from '@/config/adminCustomComponents'
+import { cloudinaryStorage } from 'payload-cloudinary';
+
 
 
 
@@ -40,7 +43,38 @@ export const payloadPlugins = [
       }),
   }),
 
-  payloadTheme({ accent: '#0d9488' }),
+  payloadTheme({
+    accent: '#0d9488',
+    logo: {
+      light: '/api/site-settings/logo?theme=light',
+      dark: '/api/site-settings/logo?theme=dark',
+    },
+    icon: {
+      light: '/api/site-settings/icon?theme=light',
+      dark: '/api/site-settings/icon?theme=dark',
+    },
+    logoHeight: 28,
+    login: {
+      heading: 'NextLoad',
+      tagline: 'Sign in to manage your content and system settings.',
+    },
+    nav: {
+      icons: generateThemeNavIcons(),
+    },
+  }),
+
+   cloudinaryStorage({
+      config: {
+        cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME!,
+        api_key: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY!,
+        api_secret: process.env.CLOUDINARY_API_SECRET!
+      },
+      collections: {
+        'media': true, // Enable for media collection
+        // Add more collections as needed
+      },
+      folder: 'your-folder-name', // Optional, defaults to 'payload-media'
+    })
       
 
     
