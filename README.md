@@ -68,7 +68,7 @@ It integrates content management, authentication, database connectivity, transac
 ### Installation
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/shatadhru/NextLoad.git
 cd nextload
 pnpm install
 ```
