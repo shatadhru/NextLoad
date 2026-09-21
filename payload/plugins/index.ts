@@ -11,6 +11,7 @@ import { trustedOrigins } from '@/config/trustedOrigins'
 import { roles } from '@/config/roles'
 import { generateThemeNavIcons } from '@/config/adminCustomComponents'
 import { cloudinaryStorage } from 'payload-cloudinary';
+import { brandThemeConfig } from '@/config/brandTheme';
 
 
 
@@ -46,12 +47,12 @@ export const payloadPlugins = [
   payloadTheme({
     accent: '#0d9488',
     logo: {
-      light: '/api/site-settings/logo?theme=light',
-      dark: '/api/site-settings/logo?theme=dark',
+      light: brandThemeConfig.logo.light,
+      dark: brandThemeConfig.logo.dark,
     },
     icon: {
-      light: '/api/site-settings/icon?theme=light',
-      dark: '/api/site-settings/icon?theme=dark',
+      light: brandThemeConfig.icon.light,
+      dark: brandThemeConfig.icon.dark,
     },
     logoHeight: 28,
     login: {
@@ -67,14 +68,14 @@ export const payloadPlugins = [
       config: {
         cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME!,
         api_key: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY!,
-        api_secret: process.env.CLOUDINARY_API_SECRET!
+        api_secret: process.env.CLOUDINARY_API_SECRET!,
       },
       collections: {
-        'media': true, // Enable for media collection
-        // Add more collections as needed
+        media: true,
       },
-      folder: 'your-folder-name', // Optional, defaults to 'payload-media'
-    })
+      folder: process.env.CLOUDINARY_FOLDER || 'nextload-media',
+      disableLocalStorage: true,
+    }),
       
 
     

@@ -13,6 +13,7 @@ import {
   ExternalLink,
   Filter,
   Check,
+  Trash2,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -81,6 +82,36 @@ export default function NotificationsPage() {
     })
   }
 
+  const handleDeleteNotification = async (id: string, e?: React.MouseEvent) => {
+    if (e) e.stopPropagation()
+    if (!userEmail) return
+    setNotifications((prev) => prev.filter((n) => n.id !== id))
+    try {
+      await fetch("/api/user/notifications", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "delete", id, email: userEmail }),
+      })
+    } catch (err) {
+      console.error("Failed to delete notification:", err)
+    }
+  }
+
+  const handleClearAll = async () => {
+    if (!userEmail || notifications.length === 0) return
+    if (!confirm("Are you sure you want to clear all notifications from your feed?")) return
+    setNotifications([])
+    try {
+      await fetch("/api/user/notifications", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "delete_all", email: userEmail }),
+      })
+    } catch (err) {
+      console.error("Failed to clear all notifications:", err)
+    }
+  }
+
   const filteredNotifications = notifications.filter((n) => {
     if (filter === "unread") return !n.isRead
     if (filter === "announcement") return n.priority === "announcement"
@@ -137,16 +168,28 @@ export default function NotificationsPage() {
           </p>
         </div>
 
-        {unreadCount > 0 && (
-          <button
-            type="button"
-            onClick={handleMarkAllAsRead}
-            className="self-start sm:self-auto inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-muted hover:bg-muted/80 text-foreground transition-colors"
-          >
-            <CheckCheck className="size-3.5" />
-            <span>Mark all as read</span>
-          </button>
-        )}
+        <div className="flex items-center gap-2 self-start sm:self-auto flex-wrap">
+          {unreadCount > 0 && (
+            <button
+              type="button"
+              onClick={handleMarkAllAsRead}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-muted hover:bg-muted/80 text-foreground transition-colors"
+            >
+              <CheckCheck className="size-3.5" />
+              <span>Mark all as read</span>
+            </button>
+          )}
+          {notifications.length > 0 && (
+            <button
+              type="button"
+              onClick={handleClearAll}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-muted-foreground hover:text-rose-600 hover:bg-rose-500/10 dark:hover:bg-rose-500/20 transition-colors"
+            >
+              <Trash2 className="size-3.5" />
+              <span>Clear all</span>
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Filter Tabs */}
@@ -262,16 +305,26 @@ export default function NotificationsPage() {
                     )}
                   </div>
 
-                  {!notif.isRead && (
+                  <div className="flex items-center gap-1 shrink-0">
+                    {!notif.isRead && (
+                      <button
+                        type="button"
+                        onClick={() => handleMarkAsRead(notif.id)}
+                        title="Mark as read"
+                        className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors opacity-80 group-hover:opacity-100"
+                      >
+                        <Check className="size-4" />
+                      </button>
+                    )}
                     <button
                       type="button"
-                      onClick={() => handleMarkAsRead(notif.id)}
-                      title="Mark as read"
-                      className="shrink-0 p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors opacity-0 group-hover:opacity-100"
+                      onClick={(e) => handleDeleteNotification(notif.id, e)}
+                      title="Delete notification"
+                      className="p-1.5 rounded-lg text-muted-foreground hover:text-rose-600 hover:bg-rose-500/10 dark:hover:bg-rose-500/20 transition-colors opacity-80 group-hover:opacity-100"
                     >
-                      <Check className="size-4" />
+                      <Trash2 className="size-4" />
                     </button>
-                  )}
+                  </div>
                 </div>
               </div>
             )

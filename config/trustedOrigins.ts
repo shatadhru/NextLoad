@@ -1,1 +1,1 @@
-export const trustedOrigins = ['']
+export const trustedOrigins: string[] = []

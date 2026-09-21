@@ -68,6 +68,43 @@ export function ProfileSettingsView() {
   // Sign out state
   const [isSigningOut, setIsSigningOut] = useState(false)
 
+  // Verification state
+  const [isSendingVerification, setIsSendingVerification] = useState(false)
+  const [verificationSent, setVerificationSent] = useState(false)
+
+  const handleSendVerification = async () => {
+    if (!session?.user?.email || isSendingVerification || verificationSent) return
+    setIsSendingVerification(true)
+    try {
+      const res = await authClient.sendVerificationEmail({
+        email: session.user.email,
+        callbackURL: "/dashboard/profile",
+      })
+      if (res?.error) {
+        toast.add({
+          title: "Failed to Send Email",
+          description: res.error.message || "Failed to send verification email.",
+          type: "error",
+        })
+      } else {
+        setVerificationSent(true)
+        toast.add({
+          title: "Verification Email Sent",
+          description: `A verification link has been sent to ${session.user.email}. Check your inbox or spam folder.`,
+          type: "success",
+        })
+      }
+    } catch (err: any) {
+      toast.add({
+        title: "Error",
+        description: err?.message || "Failed to send verification email.",
+        type: "error",
+      })
+    } finally {
+      setIsSendingVerification(false)
+    }
+  }
+
   // Synchronize name from session once loaded
   useEffect(() => {
     if (session?.user?.name) {
@@ -482,11 +519,19 @@ export function ProfileSettingsView() {
                       </>
                     )}
                   </span>
-                  {user?.image && (
-                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-primary/10 text-primary border border-primary/20">
-                      <Sparkles className="size-3" />
-                      HD Avatar
-                    </span>
+                  {!isEmailVerified && (
+                    <button
+                      type="button"
+                      onClick={handleSendVerification}
+                      disabled={isSendingVerification || verificationSent}
+                      className="inline-flex items-center gap-1 text-[11px] font-medium text-amber-700 dark:text-amber-400 hover:text-amber-900 dark:hover:text-amber-200 underline underline-offset-2 decoration-amber-400/60 disabled:opacity-60 cursor-pointer transition-colors"
+                    >
+                      {isSendingVerification
+                        ? "Sending link..."
+                        : verificationSent
+                        ? "Verification link sent!"
+                        : "Verify now"}
+                    </button>
                   )}
                 </div>
                 <p className="text-sm text-muted-foreground flex items-center gap-1.5">

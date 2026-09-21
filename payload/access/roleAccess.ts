@@ -1,13 +1,6 @@
 import type { Access } from "payload"
 
 /**
- * Access control helper: Grants access to any authenticated user.
- */
-export const authenticatedOnly: Access = ({ req }) => {
-  return Boolean(req.user)
-}
-
-/**
  * Access control helper: Grants access to users having one of the specified roles.
  * @param allowedRoles Array of role names permitted (e.g. ['admin', 'manager'])
  */

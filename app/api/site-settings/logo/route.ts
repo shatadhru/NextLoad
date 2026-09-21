@@ -3,6 +3,8 @@ import { getPayload } from "payload"
 import config from "@payload-config"
 import { SiteConfig } from "@/config/site"
 
+export const dynamic = "force-dynamic"
+
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
@@ -19,23 +21,53 @@ export async function GET(request: NextRequest) {
       // payload not initialized or DB down, fallback to SVG
     }
 
+    const resolveSecureUrl = (media: any): string | null => {
+      if (!media) return null
+      if (typeof media === "string") {
+        if (media.startsWith("/api/media/file")) return null
+        return media
+      }
+      return (
+        media.cloudinary?.secure_url ||
+        (typeof media.thumbnailURL === "string" && media.thumbnailURL.includes("res.cloudinary.com") ? media.thumbnailURL : null) ||
+        (typeof media.url === "string" && media.url.includes("res.cloudinary.com") ? media.url : null) ||
+        null
+      )
+    }
+
     let targetLogoUrl: string | null = null
     if (theme === "dark" && settings?.logoDark) {
-      targetLogoUrl = typeof settings.logoDark === "object" ? settings.logoDark.url : settings.logoDark
+      targetLogoUrl = resolveSecureUrl(settings.logoDark)
     }
     if (!targetLogoUrl && settings?.logo) {
-      targetLogoUrl = typeof settings.logo === "object" ? settings.logo.url : settings.logo
+      targetLogoUrl = resolveSecureUrl(settings.logo)
     }
 
     if (targetLogoUrl) {
       return NextResponse.redirect(new URL(targetLogoUrl, request.url), {
         status: 307,
+        headers: {
+          "Cache-Control": "public, max-age=3600, stale-while-revalidate=86400",
+        },
+      })
+    }
+
+    function escapeXml(unsafe: string): string {
+      return unsafe.replace(/[<>&'"]/g, (c) => {
+        switch (c) {
+          case "<": return "&lt;"
+          case ">": return "&gt;"
+          case "&": return "&amp;"
+          case "'": return "&apos;"
+          case '"': return "&quot;"
+          default: return c
+        }
       })
     }
 
     // Default SVG fallback
-    const siteName = settings?.siteName || SiteConfig.site.name
-    const logoText = settings?.logoText || SiteConfig.site.logoText
+    const siteName = escapeXml(settings?.siteName || SiteConfig.site.name)
+    const logoText = escapeXml(settings?.logoText || SiteConfig.site.logoText)
     const textColor = theme === "dark" ? "#f8fafc" : "#0f172a"
 
     const svg = `

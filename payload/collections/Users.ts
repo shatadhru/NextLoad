@@ -19,12 +19,18 @@ export const Users: CollectionConfig = {
       if ((req.user as typeof req.user & { role?: string }).role === 'admin') return true
       return { id: { equals: req.user.id } }
     },
+    create: ({ req }) => (req.user as (typeof req.user & { role?: string }) | undefined)?.role === 'admin',
+    update: ({ req }) => {
+      if (!req.user) return false
+      if ((req.user as typeof req.user & { role?: string }).role === 'admin') return true
+      return { id: { equals: req.user.id } }
+    },
+    delete: ({ req }) =>
+      (req.user as (typeof req.user & { role?: string }) | undefined)?.role === 'admin',
     admin: ({ req }) =>
       (req.user as (typeof req.user & { role?: string }) | undefined)?.role === 'admin',
   },
 
-
-  
   fields: [
     { name: 'email', type: 'email', required: true, unique: true },
     { name: 'emailVerified', type: 'checkbox', defaultValue: false },
@@ -34,6 +40,10 @@ export const Users: CollectionConfig = {
       name: 'role',
       type: 'select',
       defaultValue: 'user',
+      access: {
+        update: ({ req }) =>
+          (req.user as (typeof req.user & { role?: string }) | undefined)?.role === 'admin',
+      },
       options: [
         { label: 'User', value: 'user' },
         { label: 'Admin', value: 'admin' },

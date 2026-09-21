@@ -1,8 +1,21 @@
 import { NextRequest, NextResponse } from "next/server"
 import crypto from "crypto"
+import { getPayload } from "payload"
+import config from "@payload-config"
+import { getServerSession } from "@delmaredigital/payload-better-auth"
 
 export async function POST(req: NextRequest) {
   try {
+    const payload = await getPayload({ config })
+    const session = await getServerSession(payload, req.headers)
+
+    if (!session?.user) {
+      return NextResponse.json(
+        { error: "Unauthorized. You must be signed in to upload an avatar." },
+        { status: 401 }
+      )
+    }
+
     const formData = await req.formData()
     const file = formData.get("file") as File | null
 
@@ -13,9 +26,16 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    if (!file.type.startsWith("image/")) {
+    const ALLOWED_MIME_TYPES = [
+      "image/jpeg",
+      "image/png",
+      "image/webp",
+      "image/gif",
+      "image/avif",
+    ]
+    if (!ALLOWED_MIME_TYPES.includes(file.type.toLowerCase())) {
       return NextResponse.json(
-        { error: "Invalid file type. Only image files are allowed." },
+        { error: "Invalid file type. Only JPEG, PNG, WebP, GIF, and AVIF images are allowed." },
         { status: 400 }
       )
     }

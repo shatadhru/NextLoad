@@ -3,6 +3,8 @@ import { getPayload } from "payload"
 import config from "@payload-config"
 import { SiteConfig } from "@/config/site"
 
+export const dynamic = "force-dynamic"
+
 export async function GET(request: NextRequest) {
   try {
     let settings: any = null
@@ -17,15 +19,38 @@ export async function GET(request: NextRequest) {
     }
 
     if (settings?.favicon) {
-      const faviconUrl = typeof settings.favicon === "object" ? settings.favicon.url : settings.favicon
+      const faviconUrl =
+        settings.favicon?.cloudinary?.secure_url ||
+        (typeof settings.favicon?.thumbnailURL === "string" && settings.favicon.thumbnailURL.includes("res.cloudinary.com")
+          ? settings.favicon.thumbnailURL
+          : null) ||
+        (typeof settings.favicon?.url === "string" && settings.favicon.url.includes("res.cloudinary.com")
+          ? settings.favicon.url
+          : null)
       if (faviconUrl) {
         return NextResponse.redirect(new URL(faviconUrl, request.url), {
           status: 307,
+          headers: {
+            "Cache-Control": "public, max-age=3600, stale-while-revalidate=86400",
+          },
         })
       }
     }
 
-    const logoText = settings?.logoText || SiteConfig.site.logoText
+    function escapeXml(unsafe: string): string {
+      return unsafe.replace(/[<>&'"]/g, (c) => {
+        switch (c) {
+          case "<": return "&lt;"
+          case ">": return "&gt;"
+          case "&": return "&amp;"
+          case "'": return "&apos;"
+          case '"': return "&quot;"
+          default: return c
+        }
+      })
+    }
+
+    const logoText = escapeXml(settings?.logoText || SiteConfig.site.logoText)
 
     const svg = `
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40" height="40" fill="none">

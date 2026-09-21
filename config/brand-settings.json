@@ -1,0 +1,10 @@
+{
+  "logo": {
+    "light": "https://res.cloudinary.com/dccbp4dpb/image/upload/v1789961855/nextload-media/hyraticdark_1789961852998.png",
+    "dark": "https://res.cloudinary.com/dccbp4dpb/image/upload/v1789887376/your-folder-name/logoicon_1789887374541.png"
+  },
+  "icon": {
+    "light": "https://res.cloudinary.com/dccbp4dpb/image/upload/v1789887376/your-folder-name/logoicon_1789887374541.png",
+    "dark": "https://res.cloudinary.com/dccbp4dpb/image/upload/v1789887376/your-folder-name/logoicon_1789887374541.png"
+  }
+}

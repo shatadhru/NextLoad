@@ -1,10 +1,13 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getPayload } from "payload"
 import config from "@payload-config"
+import { getServerSession } from "@delmaredigital/payload-better-auth"
 import { sendBroadcastEmail } from "@/utils/sendEmail"
 import {
   saveBroadcastRecord,
   getBroadcastHistory,
+  deleteBroadcastRecord,
+  bulkDeleteBroadcastRecords,
   BroadcastRecord,
 } from "@/utils/notifications/storage"
 
@@ -22,9 +25,17 @@ interface SendNotificationBody {
   imageUrl?: string
 }
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
     const payload = await getPayload({ config })
+    const session = await getServerSession(payload, req.headers)
+
+    if (!session?.user || (session.user as { role?: string }).role !== "admin") {
+      return NextResponse.json(
+        { error: "Forbidden: Administrator access required." },
+        { status: 403 }
+      )
+    }
 
     let totalUsers = 0
     let adminCount = 0
@@ -85,6 +96,16 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
+    const payload = await getPayload({ config })
+    const session = await getServerSession(payload, req.headers)
+
+    if (!session?.user || (session.user as { role?: string }).role !== "admin") {
+      return NextResponse.json(
+        { error: "Forbidden: Administrator access required." },
+        { status: 403 }
+      )
+    }
+
     const body: SendNotificationBody = await req.json()
 
     const {
@@ -115,8 +136,6 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       )
     }
-
-    const payload = await getPayload({ config })
 
     interface Recipient {
       email: string
@@ -307,3 +326,67 @@ export async function POST(req: NextRequest) {
     )
   }
 }
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const payload = await getPayload({ config })
+    const session = await getServerSession(payload, req.headers)
+
+    if (!session?.user || (session.user as { role?: string }).role !== "admin") {
+      return NextResponse.json(
+        { error: "Forbidden: Administrator access required." },
+        { status: 403 }
+      )
+    }
+
+    const { searchParams } = new URL(req.url)
+    const queryId = searchParams.get("id")
+
+    let id = queryId
+    let ids: string[] = []
+
+    try {
+      const body = await req.json()
+      if (body.id) id = body.id
+      if (Array.isArray(body.ids)) ids = body.ids
+    } catch {
+      // JSON body is optional if query params are used
+    }
+
+    if (!id && (!ids || ids.length === 0)) {
+      return NextResponse.json(
+        { success: false, error: "Please provide a valid notification ID or IDs to remove." },
+        { status: 400 }
+      )
+    }
+
+    let deleted = false
+    if (ids.length > 0) {
+      deleted = bulkDeleteBroadcastRecords(ids)
+    } else if (id) {
+      deleted = deleteBroadcastRecord(id)
+    }
+
+    if (!deleted) {
+      return NextResponse.json(
+        { success: false, error: "Notification not found or already removed." },
+        { status: 404 }
+      )
+    }
+
+    const updatedBroadcasts = getBroadcastHistory()
+
+    return NextResponse.json({
+      success: true,
+      message: "Notification removed successfully.",
+      broadcasts: updatedBroadcasts,
+    })
+  } catch (error: any) {
+    console.error("DELETE /api/admin/notifications/send error:", error)
+    return NextResponse.json(
+      { success: false, error: error?.message || "Failed to remove notification." },
+      { status: 500 }
+    )
+  }
+}
+

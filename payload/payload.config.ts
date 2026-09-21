@@ -11,6 +11,7 @@ import { SiteSettings } from './globals/SiteSettings'
 import { payloadPlugins } from './plugins';
 import { payloadEmailAdapter } from '@/utils/sendEmail/payloadAdapter'
 import { customAdminViews, generateAdminGlobals } from '@/config/adminCustomComponents'
+import { brandThemeConfig } from '@/config/brandTheme'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -32,8 +33,7 @@ export default buildConfig({
       icons: [
         {
           rel: 'icon',
-          type: 'image/svg+xml',
-          url: '/api/site-settings/icon',
+          url: brandThemeConfig.icon.light,
         },
       ],
     },
@@ -65,5 +65,5 @@ export default buildConfig({
     url: process.env.DATABASE_URL || '',
   }),
   sharp,
-  plugins: [... payloadPlugins],
+  plugins: payloadPlugins,
 })

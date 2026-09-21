@@ -1,53 +1,12 @@
 /**
  * Centralized Site & Branding Configuration
- * 
- * Single source of truth for site name, titles, descriptions, page titles,
- * and branding assets. Modify values here to safely update the entire application.
+ *
+ * Single source of truth for site name, titles, descriptions, and page titles.
+ * Modify values here to safely update the entire application.
+ * Visual branding (logo/favicon URLs) is managed by Cloudinary via config/brandTheme.ts.
  */
 
-export interface SiteConfigType {
-  site: {
-    name: string
-    title: string
-    description: string
-    url: string
-    logoText: string
-  }
-  pages: {
-    dashboard: string
-    profile: string
-    settings: string
-    activity: string
-    notifications: string
-    files: string
-    support: string
-    login: string
-    signup: string
-    forget: string
-  }
-  seo: {
-    title: {
-      default: string
-      template: string
-    }
-    description: string
-    keywords: string[]
-    image: string
-  }
-  appearance: {
-    theme: "system" | "light" | "dark"
-    logo: {
-      light: string
-      dark: string
-    }
-    favicon: {
-      light: string
-      dark: string
-    }
-  }
-}
-
-export const SiteConfig: SiteConfigType = {
+export const SiteConfig = {
   site: {
     name: "Shatadhru",
     title: "Shatadhru Acharjee",
@@ -78,22 +37,10 @@ export const SiteConfig: SiteConfigType = {
     keywords: ["Next.js", "Payload CMS", "Better Auth", "MongoDB", "Cloudinary", "SMTP"],
     image: "/og-image.png",
   },
-
-  appearance: {
-    theme: "system",
-    logo: {
-      light: "/logo-light.svg",
-      dark: "/logo-dark.svg",
-    },
-    favicon: {
-      light: "/favicon-light.ico",
-      dark: "/favicon-dark.ico",
-    },
-  },
 }
 
 /**
- * Type-safe helper to format a page title with the site name
+ * Type-safe helper to format a page title with the site name.
  * @param pageKey The key from SiteConfig.pages or a custom title string
  */
 export function getPageTitle(pageKeyOrTitle: keyof typeof SiteConfig.pages | string): string {

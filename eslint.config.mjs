@@ -1,17 +1,12 @@
-import { dirname } from 'path'
-import { fileURLToPath } from 'url'
-import { FlatCompat } from '@eslint/eslintrc'
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-})
+import nextConfig from 'eslint-config-next/core-web-vitals'
+import tseslint from 'typescript-eslint'
 
 const eslintConfig = [
-  ...compat.extends('next/core-web-vitals', 'next/typescript'),
+  ...nextConfig,
   {
+    plugins: {
+      '@typescript-eslint': tseslint.plugin,
+    },
     rules: {
       '@typescript-eslint/ban-ts-comment': 'warn',
       '@typescript-eslint/no-empty-object-type': 'warn',
@@ -28,10 +23,20 @@ const eslintConfig = [
           caughtErrorsIgnorePattern: '^(_|ignore)',
         },
       ],
+      'react-hooks/set-state-in-effect': 'off',
+      'react-hooks/purity': 'off',
     },
   },
   {
-    ignores: ['.next/', './payload-types.ts', './payload-generated-schema.ts'],
+    ignores: [
+      '.next/**',
+      'out/**',
+      'build/**',
+      'test-results/**',
+      'playwright-report/**',
+      'payload-types.ts',
+      'payload-generated-schema.ts',
+    ],
   },
 ]
 

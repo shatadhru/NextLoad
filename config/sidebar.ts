@@ -140,6 +140,7 @@ export const sidebarConfig: SidebarConfig = {
       badge: "Admin",
       adminOnly: true,
     },
+    // TODO: implement /dashboard/users page
     {
       id: "admin-users",
       label: "User Management",
@@ -147,6 +148,7 @@ export const sidebarConfig: SidebarConfig = {
       icon: Users,
       adminOnly: true,
     },
+    // TODO: implement /dashboard/emails page
     {
       id: "admin-emails",
       label: "Email Delivery",
@@ -155,6 +157,7 @@ export const sidebarConfig: SidebarConfig = {
       badge: 3,
       adminOnly: true,
     },
+    // TODO: implement /dashboard/analytics page
     {
       id: "admin-analytics",
       label: "Analytics",

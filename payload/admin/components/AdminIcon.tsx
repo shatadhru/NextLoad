@@ -2,30 +2,44 @@
 
 import React, { useState, useEffect } from "react"
 import { SiteConfig } from "@/config/site"
+import { CldImage } from "next-cloudinary"
+import { isCloudinarySrc, extractCloudinarySecureUrl } from "@/components/ui/SafeCldImage"
+
 
 export function AdminIcon() {
-  const [logoUrl, setLogoUrl] = useState<string | null>(null)
+  const [iconUrl, setIconUrl] = useState<string | null>(null)
   const [logoText, setLogoText] = useState(SiteConfig.site.logoText)
+  const [hasError, setHasError] = useState(false)
 
   useEffect(() => {
     fetch("/api/site-settings")
       .then((res) => res.json())
       .then((data) => {
-        if (data.success) {
-          if (data.logoUrl) setLogoUrl(data.logoUrl)
-          if (data.logoText) setLogoText(data.logoText)
-        }
+        if (!data) return
+        if (data.logoText) setLogoText(data.logoText)
+
+        const icon =
+          extractCloudinarySecureUrl(data.favicon) ||
+          extractCloudinarySecureUrl(data.faviconUrl) ||
+          extractCloudinarySecureUrl(data.logoDark) ||
+          extractCloudinarySecureUrl(data.logoDarkUrl) ||
+          extractCloudinarySecureUrl(data.logo) ||
+          extractCloudinarySecureUrl(data.logoUrl)
+
+        if (icon) setIconUrl(icon)
       })
-      .catch(() => {})
+      .catch((err) => console.warn("Failed to fetch site settings in AdminIcon:", err))
   }, [])
 
-  if (logoUrl) {
+  if (iconUrl && isCloudinarySrc(iconUrl) && !hasError) {
     return (
-      /* eslint-disable-next-line @next/next/no-img-element */
-      <img
-        src={logoUrl}
+      <CldImage
+        width="48"
+        height="48"
+        src={iconUrl}
         alt="Icon"
         style={{ width: "24px", height: "24px", objectFit: "contain" }}
+        onError={() => setHasError(true)}
       />
     )
   }

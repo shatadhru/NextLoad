@@ -1,25 +1,26 @@
 "use client";
 import { authClient } from "@/payload/auth/client";
 import { useRouter } from "next/navigation";
-import React, { ReactNode } from "react";
+import React, { ReactNode, useEffect } from "react";
 import { Spinner } from "@/components/ui/spinner";
 
-function layout({ children }: { children: ReactNode }) {
+export default function SignupLayout({ children }: { children: ReactNode }) {
   const { data: session, isPending } = authClient.useSession();
-
   const router = useRouter();
-  if (isPending) {
+
+  useEffect(() => {
+    if (!isPending && session) {
+      router.push("/");
+    }
+  }, [session, isPending, router]);
+
+  if (isPending || session) {
     return (
       <div className="w-full h-screen flex items-center justify-center">
-        <Spinner className="size-6" />{" "}
+        <Spinner className="size-6" />
       </div>
     );
-  } else if (session) {
-    router.push("/");
-    return null;
-  } else {
-    return <div>{children}</div>;
   }
-}
 
-export default layout;
+  return <div>{children}</div>;
+}

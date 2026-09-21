@@ -20,9 +20,11 @@ export function CustomAdminViewWrapper({
   return (
     <div
       style={{
-        padding: "32px 40px",
+        padding: "clamp(16px, 3vw, 32px) clamp(12px, 3vw, 36px)",
         maxWidth: "1400px",
         margin: "0 auto",
+        width: "100%",
+        boxSizing: "border-box",
         color: "var(--theme-elevation-900, #111)",
       }}
     >

@@ -82,9 +82,6 @@ importers:
       payload:
         specifier: 3.90.1
         version: 3.90.1(graphql@16.14.2)(typescript@5.7.3)
-      payload-admin-theme:
-        specifier: ^1.2.0
-        version: 1.2.0(3c952bfc39510d5c92cc39c09b5d661b)
       payload-cloudinary:
         specifier: ^2.3.0
         version: 2.3.0(@types/react@19.2.14)(monaco-editor@0.56.0)(next@16.3.3(@babel/core@7.29.7)(@playwright/test@1.58.2)(@types/node@22.19.9)(babel-plugin-macros@3.1.0)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(sass@1.77.4))(payload@3.90.1(graphql@16.14.2)(typescript@5.7.3))(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(typescript@5.7.3)
@@ -106,9 +103,6 @@ importers:
       react-dom:
         specifier: 19.2.6
         version: 19.2.6(react@19.2.6)
-      shadcn:
-        specifier: ^4.21.0
-        version: 4.21.0(babel-plugin-macros@3.1.0)(typescript@5.7.3)
       sharp:
         specifier: 0.35.4
         version: 0.35.4(@types/node@22.19.9)
@@ -122,6 +116,9 @@ importers:
         specifier: ^1.4.0
         version: 1.4.0
     devDependencies:
+      '@eslint/eslintrc':
+        specifier: ^3.3.7
+        version: 3.3.7
       '@playwright/test':
         specifier: 1.58.2
         version: 1.58.2
@@ -158,12 +155,18 @@ importers:
       prettier:
         specifier: ^3.4.2
         version: 3.9.8
+      shadcn:
+        specifier: ^4.21.0
+        version: 4.21.0(babel-plugin-macros@3.1.0)(typescript@5.7.3)
       tsx:
         specifier: 4.22.4
         version: 4.22.4
       typescript:
         specifier: 5.7.3
         version: 5.7.3
+      typescript-eslint:
+        specifier: ^8.70.0
+        version: 8.70.0(eslint@9.39.5(jiti@2.7.0))(typescript@5.7.3)
       vite-tsconfig-paths:
         specifier: 6.0.5
         version: 6.0.5(typescript@5.7.3)(vite@7.3.6(@types/node@22.19.9)(jiti@2.7.0)(lightningcss@1.32.0)(sass@1.77.4)(tsx@4.22.4))
@@ -5159,17 +5162,6 @@ packages:
 
   pathe@2.0.3:
     resolution: {integrity: sha512-WUjGcAqP1gQacoQe+OBJsFA7Ld4DyXuUIjZ5cc75cLHvJ7dtNsTugphxIADwspS+AraAUePCKrSVtPLFj/F88w==}
-
-  payload-admin-theme@1.2.0:
-    resolution: {integrity: sha512-RoRsBZIlZ9C2IQM9lwCZi/zoAQLHoZT+FX5LRgzebJOSkAKg2R17UQrzHsLo3hs0hoB3i2JlyX0yIFwYNd8kcg==}
-    engines: {node: ^18.20.2 || >=20.9.0, pnpm: ^9 || ^10 || ^11}
-    peerDependencies:
-      '@payloadcms/next': ^3.88.0
-      '@payloadcms/ui': ^3.88.0
-      next: '>=15'
-      payload: ^3.88.0
-      react: ^19.0.0
-      react-dom: ^19.0.0
 
   payload-cloudinary@2.3.0:
     resolution: {integrity: sha512-r32FJe+XQ/++xYW+nEplUIgNgZf6j5fzuLGccROHdQURCaS7/I/mS2h40LI6fflX3U2oVrOrz7MfubGGEiuwow==}
@@ -11591,19 +11583,6 @@ snapshots:
   path-type@4.0.0: {}
 
   pathe@2.0.3: {}
-
-  payload-admin-theme@1.2.0(3c952bfc39510d5c92cc39c09b5d661b):
-    dependencies:
-      '@payloadcms/next': 3.90.1(@types/react@19.2.14)(graphql@16.14.2)(monaco-editor@0.56.0)(next@16.3.3(@babel/core@7.29.7)(@playwright/test@1.58.2)(@types/node@22.19.9)(babel-plugin-macros@3.1.0)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(sass@1.77.4))(payload@3.90.1(graphql@16.14.2)(typescript@5.7.3))(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(typescript@5.7.3)
-      '@payloadcms/ui': 3.90.1(@types/react@19.2.14)(monaco-editor@0.56.0)(next@16.3.3(@babel/core@7.29.7)(@playwright/test@1.58.2)(@types/node@22.19.9)(babel-plugin-macros@3.1.0)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(sass@1.77.4))(payload@3.90.1(graphql@16.14.2)(typescript@5.7.3))(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(typescript@5.7.3)
-      lucide-react: 1.47.0(react@19.2.6)
-      next: 16.3.3(@babel/core@7.29.7)(@playwright/test@1.58.2)(@types/node@22.19.9)(babel-plugin-macros@3.1.0)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(sass@1.77.4)
-      payload: 3.90.1(graphql@16.14.2)(typescript@5.7.3)
-      payload-theme: 0.9.4(patch_hash=883f19d08c3b9aeba2dee2d4ffb72dde7410158a9838848f59ad59c5b3638618)(3c952bfc39510d5c92cc39c09b5d661b)
-      react: 19.2.6
-      react-dom: 19.2.6(react@19.2.6)
-    transitivePeerDependencies:
-      - '@payloadcms/translations'
 
   payload-cloudinary@2.3.0(@types/react@19.2.14)(monaco-editor@0.56.0)(next@16.3.3(@babel/core@7.29.7)(@playwright/test@1.58.2)(@types/node@22.19.9)(babel-plugin-macros@3.1.0)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(sass@1.77.4))(payload@3.90.1(graphql@16.14.2)(typescript@5.7.3))(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(typescript@5.7.3):
     dependencies:

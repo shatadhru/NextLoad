@@ -2,6 +2,7 @@ import type { BetterAuthOptions } from 'better-auth'
 import {
   sendResetPasswordEmail,
   sendPasswordChangedEmail,
+  sendVerificationEmail,
 } from '@/utils/sendEmail'
 
 export const betterAuthOptions: Partial<BetterAuthOptions> = {
@@ -30,6 +31,18 @@ export const betterAuthOptions: Partial<BetterAuthOptions> = {
       await sendPasswordChangedEmail({
         to: user.email,
         name: user.name,
+      })
+    },
+  },
+  emailVerification: {
+    sendOnSignUp: false,
+    autoSignInAfterVerification: false,
+    sendVerificationEmail: async ({ user, url, token }) => {
+      await sendVerificationEmail({
+        to: user.email,
+        name: user.name,
+        verifyUrl: url,
+        token,
       })
     },
   },

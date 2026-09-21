@@ -20,7 +20,12 @@
       "codemantrabangla@gmail.com",
       "shatadhru@gmail.com"
     ],
-    "readBy": []
+    "readBy": [
+      "hyratic1122@gmail.com"
+    ],
+    "deletedBy": [
+      "ssnmggs@gmail.com"
+    ]
   },
   {
     "id": "bc-1789886081309-snedo",
@@ -45,6 +50,10 @@
       "shatadhru@gmail.com"
     ],
     "readBy": [
+      "ssnmggs@gmail.com",
+      "hyratic1122@gmail.com"
+    ],
+    "deletedBy": [
       "ssnmggs@gmail.com"
     ]
   },
@@ -69,6 +78,10 @@
     ],
     "readBy": [
       "codemantrabangla@gmail.com",
+      "ssnmggs@gmail.com",
+      "hyratic1122@gmail.com"
+    ],
+    "deletedBy": [
       "ssnmggs@gmail.com"
     ]
   }

@@ -30,6 +30,7 @@ import {
 } from "lucide-react"
 import { authClient } from "@/payload/auth/client"
 import { Logo } from "@/components/ui/Logo"
+import { EmailVerificationBanner } from "./EmailVerificationBanner"
 
 interface UserNotification {
   id: string
@@ -140,6 +141,26 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
       })
     } catch (err) {
       console.error("Failed to mark all notifications as read:", err)
+    }
+  }
+
+  // Delete / dismiss single notification
+  const handleDeleteNotification = async (id: string, e: React.MouseEvent) => {
+    e.stopPropagation()
+    if (!userEmail) return
+    const targetNotif = notifications.find((n) => n.id === id)
+    setNotifications((prev) => prev.filter((n) => n.id !== id))
+    if (targetNotif && !targetNotif.isRead) {
+      setUnreadCount((prev) => Math.max(0, prev - 1))
+    }
+    try {
+      await fetch("/api/user/notifications", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "delete", id, email: userEmail }),
+      })
+    } catch (err) {
+      console.error("Failed to delete notification:", err)
     }
   }
 
@@ -277,7 +298,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
                             key={notif.id}
                             onClick={() => handleMarkAsRead(notif.id, notif.actionUrl)}
                             className={cn(
-                              "p-3.5 text-left cursor-pointer transition-colors hover:bg-muted/50 flex gap-3 items-start",
+                              "p-3.5 text-left cursor-pointer transition-colors hover:bg-muted/50 flex gap-3 items-start relative group",
                               !notif.isRead && "bg-muted/20"
                             )}
                           >
@@ -289,9 +310,19 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
                                 <h4 className={cn("text-xs font-semibold truncate", !notif.isRead ? "text-foreground" : "text-muted-foreground")}>
                                   {notif.title}
                                 </h4>
-                                <span className="text-[10px] text-muted-foreground shrink-0">
-                                  {formatTimeAgo(notif.sentAt)}
-                                </span>
+                                <div className="flex items-center gap-1.5 shrink-0">
+                                  <span className="text-[10px] text-muted-foreground">
+                                    {formatTimeAgo(notif.sentAt)}
+                                  </span>
+                                  <button
+                                    type="button"
+                                    onClick={(e) => handleDeleteNotification(notif.id, e)}
+                                    title="Dismiss notification"
+                                    className="p-0.5 rounded text-muted-foreground hover:text-rose-600 hover:bg-rose-500/10 transition-colors opacity-0 group-hover:opacity-100"
+                                  >
+                                    <XIcon className="size-3" />
+                                  </button>
+                                </div>
                               </div>
                               <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
                                 {notif.message}
@@ -364,6 +395,8 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
             )}
           </div>
         </header>
+
+        <EmailVerificationBanner />
 
         <div className="flex-1 overflow-auto p-4 md:p-6">
           {children}

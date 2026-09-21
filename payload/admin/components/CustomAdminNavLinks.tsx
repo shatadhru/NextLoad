@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react"
+import React, { useEffect } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { customAdminViews, CustomAdminViewConfig } from "@/config/adminCustomComponents"
@@ -17,7 +17,6 @@ import {
   Layers,
   Code2,
   FileText,
-  HelpCircle,
   Bell,
   Sliders,
   Globe,
@@ -54,6 +53,32 @@ function resolveIcon(iconName?: string): LucideIcon {
 
 export function CustomAdminNavLinks() {
   const pathname = usePathname()
+
+  // Real-time synchronization of payload-theme logo with active Cloudinary URLs
+  useEffect(() => {
+    fetch("/api/site-settings")
+      .then((res) => res.json())
+      .then((data) => {
+        if (!data) return
+        const light = data.logoUrl || data.logo?.cloudinary?.secure_url
+        const dark = data.logoDarkUrl || data.logoDark?.cloudinary?.secure_url || light
+        if (light) {
+          const lightImgs = document.querySelectorAll(".pt-nav__logo-img--light")
+          lightImgs.forEach((img) => {
+            const el = img as HTMLImageElement
+            if (el.src !== light) el.src = light
+          })
+        }
+        if (dark) {
+          const darkImgs = document.querySelectorAll(".pt-nav__logo-img--dark")
+          darkImgs.forEach((img) => {
+            const el = img as HTMLImageElement
+            if (el.src !== dark) el.src = dark
+          })
+        }
+      })
+      .catch(() => {})
+  }, [pathname])
 
   if (!customAdminViews || customAdminViews.length === 0) {
     return null

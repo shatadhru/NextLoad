@@ -17,6 +17,7 @@ export interface BroadcastRecord {
   sentAt: string
   recipientEmails?: string[]
   readBy?: string[]
+  deletedBy?: string[]
 }
 
 const DATA_DIR = path.join(process.cwd(), "data", "notifications")
@@ -161,3 +162,89 @@ export function markAllNotificationsAsRead(userEmail: string): boolean {
   }
   return false
 }
+
+export function deleteBroadcastRecord(id: string): boolean {
+  try {
+    ensureDataDir()
+    const history = getBroadcastHistory()
+    const initialLength = history.length
+    const updated = history.filter((b) => b.id !== id)
+    if (updated.length !== initialLength) {
+      fs.writeFileSync(BROADCAST_FILE, JSON.stringify(updated, null, 2), "utf-8")
+      memoryBroadcasts = updated
+      return true
+    }
+  } catch (error) {
+    console.error("Failed to delete broadcast record:", error)
+  }
+  return false
+}
+
+export function bulkDeleteBroadcastRecords(ids: string[]): boolean {
+  try {
+    ensureDataDir()
+    const history = getBroadcastHistory()
+    const idsSet = new Set(ids)
+    const updated = history.filter((b) => !idsSet.has(b.id))
+    fs.writeFileSync(BROADCAST_FILE, JSON.stringify(updated, null, 2), "utf-8")
+    memoryBroadcasts = updated
+    return true
+  } catch (error) {
+    console.error("Failed to bulk delete broadcast records:", error)
+  }
+  return false
+}
+
+export function dismissNotificationForUser(id: string, userEmail: string): boolean {
+  try {
+    const history = getBroadcastHistory()
+    const emailLower = userEmail.toLowerCase()
+    let found = false
+
+    const updated = history.map((item) => {
+      if (item.id === id) {
+        found = true
+        const deletedBy = item.deletedBy || []
+        if (!deletedBy.includes(emailLower)) {
+          return { ...item, deletedBy: [...deletedBy, emailLower] }
+        }
+      }
+      return item
+    })
+
+    if (found) {
+      ensureDataDir()
+      fs.writeFileSync(BROADCAST_FILE, JSON.stringify(updated, null, 2), "utf-8")
+      memoryBroadcasts = updated
+      return true
+    }
+  } catch (error) {
+    console.error("Failed to dismiss notification for user:", error)
+  }
+  return false
+}
+
+export function dismissAllNotificationsForUser(userEmail: string): boolean {
+  try {
+    const history = getBroadcastHistory()
+    const emailLower = userEmail.toLowerCase()
+
+    const updated = history.map((item) => {
+      const deletedBy = item.deletedBy || []
+      if (!deletedBy.includes(emailLower)) {
+        return { ...item, deletedBy: [...deletedBy, emailLower] }
+      }
+      return item
+    })
+
+    ensureDataDir()
+    fs.writeFileSync(BROADCAST_FILE, JSON.stringify(updated, null, 2), "utf-8")
+    memoryBroadcasts = updated
+    return true
+  } catch (error) {
+    console.error("Failed to dismiss all notifications for user:", error)
+  }
+  return false
+}
+
+

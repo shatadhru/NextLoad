@@ -22,33 +22,39 @@ export async function GET() {
     const siteDescription = settings?.siteDescription || SiteConfig.site.description
     const logoText = settings?.logoText || SiteConfig.site.logoText
 
-    // Resolve uploaded logo URL if media object is present
-    let logoUrl: string | null = null
-    if (settings?.logo) {
-      if (typeof settings.logo === "object" && settings.logo.url) {
-        logoUrl = settings.logo.url
-      } else if (typeof settings.logo === "string") {
-        logoUrl = settings.logo
+    // Helper to safely extract Cloudinary secure_url from media object or string
+    const getCloudinarySecureUrl = (media: any): string | null => {
+      if (!media) return null
+      if (typeof media === "string") {
+        if (media.startsWith("/api/media/file")) return null
+        return media
       }
+      return (
+        media.cloudinary?.secure_url ||
+        (typeof media.thumbnailURL === "string" && media.thumbnailURL.includes("res.cloudinary.com") ? media.thumbnailURL : null) ||
+        (typeof media.url === "string" && media.url.includes("res.cloudinary.com") ? media.url : null) ||
+        media.cloudinary?.public_id ||
+        null
+      )
     }
 
-    let logoDarkUrl: string | null = null
-    if (settings?.logoDark) {
-      if (typeof settings.logoDark === "object" && settings.logoDark.url) {
-        logoDarkUrl = settings.logoDark.url
-      } else if (typeof settings.logoDark === "string") {
-        logoDarkUrl = settings.logoDark
-      }
-    }
+    const logoUrl = getCloudinarySecureUrl(settings?.logo)
+    const logoDarkUrl = getCloudinarySecureUrl(settings?.logoDark)
+    const faviconUrl = getCloudinarySecureUrl(settings?.favicon)
 
     return NextResponse.json({
       success: true,
+      globalType: "site-settings",
       siteName,
       siteTitle,
       siteDescription,
       logoText,
       logoUrl,
       logoDarkUrl,
+      faviconUrl,
+      logo: settings?.logo || null,
+      logoDark: settings?.logoDark || null,
+      favicon: settings?.favicon || null,
     })
   } catch (error: any) {
     console.error("GET /api/site-settings error:", error)
