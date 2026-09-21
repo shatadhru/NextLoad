@@ -23,6 +23,21 @@
       }
     ],
     "paths": {
+      "@/lib/*": [
+        "./payload/lib/*"
+      ],
+      "@/hooks/*": [
+        "./payload/hooks/*"
+      ],
+      "@/utils/*": [
+        "./payload/utils/*"
+      ],
+      "@/data/*": [
+        "./payload/data/*"
+      ],
+      "@/scripts/*": [
+        "./payload/scripts/*"
+      ],
       "@/*": [
         "./*"
       ],

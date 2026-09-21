@@ -21,7 +21,7 @@ import { createInterface } from 'readline'
 import { resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
 
-const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..')
+const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '../..')
 
 // ─── Helpers ───────────────────────────────────────────────────────────────
 

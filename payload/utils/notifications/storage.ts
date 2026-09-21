@@ -20,7 +20,7 @@ export interface BroadcastRecord {
   deletedBy?: string[]
 }
 
-const DATA_DIR = path.join(process.cwd(), "data", "notifications")
+const DATA_DIR = path.join(process.cwd(), "payload", "data", "notifications")
 const BROADCAST_FILE = path.join(DATA_DIR, "broadcasts.json")
 
 // In-memory fallback if fs fails

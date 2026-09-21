@@ -13,7 +13,7 @@ The single-command setup for anyone who clones the NextLoad boilerplate.
 ```bash
 pnpm init:project
 # or directly
-node scripts/init.mjs
+node payload/scripts/init.mjs
 ```
 
 ### What it does
@@ -22,7 +22,7 @@ node scripts/init.mjs
 2. **Updates `config/site.ts`** — site name, title, logoText, SEO template
 3. **Updates `payload/globals/SiteSettings.ts`** — Admin panel default brand values
 4. **Sets up `.env`** — copies `.env.example` if `.env` doesn't exist, patches DB name
-5. **Resets `data/notifications/broadcasts.json`** — clears demo notification data
+5. **Resets `payload/data/notifications/broadcasts.json`** — clears demo notification data
 6. **Updates `package.json`** — project name and description
 
 ### What it does NOT touch
