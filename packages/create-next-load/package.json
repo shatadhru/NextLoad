@@ -1,0 +1,33 @@
+{
+  "name": "create-next-load",
+  "version": "1.0.0",
+  "description": "CLI to quickly initialize a new project with NextLoad",
+  "type": "module",
+  "main": "index.js",
+  "bin": {
+    "create-next-load": "./index.js"
+  },
+  "keywords": [
+    "nextload",
+    "create-next-load",
+    "nextjs",
+    "payloadcms",
+    "better-auth",
+    "boilerplate",
+    "starter",
+    "cli"
+  ],
+  "author": "Shatadhru",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shatadhru/NextLoad.git"
+  },
+  "files": [
+    "index.js",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
