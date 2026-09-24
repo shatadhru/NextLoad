@@ -1,6 +1,8 @@
 import React from 'react'
 import '@/app/globals.css'
 import Providor from '@/payload/providors'
+import NoticeBannerSlot from '@/components/banner/NoticeBannerSlot'
+import CookieConsentSlot from '@/components/cookies/CookieConsentSlot'
 
 import type { Metadata } from 'next'
 import { Plus_Jakarta_Sans } from 'next/font/google'
@@ -29,7 +31,11 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
     <html lang="en" suppressHydrationWarning className={googleSans.variable}>
       <body className={googleSans.className}>
         <main>
-          <Providor>{children}</Providor>
+          <Providor>
+            <NoticeBannerSlot />
+            {children}
+            <CookieConsentSlot />
+          </Providor>
         </main>
       </body>
     </html>

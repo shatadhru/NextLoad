@@ -655,7 +655,7 @@ export function ProfileSettingsView() {
               )}
             </div>
           </CardContent>
-          <CardFooter className="flex justify-end border-t px-6 py-4 bg-muted/20">
+          <CardFooter className="flex justify-end border-t px-6 py-4 bg-muted/20 mt-4">
             <Button
               type="submit"
               size="sm"
@@ -765,7 +765,7 @@ export function ProfileSettingsView() {
               />
             </div>
           </CardContent>
-          <CardFooter className="flex justify-end border-t px-6 py-4 bg-muted/20">
+          <CardFooter className="flex justify-end border-t px-6 py-4 bg-muted/20 mt-4">
             <Button
               type="submit"
               size="sm"

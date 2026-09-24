@@ -14,7 +14,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
-import { buttonVariants } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import {
   ExternalLinkIcon,
@@ -31,6 +31,7 @@ import {
 import { authClient } from "@/payload/auth/client"
 import { Logo } from "@/components/ui/Logo"
 import { EmailVerificationBanner } from "./EmailVerificationBanner"
+import { CartDrawer } from "@/components/ecommerch"
 
 interface UserNotification {
   id: string
@@ -196,7 +197,11 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
 
   return (
     <SidebarProvider className="relative h-dvh min-h-0 w-full overflow-hidden">
-      <AppSidebar selectedWorkspace={workspace} onSelectWorkspace={setWorkspace} />
+      <AppSidebar
+        selectedWorkspace={workspace}
+        onSelectWorkspace={setWorkspace}
+        unreadCount={unreadCount}
+      />
       <SidebarInset className="min-w-0 overflow-hidden flex flex-col h-full">
         <header className="flex h-12 shrink-0 items-center gap-2 border-b px-4 bg-background/95 backdrop-blur z-20">
           <SidebarTrigger className="-ml-1" />
@@ -222,24 +227,28 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
           </Breadcrumb>
 
           <div className="ml-auto flex items-center gap-2">
-            {/* NOTIFICATION BELL WITH NUMBER SYSTEM */}
+            {/* NOTIFICATION BELL WITH NUMBER SYSTEM (MATCHING CART ICON TRIGGER DESIGN) */}
             <div className="relative" ref={notifDropdownRef}>
-              <button
-                type="button"
+              <Button
+                variant="outline"
+                size="icon"
                 onClick={() => setIsNotifOpen(!isNotifOpen)}
-                aria-label="Notifications"
+                aria-label={`Notifications, ${unreadCount} unread`}
                 className={cn(
-                  "relative p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/80 transition-colors focus:outline-hidden",
-                  isNotifOpen && "bg-muted text-foreground"
+                  "relative inline-flex items-center justify-center rounded-xl border border-border/80 bg-background/80 hover:bg-accent/60 transition-all duration-200 shadow-xs",
+                  isNotifOpen && "bg-accent/80 border-border"
                 )}
               >
-                <BellIcon className="size-4" />
+                <BellIcon className="size-4.5 text-foreground transition-transform duration-200 group-hover/button:scale-110" />
                 {unreadCount > 0 && (
-                  <span className="absolute top-1 right-1 flex size-4 items-center justify-center rounded-full bg-rose-500 text-[10px] font-bold text-white shadow-xs animate-in zoom-in">
-                    {unreadCount > 9 ? "9+" : unreadCount}
+                  <span
+                    className="absolute -top-1.5 -right-1.5 flex h-4.5 min-w-4.5 items-center justify-center rounded-full bg-rose-500 px-1 text-[10px] font-semibold text-white shadow-xs animate-in zoom-in-75 duration-200"
+                    data-slot="notification-badge"
+                  >
+                    {unreadCount > 99 ? "99+" : unreadCount}
                   </span>
                 )}
-              </button>
+              </Button>
 
               {/* NOTIFICATION DROPDOWN POPUP */}
               {isNotifOpen && (
@@ -289,7 +298,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
                     <div className="flex-1 overflow-y-auto divide-y divide-border/50 overscroll-contain">
                       {notifications.length === 0 ? (
                         <div className="p-8 text-center">
-                          <BellIcon className="size-8 text-muted-foreground/40 mx-auto mb-2" />
+                          <BellIcon className="size-8 text-muted-foreground/40 mx-auto mb-2 border" />
                           <p className="text-xs text-muted-foreground">No notifications yet.</p>
                         </div>
                       ) : (
@@ -368,13 +377,16 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
               )}
             </div>
 
+            {/* SHOPPING CART DRAWER BUTTON */}
+            <CartDrawer checkoutUrl="/checkout" />
+
             {isAdmin ? (
               <Link
                 href="/admin"
                 target="_blank"
                 className={cn(
                   buttonVariants({ variant: "outline", size: "sm" }),
-                  "flex items-center gap-1.5 text-xs"
+                  "hidden md:flex items-center gap-1.5 text-xs"
                 )}
               >
                 <DatabaseIcon className="size-3.5 text-teal-600" />
@@ -386,7 +398,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
                 href="/dashboard/support"
                 className={cn(
                   buttonVariants({ variant: "ghost", size: "sm" }),
-                  "flex items-center gap-1.5 text-xs text-muted-foreground"
+                  "hidden md:flex items-center gap-1.5 text-xs text-muted-foreground"
                 )}
               >
                 <LifeBuoyIcon className="size-3.5" />

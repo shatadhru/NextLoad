@@ -134,7 +134,13 @@ function WorkspaceSwitcher({
   )
 }
 
-function UserNav({ isCollapsed }: { isCollapsed: boolean }) {
+function UserNav({
+  isCollapsed,
+  unreadCount = 0,
+}: {
+  isCollapsed: boolean
+  unreadCount?: number
+}) {
   const pathname = usePathname()
 
   return (
@@ -145,6 +151,14 @@ function UserNav({ isCollapsed }: { isCollapsed: boolean }) {
           {sidebarConfig.userNavItems.map((item) => {
             const Icon = item.icon
             const isActive = pathname === item.href
+            const isNotifications = item.id === "notifications"
+            const itemBadge = isNotifications
+              ? unreadCount > 0
+                ? unreadCount > 99
+                  ? "99+"
+                  : unreadCount
+                : null
+              : item.badge
 
             return (
               <SidebarMenuItem key={item.id}>
@@ -152,13 +166,25 @@ function UserNav({ isCollapsed }: { isCollapsed: boolean }) {
                   render={<Link href={item.href} />}
                   isActive={isActive}
                   tooltip={item.label}
-                  className={cn(isCollapsed && "justify-center px-0 size-9")}
+                  className={cn(isCollapsed && "justify-center px-0 size-9 relative")}
                 >
                   <Icon className="size-4 shrink-0" aria-hidden="true" />
                   {!isCollapsed && <span className="truncate">{item.label}</span>}
-                  {!isCollapsed && item.badge ? (
-                    <SidebarMenuBadge>{item.badge}</SidebarMenuBadge>
+                  {!isCollapsed && itemBadge ? (
+                    <SidebarMenuBadge
+                      className={cn(
+                        isNotifications &&
+                          "bg-rose-500/15 text-rose-600 dark:bg-rose-500/20 dark:text-rose-400 font-semibold"
+                      )}
+                    >
+                      {itemBadge}
+                    </SidebarMenuBadge>
                   ) : null}
+
+                  {/* Subtle notification dot when sidebar is in collapsed icon mode */}
+                  {isCollapsed && isNotifications && unreadCount > 0 && (
+                    <span className="absolute top-1 right-1 flex size-2 rounded-full bg-rose-500 animate-in zoom-in" />
+                  )}
                 </SidebarMenuButton>
               </SidebarMenuItem>
             )
@@ -369,9 +395,11 @@ function AccountMenu({ isAdmin, isCollapsed }: { isAdmin: boolean; isCollapsed: 
 export function AppSidebar({
   selectedWorkspace,
   onSelectWorkspace,
+  unreadCount = 0,
 }: {
   selectedWorkspace?: Workspace
   onSelectWorkspace?: (workspace: Workspace) => void
+  unreadCount?: number
 }) {
   const [workspace, setWorkspace] = useState<Workspace>(
     selectedWorkspace || sidebarConfig.workspaces[0]
@@ -393,7 +421,7 @@ export function AppSidebar({
       </SidebarHeader>
 
       <SidebarContent role="navigation" aria-label="Main Navigation">
-        <UserNav isCollapsed={isCollapsed} />
+        <UserNav isCollapsed={isCollapsed} unreadCount={unreadCount} />
         {isAdmin ? <AdminNav isCollapsed={isCollapsed} /> : null}
         <QuickLinksNav isAdmin={isAdmin} isCollapsed={isCollapsed} />
       </SidebarContent>

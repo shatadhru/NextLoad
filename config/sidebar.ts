@@ -114,7 +114,6 @@ export const sidebarConfig: SidebarConfig = {
       label: "Notifications",
       href: "/dashboard/notifications",
       icon: Bell,
-      badge: 2,
     },
     {
       id: "profile",

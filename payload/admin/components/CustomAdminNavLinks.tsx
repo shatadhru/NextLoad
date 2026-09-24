@@ -22,6 +22,7 @@ import {
   Globe,
   Image,
   Folder,
+  Cookie,
   LucideIcon,
 } from "lucide-react"
 
@@ -44,6 +45,7 @@ const ICON_MAP: Record<string, LucideIcon> = {
   Globe,
   Image,
   Folder,
+  Cookie,
 }
 
 function resolveIcon(iconName?: string): LucideIcon {

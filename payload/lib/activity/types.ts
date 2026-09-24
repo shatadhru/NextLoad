@@ -51,3 +51,16 @@ export interface ActivityStats {
   successRate: number
   latestTimestamp?: string
 }
+
+export interface CreateActivityInput {
+  title: string
+  description?: string
+  category?: "Security" | "Files" | "Account" | "Settings" | "System" | "Admin"
+  type?: ActivityType
+  status?: ActivityStatus
+  timestamp?: string
+  ipAddress?: string
+  device?: string
+  adminOnly?: boolean
+  metadata?: Record<string, string | number | boolean>
+}

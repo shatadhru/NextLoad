@@ -1,5 +1,28 @@
 [
   {
+    "id": "bc-1790266694158-zghuy",
+    "title": "adfasdf",
+    "message": "asdf",
+    "priority": "announcement",
+    "target": "all",
+    "targetValue": "All Platform Users",
+    "channels": [
+      "in_app",
+      "email"
+    ],
+    "recipientCount": 4,
+    "status": "delivered",
+    "actionText": "View Details",
+    "sentAt": "2026-09-24T16:18:14.158Z",
+    "recipientEmails": [
+      "hyratic1122@gmail.com",
+      "ssnmggs@gmail.com",
+      "codemantrabangla@gmail.com",
+      "shatadhru@gmail.com"
+    ],
+    "readBy": []
+  },
+  {
     "id": "bc-1789972138531-befyo",
     "title": "sdfg",
     "message": "zdfg",
@@ -20,7 +43,12 @@
       "codemantrabangla@gmail.com",
       "shatadhru@gmail.com"
     ],
-    "readBy": []
+    "readBy": [
+      "ssnmggs@gmail.com"
+    ],
+    "deletedBy": [
+      "hyratic1122@gmail.com"
+    ]
   },
   {
     "id": "bc-1789887535447-1qnii",

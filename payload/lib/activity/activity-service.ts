@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react"
-import { Activity, ActivityStats } from "./types"
+import { Activity, ActivityStats, CreateActivityInput } from "./types"
 
 const STORAGE_KEY = "nextload_activities_log"
 const ACTIVITY_EVENT = "nextload:activity_updated"
@@ -51,6 +51,22 @@ export function logActivity(activity: Omit<Activity, "id" | "timestamp"> & { tim
   }
 
   return newActivity
+}
+
+// Convenient helper to create an activity with sensible defaults
+export function createActivity(input: CreateActivityInput): Activity {
+  return logActivity({
+    title: input.title,
+    description: input.description,
+    category: input.category || "System",
+    type: input.type || "system_event",
+    status: input.status || "info",
+    ipAddress: input.ipAddress,
+    device: input.device,
+    adminOnly: input.adminOnly,
+    metadata: input.metadata,
+    timestamp: input.timestamp,
+  })
 }
 
 // Clear all logged activities and restore seeds
@@ -146,6 +162,36 @@ export function useActivities(isAdmin = false) {
     stats,
     refresh,
     log: logActivity,
+    create: createActivity,
     clear: clearActivities,
   }
 }
+
+/**
+ * React hook to easily add/log an activity from any client-side component.
+ *
+ * @example
+ * ```tsx
+ * const { createActivity } = useActivityCreator()
+ *
+ * createActivity({
+ *   title: "Item Added",
+ *   description: "Product was added to cart",
+ *   category: "Account",
+ *   status: "success",
+ * })
+ * ```
+ */
+export function useActivityCreator() {
+  const add = useCallback((input: CreateActivityInput) => {
+    return createActivity(input)
+  }, [])
+
+  return {
+    createActivity: add,
+    logActivity: add,
+  }
+}
+
+// Alias for convenience
+export const useLogActivity = useActivityCreator

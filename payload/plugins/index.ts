@@ -12,11 +12,13 @@ import { roles } from '@/config/roles'
 import { generateThemeNavIcons } from '@/config/adminCustomComponents'
 import { cloudinaryStorage } from 'payload-cloudinary';
 import { brandThemeConfig } from '@/config/brandTheme';
+import { ecommerceConnector } from '../ecommerch/Connector'
+import { Plugin } from 'payload'
 
 
 
 
-export const payloadPlugins = [
+export const payloadPlugins:Plugin[] = [
        betterAuthCollections({
     betterAuthOptions,
     firstUserAdmin: true,
@@ -76,7 +78,6 @@ export const payloadPlugins = [
       folder: process.env.CLOUDINARY_FOLDER || 'nextload-media',
       disableLocalStorage: true,
     }),
-      
 
-    
-]
+  ecommerceConnector,
+] as Plugin[]

@@ -85,6 +85,8 @@ export function generateThemeNavIcons(): Record<string, string> {
     users: "users",
     media: "image",
     "site-settings": "settings",
+    banners: "megaphone",
+    "cookie-consent": "cookie",
   }
 
   customAdminViews.forEach((view) => {
