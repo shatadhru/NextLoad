@@ -1,5 +1,59 @@
 [
   {
+    "id": "bc-1790310530484-q8nyq",
+    "title": "Ismail bhaiya has joined",
+    "message": "Ismail bhaiya has joinedIsmail bhaiya has joinedIsmail bhaiya has joined",
+    "priority": "announcement",
+    "target": "all",
+    "targetValue": "All Platform Users",
+    "channels": [
+      "email",
+      "in_app"
+    ],
+    "recipientCount": 4,
+    "status": "delivered",
+    "actionUrl": "/bhaiya",
+    "actionText": "Hi Ismail Bhaiya",
+    "sentAt": "2026-09-25T04:28:50.484Z",
+    "recipientEmails": [
+      "hyratic1122@gmail.com",
+      "ssnmggs@gmail.com",
+      "codemantrabangla@gmail.com",
+      "shatadhru@gmail.com"
+    ],
+    "readBy": [
+      "ssnmggs@gmail.com"
+    ],
+    "deletedBy": [
+      "ssnmggs@gmail.com"
+    ]
+  },
+  {
+    "id": "bc-1790310484149-h06gp",
+    "title": "Ismail bhaiya has joined",
+    "message": "Ismail bhaiya has joinedIsmail bhaiya has joinedIsmail bhaiya has joined",
+    "priority": "announcement",
+    "target": "all",
+    "targetValue": "All Platform Users",
+    "channels": [
+      "email",
+      "in_app"
+    ],
+    "recipientCount": 4,
+    "status": "delivered",
+    "actionText": "View Details",
+    "sentAt": "2026-09-25T04:28:04.149Z",
+    "recipientEmails": [
+      "hyratic1122@gmail.com",
+      "ssnmggs@gmail.com",
+      "codemantrabangla@gmail.com",
+      "shatadhru@gmail.com"
+    ],
+    "readBy": [
+      "ssnmggs@gmail.com"
+    ]
+  },
+  {
     "id": "bc-1790266694158-zghuy",
     "title": "adfasdf",
     "message": "asdf",

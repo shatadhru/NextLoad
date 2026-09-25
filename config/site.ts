@@ -8,7 +8,7 @@
 
 export const SiteConfig = {
   site: {
-    name: "Shatadhru",
+    name: "Ismail Bhaiya",
     title: "Shatadhru Acharjee",
     description: "Enterprise-grade full-stack web application with Next.js 16, Payload CMS 3.0, and Better Auth.",
     url: process.env.NEXT_PUBLIC_APP_URL || process.env.BETTER_AUTH_URL || "http://localhost:3000",

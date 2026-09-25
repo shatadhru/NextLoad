@@ -15,6 +15,7 @@ import { brandThemeConfig } from '@/config/brandTheme'
 import { Categories } from './collections/ecommerch/Categories'
 import { Banners } from './collections/Banners'
 import { CookieConsent } from './globals/CookieConsent'
+import { PersonalData } from './collections/Personaldata'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -56,7 +57,7 @@ export default buildConfig({
       ],
     },
   },
-  collections: [Users, Media, Categories, Banners],
+  collections: [Users, Media, Categories, Banners , PersonalData],
   globals: [SiteSettings, CookieConsent, ...generateAdminGlobals()],
   editor: lexicalEditor(),
   email: payloadEmailAdapter(),

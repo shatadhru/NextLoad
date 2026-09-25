@@ -76,6 +76,7 @@ export interface Config {
     media: Media;
     categories: Category;
     banners: Banner;
+    personaldata: Personaldatum;
     sessions: Session;
     accounts: Account;
     verifications: Verification;
@@ -105,6 +106,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     banners: BannersSelect<false> | BannersSelect<true>;
+    personaldata: PersonaldataSelect<false> | PersonaldataSelect<true>;
     sessions: SessionsSelect<false> | SessionsSelect<true>;
     accounts: AccountsSelect<false> | AccountsSelect<true>;
     verifications: VerificationsSelect<false> | VerificationsSelect<true>;
@@ -129,11 +131,13 @@ export interface Config {
     'site-settings': SiteSetting;
     'cookie-consent': CookieConsent;
     notifications: Notification;
+    'api-reference': ApiReference;
   };
   globalsSelect: {
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
     'cookie-consent': CookieConsentSelect<false> | CookieConsentSelect<true>;
     notifications: NotificationsSelect<false> | NotificationsSelect<true>;
+    'api-reference': ApiReferenceSelect<false> | ApiReferenceSelect<true>;
   };
   locale: null;
   widgets: {
@@ -372,6 +376,17 @@ export interface Banner {
    * Optional expiration date when the banner automatically hides.
    */
   endDate?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "personaldata".
+ */
+export interface Personaldatum {
+  id: string;
+  name: string;
+  selectrole?: ('admin' | 'user' | 'me' | 'you') | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -704,6 +719,10 @@ export interface PayloadLockedDocument {
         value: string | Banner;
       } | null)
     | ({
+        relationTo: 'personaldata';
+        value: string | Personaldatum;
+      } | null)
+    | ({
         relationTo: 'sessions';
         value: string | Session;
       } | null)
@@ -879,6 +898,16 @@ export interface BannersSelect<T extends boolean = true> {
   isSticky?: T;
   startDate?: T;
   endDate?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "personaldata_select".
+ */
+export interface PersonaldataSelect<T extends boolean = true> {
+  name?: T;
+  selectrole?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1281,6 +1310,15 @@ export interface Notification {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "api-reference".
+ */
+export interface ApiReference {
+  id: string;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "site-settings_select".
  */
 export interface SiteSettingsSelect<T extends boolean = true> {
@@ -1341,6 +1379,15 @@ export interface CookieConsentSelect<T extends boolean = true> {
  * via the `definition` "notifications_select".
  */
 export interface NotificationsSelect<T extends boolean = true> {
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "api-reference_select".
+ */
+export interface ApiReferenceSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

@@ -71,6 +71,7 @@ It integrates content management, authentication, database connectivity, transac
 git clone https://github.com/shatadhru/NextLoad.git
 cd nextload
 pnpm install
+npx payload generate:importmap
 ```
 
 Create your environment file:

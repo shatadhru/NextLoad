@@ -14,7 +14,7 @@
     "lint": "cross-env NODE_OPTIONS=--no-deprecation eslint .",
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
-    "prepare": "husky"
+    "postinstall": "husky || true"
   },
   "dependencies": {
     "@base-ui/react": "^1.8.0",
@@ -62,7 +62,6 @@
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
     "@vitejs/plugin-react": "4.5.2",
-    "cross-env": "^10.0.0",
     "eslint": "^9.16.0",
     "eslint-config-next": "16.3.3",
     "husky": "^9.1.7",

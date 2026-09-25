@@ -51,7 +51,21 @@ export const customAdminViews: CustomAdminViewConfig[] = [
     group: "Custom Tools",
     exact: true,
   },
+
+  {
+    id: "api-reference",
+    title: "API Reference",
+    path: "/api-reference",
+    componentPath: "./admin/views/ApiReferenceView#ApiReferenceView",
+    icon: "Code2",
+    badge: "Products",
+    description: "Full REST API documentation for the Products system with live code examples in multiple languages.",
+    group: "Custom Tools",
+    exact: true,
+  },
+
 ]
+
 
 /**
  * Generate Payload CMS GlobalConfigs so that each custom component
@@ -101,6 +115,7 @@ export function generateThemeNavIcons(): Record<string, string> {
 
   // Ensure explicit overrides for any special Lucide icon names
   icons["notifications"] = "bell"
+  icons["api-reference"] = "code-2"
 
   return icons
 }
