@@ -16,6 +16,8 @@ import { Categories } from './collections/ecommerch/Categories'
 import { Banners } from './collections/Banners'
 import { CookieConsent } from './globals/CookieConsent'
 import { PersonalData } from './collections/Personaldata'
+import { Reviews } from './collections/ecommerch/Reviews'
+import { Coupons } from './collections/ecommerch/Coupons'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -57,7 +59,7 @@ export default buildConfig({
       ],
     },
   },
-  collections: [Users, Media, Categories, Banners , PersonalData],
+  collections: [Users, Media, Categories, Banners, PersonalData, Reviews, Coupons],
   globals: [SiteSettings, CookieConsent, ...generateAdminGlobals()],
   editor: lexicalEditor(),
   email: payloadEmailAdapter(),

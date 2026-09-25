@@ -77,6 +77,8 @@ export interface Config {
     categories: Category;
     banners: Banner;
     personaldata: Personaldatum;
+    reviews: Review;
+    coupons: Coupon;
     sessions: Session;
     accounts: Account;
     verifications: Verification;
@@ -107,6 +109,8 @@ export interface Config {
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     banners: BannersSelect<false> | BannersSelect<true>;
     personaldata: PersonaldataSelect<false> | PersonaldataSelect<true>;
+    reviews: ReviewsSelect<false> | ReviewsSelect<true>;
+    coupons: CouponsSelect<false> | CouponsSelect<true>;
     sessions: SessionsSelect<false> | SessionsSelect<true>;
     accounts: AccountsSelect<false> | AccountsSelect<true>;
     verifications: VerificationsSelect<false> | VerificationsSelect<true>;
@@ -391,6 +395,200 @@ export interface Personaldatum {
   createdAt: string;
 }
 /**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reviews".
+ */
+export interface Review {
+  id: string;
+  title: string;
+  body: string;
+  rating: number;
+  product: string | Product;
+  author: string;
+  /**
+   * Not shown publicly.
+   */
+  authorEmail?: string | null;
+  /**
+   * Check if this reviewer has purchased the product.
+   */
+  verified?: boolean | null;
+  /**
+   * Only approved reviews appear on the store.
+   */
+  approved?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products".
+ */
+export interface Product {
+  id: string;
+  title: string;
+  /**
+   * Used in the URL. Auto-generated from title if left empty.
+   */
+  slug?: string | null;
+  description?: string | null;
+  richDescription?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  price: number;
+  /**
+   * Optional discount price. If set, shown as the current price.
+   */
+  salePrice?: number | null;
+  category?: (string | null) | Category;
+  tags?:
+    | {
+        tag: string;
+        id?: string | null;
+      }[]
+    | null;
+  image: string | Media;
+  /**
+   * Additional product images for the gallery carousel.
+   */
+  gallery?:
+    | {
+        image: string | Media;
+        alt?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  isNew?: boolean | null;
+  isBestSeller?: boolean | null;
+  isFeatured?: boolean | null;
+  stockStatus?: ('in_stock' | 'low_stock' | 'out_of_stock' | 'preorder') | null;
+  shippingInfo?: {
+    weight?: number | null;
+    freeShipping?: boolean | null;
+    estimatedDelivery?: string | null;
+  };
+  seoTitle?: string | null;
+  seoDescription?: string | null;
+  inventory?: number | null;
+  enableVariants?: boolean | null;
+  variantTypes?: (string | VariantType)[] | null;
+  variants?: {
+    docs?: (string | Variant)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  priceInBDTEnabled?: boolean | null;
+  priceInBDT?: number | null;
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "variantTypes".
+ */
+export interface VariantType {
+  id: string;
+  label: string;
+  name: string;
+  options?: {
+    docs?: (string | VariantOption)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "variantOptions".
+ */
+export interface VariantOption {
+  id: string;
+  _variantOptions_options_order?: string | null;
+  variantType: string | VariantType;
+  label: string;
+  /**
+   * should be defaulted or dynamic based on label
+   */
+  value: string;
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "variants".
+ */
+export interface Variant {
+  id: string;
+  /**
+   * Used for administrative purposes, not shown to customers. This is populated by default.
+   */
+  title?: string | null;
+  product: string | Product;
+  options: (string | VariantOption)[];
+  inventory?: number | null;
+  priceInBDTEnabled?: boolean | null;
+  priceInBDT?: number | null;
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "coupons".
+ */
+export interface Coupon {
+  id: string;
+  /**
+   * Uppercase code customers enter at checkout (e.g. SUMMER20)
+   */
+  code: string;
+  type: 'percentage' | 'fixed' | 'free_shipping';
+  /**
+   * For percentage: e.g. 20 means 20%. For fixed: amount in BDT.
+   */
+  value?: number | null;
+  /**
+   * Optional minimum cart total to apply this coupon.
+   */
+  minOrderAmount?: number | null;
+  /**
+   * Optional cap for percentage discounts.
+   */
+  maxDiscountAmount?: number | null;
+  usageCount?: number | null;
+  maxUses?: number | null;
+  /**
+   * Leave blank for no expiry.
+   */
+  expiresAt?: string | null;
+  active?: boolean | null;
+  /**
+   * Leave empty to apply to all products.
+   */
+  applicableProducts?: (string | Product)[] | null;
+  applicableCategories?: (string | Category)[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * Auto-generated from Better Auth schema (session)
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -501,86 +699,6 @@ export interface Address {
   phone?: string | null;
   updatedAt: string;
   createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "variants".
- */
-export interface Variant {
-  id: string;
-  /**
-   * Used for administrative purposes, not shown to customers. This is populated by default.
-   */
-  title?: string | null;
-  product: string | Product;
-  options: (string | VariantOption)[];
-  inventory?: number | null;
-  priceInBDTEnabled?: boolean | null;
-  priceInBDT?: number | null;
-  updatedAt: string;
-  createdAt: string;
-  deletedAt?: string | null;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "products".
- */
-export interface Product {
-  id: string;
-  title: string;
-  description?: string | null;
-  price: number;
-  category?: ('general' | 'clothing' | 'electronics' | 'digital') | null;
-  image?: (string | null) | Media;
-  inventory?: number | null;
-  enableVariants?: boolean | null;
-  variantTypes?: (string | VariantType)[] | null;
-  variants?: {
-    docs?: (string | Variant)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
-  priceInBDTEnabled?: boolean | null;
-  priceInBDT?: number | null;
-  updatedAt: string;
-  createdAt: string;
-  deletedAt?: string | null;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "variantTypes".
- */
-export interface VariantType {
-  id: string;
-  label: string;
-  name: string;
-  options?: {
-    docs?: (string | VariantOption)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
-  updatedAt: string;
-  createdAt: string;
-  deletedAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "variantOptions".
- */
-export interface VariantOption {
-  id: string;
-  _variantOptions_options_order?: string | null;
-  variantType: string | VariantType;
-  label: string;
-  /**
-   * should be defaulted or dynamic based on label
-   */
-  value: string;
-  updatedAt: string;
-  createdAt: string;
-  deletedAt?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -721,6 +839,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'personaldata';
         value: string | Personaldatum;
+      } | null)
+    | ({
+        relationTo: 'reviews';
+        value: string | Review;
+      } | null)
+    | ({
+        relationTo: 'coupons';
+        value: string | Coupon;
       } | null)
     | ({
         relationTo: 'sessions';
@@ -913,6 +1039,41 @@ export interface PersonaldataSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reviews_select".
+ */
+export interface ReviewsSelect<T extends boolean = true> {
+  title?: T;
+  body?: T;
+  rating?: T;
+  product?: T;
+  author?: T;
+  authorEmail?: T;
+  verified?: T;
+  approved?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "coupons_select".
+ */
+export interface CouponsSelect<T extends boolean = true> {
+  code?: T;
+  type?: T;
+  value?: T;
+  minOrderAmount?: T;
+  maxDiscountAmount?: T;
+  usageCount?: T;
+  maxUses?: T;
+  expiresAt?: T;
+  active?: T;
+  applicableProducts?: T;
+  applicableCategories?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "sessions_select".
  */
 export interface SessionsSelect<T extends boolean = true> {
@@ -1020,10 +1181,39 @@ export interface VariantOptionsSelect<T extends boolean = true> {
  */
 export interface ProductsSelect<T extends boolean = true> {
   title?: T;
+  slug?: T;
   description?: T;
+  richDescription?: T;
   price?: T;
+  salePrice?: T;
   category?: T;
+  tags?:
+    | T
+    | {
+        tag?: T;
+        id?: T;
+      };
   image?: T;
+  gallery?:
+    | T
+    | {
+        image?: T;
+        alt?: T;
+        id?: T;
+      };
+  isNew?: T;
+  isBestSeller?: T;
+  isFeatured?: T;
+  stockStatus?: T;
+  shippingInfo?:
+    | T
+    | {
+        weight?: T;
+        freeShipping?: T;
+        estimatedDelivery?: T;
+      };
+  seoTitle?: T;
+  seoDescription?: T;
   inventory?: T;
   enableVariants?: T;
   variantTypes?: T;

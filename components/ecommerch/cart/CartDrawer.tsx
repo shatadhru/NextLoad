@@ -126,7 +126,7 @@ export function CartDrawer({
 
   return (
     <Sheet open={currentOpen} onOpenChange={handleOpenChange}>
-      <SheetTrigger render={trigger ? <>{trigger}</> : <CartIconTrigger />} />
+      <SheetTrigger nativeButton={false} render={trigger ? <>{trigger}</> : <CartIconTrigger />} />
 
       <SheetContent
         side={side}
