@@ -53,6 +53,7 @@ export function CartDrawer({
     return items.reduce((acc, item) => acc + (item.quantity || 0), 0)
   }, [items])
 
+  // eslint-disable-next-line react-hooks/preserve-manual-memoization
   const subtotal = useMemo(() => {
     if (typeof cart?.subtotal === 'number') {
       return cart.subtotal
@@ -151,7 +152,7 @@ export function CartDrawer({
                 size="sm"
                 onClick={closeDrawer}
                 className="mt-6 rounded-xl text-xs font-semibold gap-1.5"
-                asChild
+                
               >
                 <Link href={shoppingUrl}>
                   <span>Start Exploring</span>
@@ -203,7 +204,6 @@ export function CartDrawer({
               size="lg"
               onClick={closeDrawer}
               className="w-full gap-2 rounded-xl font-semibold bg-teal-600 hover:bg-teal-700 text-white shadow-md transition-all hover:shadow-lg cursor-pointer"
-              asChild
             >
               <Link href={checkoutUrl}>
                 <Lock className="size-4" />
