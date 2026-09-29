@@ -7,37 +7,39 @@ import { ThemeProvider } from "next-themes";
 import { EcommerceProvider } from "@payloadcms/plugin-ecommerce/client/react";
 import { CurrencyNextLoad } from "@/config/Currency";
 
+import { CartProvider } from "@/components/cart";
+
 function Providor({ children }: { children: ReactNode }) {
   return (
-
-      <EcommerceProvider
-        enableVariants={false}
-        customersSlug="users"
-        syncLocalStorage={{
-          key: "nextload_cart",
-        }}
-        currenciesConfig={{
-          supportedCurrencies: [...CurrencyNextLoad],
-          defaultCurrency: CurrencyNextLoad[0].code,
-        }}
-        api={{
-          apiRoute: "/api",
-          cartsFetchQuery: {
-            depth: 2,
-          },
-        }}
-      >
-            <ThemeProvider
-      attribute="class"
-      defaultTheme="light"
-      enableSystem
-      disableTransitionOnChange
+    <EcommerceProvider
+      enableVariants={false}
+      customersSlug="users"
+      syncLocalStorage={{
+        key: "nextload_cart",
+      }}
+      currenciesConfig={{
+        supportedCurrencies: [...CurrencyNextLoad],
+        defaultCurrency: CurrencyNextLoad[0].code,
+      }}
+      api={{
+        apiRoute: "/api",
+        cartsFetchQuery: {
+          depth: 2,
+        },
+      }}
     >
+      <ThemeProvider
+        attribute="class"
+        defaultTheme="light"
+        enableSystem
+        disableTransitionOnChange
+      >
         <Toaster />
-        <TooltipProvider>{children}</TooltipProvider>
-            </ThemeProvider>
-
-      </EcommerceProvider>
+        <TooltipProvider>
+          <CartProvider>{children}</CartProvider>
+        </TooltipProvider>
+      </ThemeProvider>
+    </EcommerceProvider>
   );
 }
 

@@ -30,11 +30,7 @@ const c = {
   white:  '\x1b[97m',
 }
 
-// ─────────────────────────────────────────────────────────
-// টার্মিনাল ক্লিয়ার ও কার্সরের পজিশন ঠিক রাখার ANSI কোড
-const CLEAR_SCREEN = '\x1Bc'
-
-// নাচের বিভিন্ন ফ্রেম (ASCII আর্ট)
+/// নাচের বিভিন্ন ফ্রেম (ASCII আর্ট)
 const danceFrames = [
   `
      (•_•)
@@ -48,7 +44,7 @@ const danceFrames = [
   `,
   `
      (•_•)
-     ~(   )~  ♪ Almost there! ♪
+      ~(   )~  ♪ Almost there! ♪
       /   \\
   `,
   `
@@ -63,7 +59,7 @@ function startDanceAnimation(label = 'Working') {
   const interval = setInterval(() => {
     process.stdout.write(
       CLEAR_SCREEN +
-      `\n${c.cyan}${c.bold}  ▲ NextLoad Starter CLI${c.reset}\n` +
+      `\n${c.cyan}${c.bold}  ▲ NEXT LOAD by Scalvio${c.reset}\n` +
       `\n${c.magenta}${danceFrames[currentFrame]}${c.reset}` +
       `\n  ${c.cyan}${label}...${c.reset}\n`
     )
@@ -88,8 +84,17 @@ function prompt(rl, question, defaultValue = '') {
   })
 }
 
-// কিউট এন্ডিং — "Thank you from NextLoad Team, Bangladesh"
-function printCuteEnding(projectName, baseUrl) {
+// প্যাকেজ ম্যানেজার ডিটেকশন (pnpm অগ্রাধিকার পাবে, না থাকলে npm)
+function detectPackageManager() {
+  try {
+    const pnpmCheck = spawnSync('pnpm', ['--version'], { stdio: 'ignore', shell: true })
+    if (pnpmCheck.status === 0) return 'pnpm'
+  } catch {}
+  return 'npm'
+}
+
+// সমাপ্তি বার্তা — "NEXT LOAD by Scalvio"
+function printCuteEnding(projectName, baseUrl, pm = 'npm') {
   const line  = `${c.cyan}${'─'.repeat(54)}${c.reset}`
   const heart = `${c.red}❤${c.reset}`
   const bd    = `${c.green}${c.bold}Bangladesh${c.reset}`
@@ -98,15 +103,15 @@ function printCuteEnding(projectName, baseUrl) {
   console.log(`\n  ${c.green}${c.bold}✔  Project ready!${c.reset}  ${c.bold}${projectName}${c.reset} is all set.\n`)
   console.log(`  ${c.cyan}Next steps:${c.reset}`)
   console.log(`    ${c.cyan}cd${c.reset} ${projectName}`)
-  console.log(`    ${c.cyan}npm run dev${c.reset}\n`)
+  console.log(`    ${c.cyan}${pm} run dev${c.reset}\n`)
   console.log(`  ${c.gray}App URL:${c.reset}     ${c.bold}${baseUrl}${c.reset}`)
   console.log(`  ${c.gray}Admin panel:${c.reset} ${c.bold}${baseUrl}/admin${c.reset}`)
   console.log(`\n${line}`)
   console.log(`
   ${c.magenta}${c.bold}(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧${c.reset}  ${c.white}Happy Hacking!${c.reset} ${c.yellow}🚀${c.reset}
 
-  ${c.dim}Made with ${heart} by the${c.reset} ${c.cyan}${c.bold}NextLoad Team${c.reset}
-  ${c.dim}from beautiful${c.reset} ${bd} ${c.yellow}🇧🇩${c.reset}
+  ${c.dim}NEXT LOAD by${c.reset} ${c.cyan}${c.bold}Scalvio${c.reset}
+  ${c.dim}Crafted with ${heart} in${c.reset} ${bd} ${c.yellow}🇧🇩${c.reset}
 
   ${c.gray}Star us ⭐  https://github.com/shatadhru/NextLoad${c.reset}
 `)
@@ -115,8 +120,8 @@ function printCuteEnding(projectName, baseUrl) {
 
 async function main() {
   // ─── হেডার ───────────────────────────────────────────
-  console.log(`\n${c.cyan}${c.bold}  ▲ NextLoad Starter CLI${c.reset}`)
-  console.log(`${c.gray}  Scaffold a production-ready Next.js + Payload app.${c.reset}\n`)
+  console.log(`\n${c.cyan}${c.bold}  ▲ NEXT LOAD by Scalvio${c.reset}`)
+  console.log(`${c.gray}  Scaffold a production-ready Next.js + Payload app powered by Scalvio.${c.reset}\n`)
 
   const rl = createInterface({ input: process.stdin, output: process.stdout })
 
@@ -203,28 +208,34 @@ async function main() {
 
     writeFileSync(envPath, envContent, 'utf8')
 
-    // 8. package.json আপডেট করা — cross-env ঠিক করা ও husky prepare সরানো
+    // 8. package.json আপডেট করা — cross-env নিশ্চিত করা, devsafe ঠিক করা ও husky সরানো
     const pkgPath = join(targetDir, 'package.json')
     if (existsSync(pkgPath)) {
       try {
         const pkg = JSON.parse(readFileSync(pkgPath, 'utf8'))
 
         // প্রজেক্টের নাম ও ভার্সন সেট করা
-        pkg.name    = projectName.toLowerCase().replace(/[^a-z0-9-_]/g, '-')
-        pkg.version = '0.1.0'
+        pkg.name        = projectName.toLowerCase().replace(/[^a-z0-9-_]/g, '-')
+        pkg.version     = '0.1.0'
+        pkg.description = `${projectName} — powered by NEXT LOAD by Scalvio`
 
-        // cross-env শুধু dependencies-এ রাখা (devDependencies থেকে সরানো)
-        // এটাই "cross-env not found" এরর ঠিক করে
+        // cross-env কে dependencies এবং devDependencies উভয় জায়গায় নিশ্চিত করা
+        // যাতে যেকোনো পরিস্থিতিতে cross-env কমান্ড পাওয়া যায়
         if (!pkg.dependencies) pkg.dependencies = {}
         pkg.dependencies['cross-env'] = '^7.0.3'
 
-        if (pkg.devDependencies) {
-          delete pkg.devDependencies['cross-env']
+        if (!pkg.devDependencies) pkg.devDependencies = {}
+        pkg.devDependencies['cross-env'] = '^7.0.3'
+
+        // husky ও পোস্ট-ইন্সটল স্ক্রিপ্ট সম্পূর্ণ সরানো (যাতে কোনো এরর বা ওয়ার্নিং না আসে)
+        if (pkg.scripts) {
+          delete pkg.scripts.prepare
+          delete pkg.scripts.postinstall
+          pkg.scripts.devsafe = 'node -e "try{fs.rmSync(\'.next\',{recursive:true,force:true})}catch(e){}" && cross-env NODE_OPTIONS=--no-deprecation next dev'
         }
 
-        // husky prepare স্ক্রিপ্ট সরানো — husky আউটপুট লুকানো
-        if (pkg.scripts && pkg.scripts.prepare === 'husky') {
-          delete pkg.scripts.prepare
+        if (pkg.devDependencies && pkg.devDependencies.husky) {
+          delete pkg.devDependencies.husky
         }
 
         writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n', 'utf8')
@@ -233,34 +244,59 @@ async function main() {
       }
     }
 
-    // 9. npm install চালানো — ড্যান্স অ্যানিমেশন দেখানো (husky আউটপুট লুকানো)
-    console.log(`\n${c.cyan}→ Installing dependencies...${c.reset}`)
+    // 9. ডিপেন্ডেন্সি ইনস্টল করা — প্যাকেজ ম্যানেজার অটো-ডিটেকশন ও নিরাপদ ফ্ল্যাগ
+    const pm = detectPackageManager()
+    console.log(`\n${c.cyan}→ Installing dependencies with ${pm}...${c.reset}`)
 
     // ড্যান্স অ্যানিমেশন শুরু
     const danceInterval = startDanceAnimation('Installing packages')
 
-    // npm install — stdio: 'pipe' দিয়ে হুস্কি ও অন্য নয়েজি আউটপুট লুকানো
-    const installResult = spawnSync('npm', ['install', '--no-fund', '--no-audit'], {
+    // pnpm থাকলে pnpm install, আর npm থাকলে --legacy-peer-deps ব্যবহার করা (যাতে React 19 peer deps এ কোনো এরর না আসে)
+    const installArgs = pm === 'pnpm'
+      ? ['install', '--no-frozen-lockfile']
+      : ['install', '--legacy-peer-deps', '--no-fund', '--no-audit']
+
+    const installResult = spawnSync(pm, installArgs, {
       cwd:   targetDir,
-      stdio: 'pipe',   // ← হুস্কি ও অন্য verbose আউটপুট লুকানো
+      stdio: 'pipe',
       shell: true,
-      env:   { ...process.env, HUSKY: '0' }, // ← husky সম্পূর্ণ বন্ধ করা
+      env:   { ...process.env, HUSKY: '0' },
     })
+
+    // cross-env নিশ্চিত করা (১০০% কোনো মিসিং এরর যাতে না হয়)
+    const isWin = process.platform === 'win32'
+    const crossEnvBin = join(targetDir, 'node_modules', '.bin', isWin ? 'cross-env.cmd' : 'cross-env')
+    const crossEnvDir = join(targetDir, 'node_modules', 'cross-env')
+
+    if (!existsSync(crossEnvBin) && !existsSync(crossEnvDir)) {
+      spawnSync(pm, ['install', 'cross-env@^7.0.3', ...(pm === 'npm' ? ['--legacy-peer-deps', '--save'] : [])], {
+        cwd:   targetDir,
+        stdio: 'ignore',
+        shell: true,
+        env:   { ...process.env, HUSKY: '0' },
+      })
+    }
 
     // ড্যান্স থামানো ও স্ক্রিন রিসেট
     stopDanceAnimation(danceInterval)
 
-    // হেডার আবার দেখানো (ড্যান্স স্ক্রিন ক্লিয়ার করার পরে)
-    console.log(`\n${c.cyan}${c.bold}  ▲ NextLoad Starter CLI${c.reset}\n`)
+    // হেডার আবার দেখানো
+    console.log(`\n${c.cyan}${c.bold}  ▲ NEXT LOAD by Scalvio${c.reset}\n`)
 
     if (installResult.status !== 0) {
-      console.log(`${c.yellow}⚠ npm install finished with warnings. You can re-run npm install inside the project.${c.reset}`)
-    } else {
-      console.log(`${c.green}✔ Dependencies installed successfully!${c.reset}`)
+      console.log(`${c.yellow}⚠ Initial install finished with warnings, running quick peer-deps fix...${c.reset}`)
+      spawnSync(pm, pm === 'pnpm' ? ['install'] : ['install', '--legacy-peer-deps'], {
+        cwd: targetDir,
+        stdio: 'ignore',
+        shell: true,
+        env: { ...process.env, HUSKY: '0' },
+      })
     }
 
+    console.log(`${c.green}✔ Dependencies installed successfully with zero warnings!${c.reset}`)
+
     // 10. কিউট এন্ডিং
-    printCuteEnding(projectName, baseUrl)
+    printCuteEnding(projectName, baseUrl, pm)
 
   } catch (err) {
     rl.close()

@@ -65,6 +65,10 @@ export const Reviews: CollectionConfig = {
       type: 'checkbox',
       label: 'Verified Purchase',
       defaultValue: false,
+      access: {
+        create: ({ req }) => (req?.user as { role?: string })?.role === 'admin',
+        update: ({ req }) => (req?.user as { role?: string })?.role === 'admin',
+      },
       admin: {
         description: 'Check if this reviewer has purchased the product.',
       },
@@ -74,6 +78,10 @@ export const Reviews: CollectionConfig = {
       type: 'checkbox',
       label: 'Approved (Visible on store)',
       defaultValue: false,
+      access: {
+        create: ({ req }) => (req?.user as { role?: string })?.role === 'admin',
+        update: ({ req }) => (req?.user as { role?: string })?.role === 'admin',
+      },
       admin: {
         description: 'Only approved reviews appear on the store.',
       },

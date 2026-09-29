@@ -16,6 +16,8 @@ export interface LogoProps {
   variant?: "full" | "icon";
   /** Preset size */
   size?: "xs" | "sm" | "md" | "lg" | "xl";
+  /** Alignment: 'left' | 'center' | 'right' (defaults to 'left') */
+  align?: "left" | "center" | "right";
   /** Explicit theme override or auto (follows dark/light mode) */
   theme?: "auto" | "light" | "dark";
   /** Optional destination link (wraps logo in Next.js Link) */
@@ -40,6 +42,7 @@ let cachedSettings: {
 export function Logo({
   variant = "full",
   size = "md",
+  align = "left",
   theme = "auto",
   href,
   className,
@@ -93,42 +96,64 @@ export function Logo({
     customLogoText || settings.logoText || SiteConfig.site.logoText;
   const hasUploadedLogo = Boolean(settings.logoUrl || settings.logoDarkUrl);
 
+  const alignClass = {
+    left: "justify-start text-left",
+    center: "justify-center text-center",
+    right: "justify-end text-right",
+  }[align];
+
+  const objectAlignClass = {
+    left: "object-left",
+    center: "object-center",
+    right: "object-right",
+  }[align];
+
   // Dimensions per size
   const sizeMap = {
     xs: {
-      skeleton: "h-6 w-16 rounded-md",
+      skeleton: "h-6 w-24 rounded-md",
       iconSkeleton: "size-6 rounded-md",
-      shimmer: "h-6 w-16 rounded-md",
+      shimmer: "h-6 w-24 rounded-md",
       badge: "size-6 text-[10px] rounded-md",
       img: "h-6 max-w-[90px]",
+      title: "text-xs font-bold leading-none",
+      subtitle: "text-[8px] font-medium tracking-wider uppercase text-muted-foreground leading-none mt-0.5",
     },
     sm: {
-      skeleton: "h-7 w-20 rounded-lg",
+      skeleton: "h-7 w-28 rounded-lg",
       iconSkeleton: "size-7 rounded-lg",
-      shimmer: "h-7 w-20 rounded-lg",
+      shimmer: "h-7 w-28 rounded-lg",
       badge: "size-7 text-xs rounded-lg",
       img: "h-7 max-w-[110px]",
+      title: "text-xs font-bold leading-none",
+      subtitle: "text-[9px] font-medium tracking-wider uppercase text-muted-foreground leading-none mt-0.5",
     },
     md: {
-      skeleton: "h-8 w-24 rounded-lg",
+      skeleton: "h-8 w-32 rounded-lg",
       iconSkeleton: "size-8 rounded-lg",
-      shimmer: "h-8 w-24 rounded-lg",
+      shimmer: "h-8 w-32 rounded-lg",
       badge: "size-8 text-xs rounded-lg",
       img: "h-8 max-w-[140px]",
+      title: "text-sm font-bold leading-none",
+      subtitle: "text-[10px] font-medium tracking-wider uppercase text-muted-foreground leading-none mt-0.5",
     },
     lg: {
-      skeleton: "h-10 w-32 rounded-xl",
+      skeleton: "h-10 w-40 rounded-xl",
       iconSkeleton: "size-10 rounded-xl",
-      shimmer: "h-10 w-32 rounded-xl",
+      shimmer: "h-10 w-40 rounded-xl",
       badge: "size-10 text-sm rounded-xl",
       img: "h-10 max-w-[180px]",
+      title: "text-base font-bold leading-none",
+      subtitle: "text-[11px] font-medium tracking-wider uppercase text-muted-foreground leading-none mt-0.5",
     },
     xl: {
-      skeleton: "h-12 w-40 rounded-2xl",
+      skeleton: "h-12 w-48 rounded-2xl",
       iconSkeleton: "size-12 rounded-2xl",
-      shimmer: "h-12 w-40 rounded-2xl",
+      shimmer: "h-12 w-48 rounded-2xl",
       badge: "size-12 text-base rounded-2xl",
       img: "h-12 max-w-[220px]",
+      title: "text-lg font-bold leading-none",
+      subtitle: "text-xs font-medium tracking-wider uppercase text-muted-foreground leading-none mt-0.5",
     },
   }[size];
 
@@ -140,18 +165,25 @@ export function Logo({
           "shrink-0",
           variant === "icon" ? sizeMap.iconSkeleton : sizeMap.skeleton,
           badgeClassName,
-          className,
         )}
       />
     );
 
     if (href) {
-      return <div className="inline-flex items-center">{skeletonContent}</div>;
+      return (
+        <div className={cn("inline-flex items-center", alignClass, className)}>
+          {skeletonContent}
+        </div>
+      );
     }
-    return skeletonContent;
+    return (
+      <div className={cn("inline-flex items-center", alignClass, className)}>
+        {skeletonContent}
+      </div>
+    );
   }
 
-  // Render the logo itself (pure logo, no external text)
+  // Render the logo itself
   const renderLogo = () => {
     if (variant === "icon") {
       return (
@@ -184,6 +216,7 @@ export function Logo({
             alt={siteName}
             className={cn(
               "object-contain shrink-0",
+              objectAlignClass,
               sizeMap.img,
               badgeClassName,
             )}
@@ -202,6 +235,7 @@ export function Logo({
             alt={siteName}
             className={cn(
               "object-contain shrink-0",
+              objectAlignClass,
               sizeMap.img,
               badgeClassName,
             )}
@@ -213,7 +247,7 @@ export function Logo({
       if (isLightValid || isDarkValid) {
         // Auto mode: show light logo in light mode and dark logo in dark mode
         return (
-          <span className="relative shrink-0 flex items-center">
+          <span className={cn("relative shrink-0 flex items-center", alignClass)}>
             {/* Light Mode Variant */}
             {isLightValid && (
               <CldImage
@@ -224,6 +258,7 @@ export function Logo({
                 alt={siteName}
                 className={cn(
                   "object-contain dark:hidden block",
+                  objectAlignClass,
                   sizeMap.img,
                   badgeClassName,
                 )}
@@ -240,6 +275,7 @@ export function Logo({
                 alt={siteName}
                 className={cn(
                   "object-contain dark:block hidden",
+                  objectAlignClass,
                   sizeMap.img,
                   badgeClassName,
                 )}
@@ -251,23 +287,33 @@ export function Logo({
       }
     }
 
-    // Default NextLoad Gradient Badge Fallback (only the logo, no external text)
+    // Default NEXT LOAD by Scalvio Gradient Emblem Fallback
     return (
-      <span
-        aria-hidden="true"
-        className={cn(
-          "bg-gradient-to-br from-teal-600 via-teal-500 to-sky-600 text-white flex shrink-0 items-center justify-center font-extrabold tracking-wider shadow-sm select-none transition-transform duration-200",
-          sizeMap.badge,
-          badgeClassName,
-        )}
-      >
-        {logoText}
-      </span>
+      <div className="flex items-center gap-2.5">
+        <span
+          aria-hidden="true"
+          className={cn(
+            "bg-gradient-to-br from-teal-600 via-teal-500 to-sky-600 text-white flex shrink-0 items-center justify-center font-extrabold tracking-wider shadow-sm select-none transition-transform duration-200",
+            sizeMap.badge,
+            badgeClassName,
+          )}
+        >
+          {logoText}
+        </span>
+        <div className="flex flex-col text-left select-none">
+          <span className={cn(sizeMap.title, "text-foreground tracking-tight")}>
+            NEXT LOAD
+          </span>
+          <span className={cn(sizeMap.subtitle)}>
+            by Scalvio
+          </span>
+        </div>
+      </div>
     );
   };
 
   const content = (
-    <div className={cn("inline-flex items-center shrink-0", className)}>
+    <div className={cn("inline-flex items-center shrink-0", alignClass, !href && className)}>
       {renderLogo()}
     </div>
   );
@@ -277,7 +323,11 @@ export function Logo({
       <Link
         href={href}
         aria-label={siteName}
-        className="inline-flex items-center hover:opacity-90 transition-opacity focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-md"
+        className={cn(
+          "inline-flex items-center hover:opacity-90 transition-opacity focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-md",
+          alignClass,
+          className,
+        )}
       >
         {content}
       </Link>

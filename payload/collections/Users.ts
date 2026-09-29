@@ -7,11 +7,15 @@ import { betterAuthStrategy } from '@delmaredigital/payload-better-auth'
 
 export const Users: CollectionConfig = {
   slug: 'users',
+  admin: {
+    group: 'Users',
+    defaultColumns: ['name', 'email', 'role'],
+    useAsTitle: 'name',
+  },
   auth: {
     disableLocalStrategy: true,
     strategies: [betterAuthStrategy()],
   },
-
 
   access: {
     read: ({ req }) => {
@@ -48,6 +52,36 @@ export const Users: CollectionConfig = {
         { label: 'User', value: 'user' },
         { label: 'Admin', value: 'admin' },
       ],
+    },
+    {
+      name: 'orders',
+      type: 'join',
+      collection: 'orders',
+      on: 'customer',
+      admin: {
+        allowCreate: false,
+        defaultColumns: ['id', 'createdAt', 'total', 'currency', 'items'],
+      },
+    },
+    {
+      name: 'cart',
+      type: 'join',
+      collection: 'carts',
+      on: 'customer',
+      admin: {
+        allowCreate: false,
+        defaultColumns: ['id', 'createdAt', 'total', 'currency', 'items'],
+      },
+    },
+    {
+      name: 'addresses',
+      type: 'join',
+      collection: 'addresses',
+      on: 'customer',
+      admin: {
+        allowCreate: false,
+        defaultColumns: ['id'],
+      },
     },
   ],
 }

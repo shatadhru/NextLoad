@@ -1,224 +1,135 @@
+import { slugField, type DefaultDocumentIDType, type Where } from 'payload'
 import type { CollectionOverride } from '@payloadcms/plugin-ecommerce/types'
+import {
+  FixedToolbarFeature,
+  HeadingFeature,
+  HorizontalRuleFeature,
+  InlineToolbarFeature,
+  lexicalEditor,
+} from '@payloadcms/richtext-lexical'
 
-export const productCollectionOverride: CollectionOverride = ({ defaultCollection }) => {
-  return {
-    ...defaultCollection,
-    admin: {
-      ...defaultCollection.admin,
-      useAsTitle: 'title',
-      defaultColumns: ['title', 'price', 'salePrice', 'inventory', 'category', '_status'],
-      group: 'E-commerce',
+const generatePreviewPath = ({ slug }: { slug?: string | null }) =>
+  slug ? `/store/${slug}` : '/store'
+
+export const ProductsCollection: CollectionOverride = ({ defaultCollection }) => ({
+  ...defaultCollection,
+  admin: {
+    ...defaultCollection?.admin,
+    defaultColumns: ['title', 'enableVariants', '_status', 'variants.variants'],
+    livePreview: {
+      url: ({ data }) => generatePreviewPath({ slug: data?.slug }),
     },
-    fields: [
-      {
-        name: 'title',
-        type: 'text',
-        required: true,
-        label: 'Product Title',
-      },
-      {
-        name: 'slug',
-        type: 'text',
-        label: 'URL Slug',
-        admin: {
-          description: 'Used in the URL. Auto-generated from title if left empty.',
-        },
-      },
-      {
-        name: 'description',
-        type: 'textarea',
-        label: 'Short Description',
-      },
-      {
-        name: 'richDescription',
-        type: 'richText',
-        label: 'Full Description (Rich Text)',
-      },
-      {
-        name: 'price',
-        type: 'number',
-        required: true,
-        defaultValue: 0,
-        label: 'Regular Price (BDT)',
-      },
-      {
-        name: 'salePrice',
-        type: 'number',
-        label: 'Sale Price (BDT)',
-        admin: {
-          description: 'Optional discount price. If set, shown as the current price.',
-        },
-      },
-      {
-        name: 'category',
-        type: 'relationship',
-        relationTo: 'categories',
-        label: 'Category',
-      },
-      {
-        name: 'tags',
-        type: 'array',
-        label: 'Tags',
-        fields: [
-          {
-            name: 'tag',
-            type: 'text',
-            required: true,
-          },
-        ],
-      },
-      {
-        name: 'image',
-        type: 'upload',
-        relationTo: 'media',
-        label: 'Primary Product Image',
-        required: true,
-      },
-      {
-        name: 'gallery',
-        type: 'array',
-        label: 'Image Gallery',
-        admin: {
-          description: 'Additional product images for the gallery carousel.',
-        },
-        fields: [
-          {
-            name: 'image',
-            type: 'upload',
-            relationTo: 'media',
-            required: true,
-          },
-          {
-            name: 'alt',
-            type: 'text',
-            label: 'Alt Text',
-          },
-        ],
-      },
-      {
-        name: 'isNew',
-        type: 'checkbox',
-        label: 'Mark as New',
-        defaultValue: false,
-      },
-      {
-        name: 'isBestSeller',
-        type: 'checkbox',
-        label: 'Mark as Best Seller',
-        defaultValue: false,
-      },
-      {
-        name: 'isFeatured',
-        type: 'checkbox',
-        label: 'Featured on Store Home',
-        defaultValue: false,
-      },
-      {
-        name: 'stockStatus',
-        type: 'select',
-        label: 'Stock Status',
-        defaultValue: 'in_stock',
-        options: [
-          { label: 'In Stock', value: 'in_stock' },
-          { label: 'Low Stock', value: 'low_stock' },
-          { label: 'Out of Stock', value: 'out_of_stock' },
-          { label: 'Pre-order', value: 'preorder' },
-        ],
-      },
-      {
-        name: 'shippingInfo',
-        type: 'group',
-        label: 'Shipping',
-        fields: [
-          {
-            name: 'weight',
-            type: 'number',
-            label: 'Weight (grams)',
-          },
-          {
-            name: 'freeShipping',
-            type: 'checkbox',
-            label: 'Free Shipping',
-            defaultValue: false,
-          },
-          {
-            name: 'estimatedDelivery',
-            type: 'text',
-            label: 'Estimated Delivery',
-            admin: {
-              placeholder: 'e.g. 3–5 business days',
+    preview: (data) => generatePreviewPath({ slug: (data?.slug as string) || '' }),
+    useAsTitle: 'title',
+  },
+  defaultPopulate: {
+    ...defaultCollection?.defaultPopulate,
+    title: true,
+    slug: true,
+    variantOptions: true,
+    variants: true,
+    enableVariants: true,
+    gallery: true,
+    priceInBDT: true,
+    inventory: true,
+    meta: true,
+  },
+  fields: [
+    { name: 'title', type: 'text', required: true },
+    {
+      type: 'tabs',
+      tabs: [
+        {
+          label: 'Content',
+          fields: [
+            {
+              name: 'description',
+              type: 'richText',
+              editor: lexicalEditor({
+                features: ({ rootFeatures }) => [
+                  ...rootFeatures,
+                  HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+                  FixedToolbarFeature(),
+                  InlineToolbarFeature(),
+                  HorizontalRuleFeature(),
+                ],
+              }),
+              label: false,
+              required: false,
             },
-          },
-        ],
-      },
-      {
-        name: 'seoTitle',
-        type: 'text',
-        label: 'SEO Title',
-        admin: { position: 'sidebar' },
-      },
-      {
-        name: 'seoDescription',
-        type: 'textarea',
-        label: 'SEO Description',
-        admin: { position: 'sidebar' },
-      },
-      // Keep ecommerce plugin fields (inventory, variants, etc.)
-      ...defaultCollection.fields,
-    ],
-    hooks: {
-      ...defaultCollection.hooks,
-      beforeValidate: [
-        ...(defaultCollection.hooks?.beforeValidate || []),
-        ({ data }) => {
-          if (!data) return data
-          const p =
-            typeof data.priceInBDT === 'number' && !isNaN(data.priceInBDT)
-              ? data.priceInBDT
-              : typeof data.price === 'number' && !isNaN(data.price)
-              ? data.price
-              : typeof data.salePrice === 'number' && !isNaN(data.salePrice)
-              ? data.salePrice
-              : 0
-          data.priceInBDT = p
-          data.price = p
-          return data
+            {
+              name: 'gallery',
+              type: 'array',
+              minRows: 1,
+              fields: [
+                {
+                  name: 'image',
+                  type: 'upload',
+                  relationTo: 'media',
+                  required: true,
+                },
+                {
+                  name: 'variantOption',
+                  type: 'relationship',
+                  relationTo: 'variantOptions',
+                  admin: {
+                    condition: (data) =>
+                      Boolean(data?.enableVariants && data?.variantTypes?.length > 0),
+                  },
+                  filterOptions: ({ data }) => {
+                    if (data?.enableVariants && data?.variantTypes?.length) {
+                      const variantTypeIDs = data.variantTypes.map((item: any) =>
+                        typeof item === 'object' && item?.id ? item.id : item
+                      ) as DefaultDocumentIDType[]
+
+                      if (variantTypeIDs.length === 0) return { variantType: { in: [] } }
+                      return { variantType: { in: variantTypeIDs } } as Where
+                    }
+                    return { variantType: { in: [] } } as Where
+                  },
+                },
+              ],
+            },
+          ],
         },
-      ],
-      beforeChange: [
-        ...(defaultCollection.hooks?.beforeChange || []),
-        ({ data }) => {
-          if (!data) return data
-          const p =
-            typeof data.priceInBDT === 'number' && !isNaN(data.priceInBDT)
-              ? data.priceInBDT
-              : typeof data.price === 'number' && !isNaN(data.price)
-              ? data.price
-              : typeof data.salePrice === 'number' && !isNaN(data.salePrice)
-              ? data.salePrice
-              : 0
-          data.priceInBDT = p
-          data.price = p
-          return data
+        {
+          label: 'Product Details',
+          fields: [
+            ...defaultCollection.fields,
+            {
+              name: 'relatedProducts',
+              type: 'relationship',
+              filterOptions: ({ id }) =>
+                id ? { id: { not_in: [id] } } : { id: { exists: true } },
+              hasMany: true,
+              relationTo: 'products',
+            },
+          ],
         },
-      ],
-      afterRead: [
-        ...(defaultCollection.hooks?.afterRead || []),
-        ({ doc }) => {
-          if (!doc) return doc
-          const p =
-            typeof doc.priceInBDT === 'number' && !isNaN(doc.priceInBDT)
-              ? doc.priceInBDT
-              : typeof doc.price === 'number' && !isNaN(doc.price)
-              ? doc.price
-              : 0
-          doc.priceInBDT = p
-          doc.price = p
-          return doc
+        {
+          name: 'meta',
+          label: 'SEO',
+          fields: [
+            { name: 'title', type: 'text', label: 'Meta Title' },
+            { name: 'description', type: 'textarea', label: 'Meta Description' },
+            { name: 'image', type: 'upload', relationTo: 'media', label: 'Meta Image' },
+          ],
         },
       ],
     },
-  }
-}
+    {
+      name: 'categories',
+      type: 'relationship',
+      admin: {
+        position: 'sidebar',
+        sortOptions: 'title',
+      },
+      hasMany: true,
+      relationTo: 'categories',
+    },
+    slugField(),
+  ],
+})
 
-export default productCollectionOverride
+export const productCollectionOverride = ProductsCollection
+export default ProductsCollection

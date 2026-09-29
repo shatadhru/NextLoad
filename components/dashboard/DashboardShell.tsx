@@ -31,7 +31,7 @@ import {
 import { authClient } from "@/payload/auth/client"
 import { Logo } from "@/components/ui/Logo"
 import { EmailVerificationBanner } from "./EmailVerificationBanner"
-import { CartDrawer } from "@/components/ecommerch"
+
 
 interface UserNotification {
   id: string
@@ -228,7 +228,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
 
           <div className="ml-auto flex items-center gap-2">
             {/* NOTIFICATION BELL WITH NUMBER SYSTEM (MATCHING CART ICON TRIGGER DESIGN) */}
-            <div className="relative" ref={notifDropdownRef}>
+            <div className={cn("relative", isNotifOpen && "z-50")} ref={notifDropdownRef}>
               <Button
                 variant="outline"
                 size="icon"
@@ -253,9 +253,9 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
               {/* NOTIFICATION DROPDOWN POPUP */}
               {isNotifOpen && (
                 <>
-                  {/* Mobile Backdrop overlay */}
+                  {/* Mobile Backdrop overlay (starts below header to prevent blurring the header) */}
                   <div
-                    className="fixed inset-0 bg-black/40 backdrop-blur-xs z-40 sm:hidden"
+                    className="fixed inset-x-0 top-12 bottom-0 bg-black/30 z-40 sm:hidden"
                     onClick={() => setIsNotifOpen(false)}
                   />
 
@@ -377,8 +377,6 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
               )}
             </div>
 
-            {/* SHOPPING CART DRAWER BUTTON */}
-            <CartDrawer checkoutUrl="/checkout" />
 
             {isAdmin ? (
               <Link

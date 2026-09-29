@@ -18,6 +18,10 @@ import { CookieConsent } from './globals/CookieConsent'
 import { PersonalData } from './collections/Personaldata'
 import { Reviews } from './collections/ecommerch/Reviews'
 import { Coupons } from './collections/ecommerch/Coupons'
+import { Posts } from './collections/blog/Posts'
+import { BlogCategories } from './collections/blog/Categories'
+import { BlogTags } from './collections/blog/Tags'
+import { Newsletter } from './collections/Newsletter'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -59,7 +63,19 @@ export default buildConfig({
       ],
     },
   },
-  collections: [Users, Media, Categories, Banners, PersonalData, Reviews, Coupons],
+  collections: [
+    Users,
+    Media,
+    Categories,
+    Banners,
+    PersonalData,
+    Reviews,
+    Coupons,
+    Posts,
+    BlogCategories,
+    Newsletter,
+    BlogTags,
+  ],
   globals: [SiteSettings, CookieConsent, ...generateAdminGlobals()],
   editor: lexicalEditor(),
   email: payloadEmailAdapter(),

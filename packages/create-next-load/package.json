@@ -1,7 +1,7 @@
 {
   "name": "create-next-load",
   "version": "1.0.0",
-  "description": "CLI to quickly initialize a new project with NextLoad",
+  "description": "CLI to quickly initialize a new project with NEXT LOAD by Scalvio",
   "type": "module",
   "main": "index.js",
   "bin": {
@@ -9,6 +9,7 @@
   },
   "keywords": [
     "nextload",
+    "scalvio",
     "create-next-load",
     "nextjs",
     "payloadcms",
@@ -17,7 +18,7 @@
     "starter",
     "cli"
   ],
-  "author": "Shatadhru",
+  "author": "Scalvio",
   "license": "MIT",
   "repository": {
     "type": "git",

@@ -66,12 +66,12 @@ export async function GET(request: NextRequest) {
     }
 
     // Default SVG fallback
-    const siteName = escapeXml(settings?.siteName || SiteConfig.site.name)
     const logoText = escapeXml(settings?.logoText || SiteConfig.site.logoText)
     const textColor = theme === "dark" ? "#f8fafc" : "#0f172a"
+    const subColor = theme === "dark" ? "#94a3b8" : "#64748b"
 
     const svg = `
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 48" width="200" height="48" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 48" width="240" height="48" fill="none">
   <defs>
     <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#0d9488" />
@@ -82,8 +82,9 @@ export async function GET(request: NextRequest) {
     </filter>
   </defs>
   <rect x="2" y="4" width="40" height="40" rx="10" fill="url(#logo-grad)" filter="url(#shadow)" />
-  <text x="22" y="29" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="17" font-weight="800" fill="#ffffff" text-anchor="middle" letter-spacing="-0.5">${logoText}</text>
-  <text x="52" y="30" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="20" font-weight="700" fill="${textColor}" letter-spacing="-0.5">${siteName}</text>
+  <text x="22" y="29" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="16" font-weight="800" fill="#ffffff" text-anchor="middle" letter-spacing="-0.5">${logoText}</text>
+  <text x="52" y="25" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="17" font-weight="800" fill="${textColor}" letter-spacing="-0.5">NEXT LOAD</text>
+  <text x="53" y="38" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10" font-weight="600" fill="${subColor}" letter-spacing="1">BY SCALVIO</text>
 </svg>`.trim()
 
     return new NextResponse(svg, {
@@ -95,7 +96,7 @@ export async function GET(request: NextRequest) {
     })
   } catch (error) {
     console.error("GET /api/site-settings/logo error:", error)
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 40" width="160" height="40"><rect width="36" height="36" rx="8" fill="#0d9488"/><text x="18" y="24" font-size="14" font-weight="bold" fill="#fff" text-anchor="middle">NL</text><text x="46" y="26" font-size="18" font-weight="bold" fill="#0d9488">NextLoad</text></svg>`
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 40" width="200" height="40"><rect width="36" height="36" rx="8" fill="#0d9488"/><text x="18" y="24" font-size="14" font-weight="bold" fill="#fff" text-anchor="middle">NL</text><text x="46" y="22" font-size="16" font-weight="bold" fill="#0d9488">NEXT LOAD</text><text x="46" y="34" font-size="9" font-weight="bold" fill="#64748b">BY SCALVIO</text></svg>`
     return new NextResponse(svg, {
       status: 200,
       headers: { "Content-Type": "image/svg+xml" },

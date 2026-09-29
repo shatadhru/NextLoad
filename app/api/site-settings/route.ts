@@ -42,12 +42,23 @@ export async function GET() {
     const logoDarkUrl = getCloudinarySecureUrl(settings?.logoDark)
     const faviconUrl = getCloudinarySecureUrl(settings?.favicon)
 
+    const copyright = settings?.copyright || `© {year} ${siteName}. All rights reserved.`
+    const footerTagline = settings?.footerTagline || siteDescription
+    const paymentMethods = settings?.paymentMethods || null
+    const socialLinks = settings?.socialLinks || null
+    const legal = settings?.legal || null
+
     return NextResponse.json({
       success: true,
       globalType: "site-settings",
       siteName,
       siteTitle,
       siteDescription,
+      copyright,
+      footerTagline,
+      paymentMethods,
+      socialLinks,
+      legal,
       logoText,
       logoUrl,
       logoDarkUrl,
@@ -66,6 +77,7 @@ export async function GET() {
       logoText: SiteConfig.site.logoText,
       logoUrl: null,
       logoDarkUrl: null,
+      socialLinks: null,
     })
   }
 }

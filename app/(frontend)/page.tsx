@@ -24,6 +24,8 @@ import { buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { Logo } from "@/components/ui/Logo"
 import { SiteConfig } from "@/config/site"
+import { CartIconTrigger } from "@/components/cart"
+import { Footer } from "@/components/footer"
 
 export default function HomePage() {
   const { data: session, isPending } = authClient.useSession()
@@ -85,9 +87,16 @@ export default function HomePage() {
             <span className="hidden sm:inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold bg-teal-500/10 text-teal-600 dark:text-teal-400 border border-teal-500/20">
               v1.0 Production
             </span>
+            <Link
+              href="/blog"
+              className="text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors ml-1"
+            >
+              Blog
+            </Link>
           </div>
 
           <div className="flex items-center gap-3">
+            <CartIconTrigger size="sm" />
             {isPending ? (
               <div className="h-8 w-24 bg-muted animate-pulse rounded-md" />
             ) : user ? (
@@ -265,32 +274,7 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="mt-auto border-t py-8 px-4 sm:px-6 bg-muted/20">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
-          <div className="flex items-center gap-2">
-            <span className="font-semibold text-foreground">{SiteConfig.site.name}</span>
-            <span>&copy; {new Date().getFullYear()} All rights reserved.</span>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <Link href="/dashboard" className="hover:text-foreground transition-colors">
-              Dashboard
-            </Link>
-            <Link href="/admin" className="hover:text-foreground transition-colors">
-              Payload CMS
-            </Link>
-            <Link href="/auth/login" className="hover:text-foreground transition-colors">
-              Sign In
-            </Link>
-            <Link href="/dashboard/support" className="hover:text-foreground transition-colors">
-              Support
-            </Link>
-            <Link href="/admin/readme" className="hover:text-foreground transition-colors">
-              Docs
-            </Link>
-          </div>
-        </div>
-      </footer>
+      <Footer className="mt-auto" />
     </div>
   )
 }

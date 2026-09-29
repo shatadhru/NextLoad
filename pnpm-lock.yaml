@@ -106,6 +106,12 @@ importers:
       react-dom:
         specifier: 19.2.6
         version: 19.2.6(react@19.2.6)
+      react-social-icons:
+        specifier: ^6.27.0
+        version: 6.27.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
+      react-svg-credit-card-payment-icons:
+        specifier: ^6.0.4
+        version: 6.0.4(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       sharp:
         specifier: 0.35.4
         version: 0.35.4(@types/node@22.19.9)
@@ -5434,6 +5440,12 @@ packages:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
+  react-social-icons@6.27.0:
+    resolution: {integrity: sha512-f3mtFq49SQP0WjqC1rZ9edsDuvgs35e17DShArB/M+Ub2N26wYkpUlX/TAKDiI8y1VHU88aYssq+Y6LtbZJqfQ==}
+    peerDependencies:
+      react: 16.x.x || 17.x.x || 18.x.x || 19.x.x
+      react-dom: 16.x.x || 17.x.x || 18.x.x || 19.x.x
+
   react-style-singleton@2.2.3:
     resolution: {integrity: sha512-b6jSvxvVnyptAiLjbkWLE/lOnR4lfTtDAl+eUC7RZy+QQWc6wRzIV2CE6xBuMmDxc2qIihtDCZD5NPOFl7fRBQ==}
     engines: {node: '>=10'}
@@ -5442,6 +5454,18 @@ packages:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0 || ^19.0.0-rc
     peerDependenciesMeta:
       '@types/react':
+        optional: true
+
+  react-svg-credit-card-payment-icons@6.0.4:
+    resolution: {integrity: sha512-kp8Dhk5kedjPMmFIzkeIQKa1NouOEVymwiXwPcKEcIBVM4qzxQdEd5fMTl9H5fVTCZWviX/g0tjd6RCCpvbUYw==}
+    peerDependencies:
+      react: '>=16'
+      react-dom: '>=16'
+      react-native-svg: '>=12'
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+      react-native-svg:
         optional: true
 
   react-transition-group@4.4.5:
@@ -12012,6 +12036,12 @@ snapshots:
       - '@types/react'
       - supports-color
 
+  react-social-icons@6.27.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6):
+    dependencies:
+      '@babel/runtime': 7.29.7
+      react: 19.2.6
+      react-dom: 19.2.6(react@19.2.6)
+
   react-style-singleton@2.2.3(@types/react@19.2.14)(react@19.2.6):
     dependencies:
       get-nonce: 1.0.1
@@ -12019,6 +12049,12 @@ snapshots:
       tslib: 2.8.1
     optionalDependencies:
       '@types/react': 19.2.14
+
+  react-svg-credit-card-payment-icons@6.0.4(react-dom@19.2.6(react@19.2.6))(react@19.2.6):
+    dependencies:
+      react: 19.2.6
+    optionalDependencies:
+      react-dom: 19.2.6(react@19.2.6)
 
   react-transition-group@4.4.5(react-dom@19.2.6(react@19.2.6))(react@19.2.6):
     dependencies:

@@ -8,11 +8,13 @@
 
 export const SiteConfig = {
   site: {
-    name: "Ismail Bhaiya",
-    title: "Shatadhru Acharjee",
-    description: "Enterprise-grade full-stack web application with Next.js 16, Payload CMS 3.0, and Better Auth.",
+    name: "NEXT LOAD",
+    title: "NEXT LOAD by Scalvio",
+    company: "Scalvio",
+    tagline: "by Scalvio",
+    description: "Enterprise-grade full-stack boilerplate by Scalvio powered by Next.js 16, Payload CMS 3.0, and Better Auth.",
     url: process.env.NEXT_PUBLIC_APP_URL || process.env.BETTER_AUTH_URL || "http://localhost:3000",
-    logoText: "SH",
+    logoText: "NL",
   },
 
   pages: {
@@ -30,11 +32,11 @@ export const SiteConfig = {
 
   seo: {
     title: {
-      default: "Shatadhru",
-      template: "%s | Shatadhru",
+      default: "NEXT LOAD by Scalvio",
+      template: "%s | NEXT LOAD by Scalvio",
     },
-    description: "A production-ready web application template integrating Next.js 16 with Payload CMS 3.0, Better Auth, and MongoDB.",
-    keywords: ["Next.js", "Payload CMS", "Better Auth", "MongoDB", "Cloudinary", "SMTP"],
+    description: "A production-ready full-stack web application boilerplate by Scalvio integrating Next.js 16 with Payload CMS 3.0, Better Auth, and MongoDB.",
+    keywords: ["Next.js", "Payload CMS", "Better Auth", "MongoDB", "Cloudinary", "Scalvio", "NextLoad"],
     image: "/og-image.png",
   },
 }

@@ -79,6 +79,10 @@ export interface Config {
     personaldata: Personaldatum;
     reviews: Review;
     coupons: Coupon;
+    posts: Post;
+    'blog-categories': BlogCategory;
+    newsletter: Newsletter;
+    'blog-tags': BlogTag;
     sessions: Session;
     accounts: Account;
     verifications: Verification;
@@ -96,6 +100,11 @@ export interface Config {
     'payload-migrations': PayloadMigration;
   };
   collectionsJoins: {
+    users: {
+      orders: 'orders';
+      cart: 'carts';
+      addresses: 'addresses';
+    };
     variantTypes: {
       options: 'variantOptions';
     };
@@ -111,6 +120,10 @@ export interface Config {
     personaldata: PersonaldataSelect<false> | PersonaldataSelect<true>;
     reviews: ReviewsSelect<false> | ReviewsSelect<true>;
     coupons: CouponsSelect<false> | CouponsSelect<true>;
+    posts: PostsSelect<false> | PostsSelect<true>;
+    'blog-categories': BlogCategoriesSelect<false> | BlogCategoriesSelect<true>;
+    newsletter: NewsletterSelect<false> | NewsletterSelect<true>;
+    'blog-tags': BlogTagsSelect<false> | BlogTagsSelect<true>;
     sessions: SessionsSelect<false> | SessionsSelect<true>;
     accounts: AccountsSelect<false> | AccountsSelect<true>;
     verifications: VerificationsSelect<false> | VerificationsSelect<true>;
@@ -198,9 +211,116 @@ export interface User {
   name?: string | null;
   image?: string | null;
   role?: ('user' | 'admin') | null;
+  orders?: {
+    docs?: (string | Order)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  cart?: {
+    docs?: (string | Cart)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  addresses?: {
+    docs?: (string | Address)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   updatedAt: string;
   createdAt: string;
   collection: 'users';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "orders".
+ */
+export interface Order {
+  id: string;
+  items?:
+    | {
+        product?: (string | null) | Product;
+        variant?: (string | null) | Variant;
+        quantity: number;
+        id?: string | null;
+      }[]
+    | null;
+  shippingAddress?: {
+    title?: string | null;
+    firstName?: string | null;
+    lastName?: string | null;
+    company?: string | null;
+    addressLine1?: string | null;
+    addressLine2?: string | null;
+    city?: string | null;
+    state?: string | null;
+    postalCode?: string | null;
+    country?: string | null;
+    phone?: string | null;
+  };
+  customer?: (string | null) | User;
+  customerEmail?: string | null;
+  transactions?: (string | Transaction)[] | null;
+  status?: OrderStatus;
+  amount?: number | null;
+  currency?: 'BDT' | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products".
+ */
+export interface Product {
+  id: string;
+  title: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  gallery?:
+    | {
+        image: string | Media;
+        variantOption?: (string | null) | VariantOption;
+        id?: string | null;
+      }[]
+    | null;
+  inventory?: number | null;
+  enableVariants?: boolean | null;
+  variantTypes?: (string | VariantType)[] | null;
+  variants?: {
+    docs?: (string | Variant)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  priceInBDTEnabled?: boolean | null;
+  priceInBDT?: number | null;
+  relatedProducts?: (string | Product)[] | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    image?: (string | null) | Media;
+  };
+  categories?: (string | Category)[] | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -284,6 +404,60 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "variantOptions".
+ */
+export interface VariantOption {
+  id: string;
+  _variantOptions_options_order?: string | null;
+  variantType: string | VariantType;
+  label: string;
+  /**
+   * should be defaulted or dynamic based on label
+   */
+  value: string;
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "variantTypes".
+ */
+export interface VariantType {
+  id: string;
+  label: string;
+  name: string;
+  options?: {
+    docs?: (string | VariantOption)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "variants".
+ */
+export interface Variant {
+  id: string;
+  /**
+   * Used for administrative purposes, not shown to customers. This is populated by default.
+   */
+  title?: string | null;
+  product: string | Product;
+  options: (string | VariantOption)[];
+  inventory?: number | null;
+  priceInBDTEnabled?: boolean | null;
+  priceInBDT?: number | null;
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "categories".
  */
 export interface Category {
@@ -294,6 +468,127 @@ export interface Category {
    */
   generateSlug?: boolean | null;
   slug: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "transactions".
+ */
+export interface Transaction {
+  id: string;
+  items?:
+    | {
+        product?: (string | null) | Product;
+        variant?: (string | null) | Variant;
+        quantity: number;
+        id?: string | null;
+      }[]
+    | null;
+  billingAddress?: {
+    title?: string | null;
+    firstName?: string | null;
+    lastName?: string | null;
+    company?: string | null;
+    addressLine1?: string | null;
+    addressLine2?: string | null;
+    city?: string | null;
+    state?: string | null;
+    postalCode?: string | null;
+    country?: string | null;
+    phone?: string | null;
+  };
+  status: 'pending' | 'processing' | 'succeeded' | 'failed' | 'cancelled' | 'expired' | 'refunded';
+  customer?: (string | null) | User;
+  customerEmail?: string | null;
+  order?: (string | null) | Order;
+  cart?: (string | null) | Cart;
+  amount?: number | null;
+  currency?: 'BDT' | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "carts".
+ */
+export interface Cart {
+  id: string;
+  items?:
+    | {
+        product?: (string | null) | Product;
+        variant?: (string | null) | Variant;
+        quantity: number;
+        id?: string | null;
+      }[]
+    | null;
+  secret?: string | null;
+  customer?: (string | null) | User;
+  purchasedAt?: string | null;
+  status?: ('active' | 'purchased' | 'abandoned') | null;
+  subtotal?: number | null;
+  currency?: 'BDT' | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "addresses".
+ */
+export interface Address {
+  id: string;
+  customer?: (string | null) | User;
+  title?: string | null;
+  firstName?: string | null;
+  lastName?: string | null;
+  company?: string | null;
+  addressLine1?: string | null;
+  addressLine2?: string | null;
+  city?: string | null;
+  state?: string | null;
+  postalCode?: string | null;
+  country:
+    | 'US'
+    | 'GB'
+    | 'CA'
+    | 'AU'
+    | 'AT'
+    | 'BE'
+    | 'BR'
+    | 'BG'
+    | 'CY'
+    | 'CZ'
+    | 'DK'
+    | 'EE'
+    | 'FI'
+    | 'FR'
+    | 'DE'
+    | 'GR'
+    | 'HK'
+    | 'HU'
+    | 'IN'
+    | 'IE'
+    | 'IT'
+    | 'JP'
+    | 'LV'
+    | 'LT'
+    | 'LU'
+    | 'MY'
+    | 'MT'
+    | 'MX'
+    | 'NL'
+    | 'NZ'
+    | 'NO'
+    | 'PL'
+    | 'PT'
+    | 'RO'
+    | 'SG'
+    | 'SK'
+    | 'SI'
+    | 'ES'
+    | 'SE'
+    | 'CH';
+  phone?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -422,136 +717,6 @@ export interface Review {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "products".
- */
-export interface Product {
-  id: string;
-  title: string;
-  /**
-   * Used in the URL. Auto-generated from title if left empty.
-   */
-  slug?: string | null;
-  description?: string | null;
-  richDescription?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  price: number;
-  /**
-   * Optional discount price. If set, shown as the current price.
-   */
-  salePrice?: number | null;
-  category?: (string | null) | Category;
-  tags?:
-    | {
-        tag: string;
-        id?: string | null;
-      }[]
-    | null;
-  image: string | Media;
-  /**
-   * Additional product images for the gallery carousel.
-   */
-  gallery?:
-    | {
-        image: string | Media;
-        alt?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  isNew?: boolean | null;
-  isBestSeller?: boolean | null;
-  isFeatured?: boolean | null;
-  stockStatus?: ('in_stock' | 'low_stock' | 'out_of_stock' | 'preorder') | null;
-  shippingInfo?: {
-    weight?: number | null;
-    freeShipping?: boolean | null;
-    estimatedDelivery?: string | null;
-  };
-  seoTitle?: string | null;
-  seoDescription?: string | null;
-  inventory?: number | null;
-  enableVariants?: boolean | null;
-  variantTypes?: (string | VariantType)[] | null;
-  variants?: {
-    docs?: (string | Variant)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
-  priceInBDTEnabled?: boolean | null;
-  priceInBDT?: number | null;
-  updatedAt: string;
-  createdAt: string;
-  deletedAt?: string | null;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "variantTypes".
- */
-export interface VariantType {
-  id: string;
-  label: string;
-  name: string;
-  options?: {
-    docs?: (string | VariantOption)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
-  updatedAt: string;
-  createdAt: string;
-  deletedAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "variantOptions".
- */
-export interface VariantOption {
-  id: string;
-  _variantOptions_options_order?: string | null;
-  variantType: string | VariantType;
-  label: string;
-  /**
-   * should be defaulted or dynamic based on label
-   */
-  value: string;
-  updatedAt: string;
-  createdAt: string;
-  deletedAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "variants".
- */
-export interface Variant {
-  id: string;
-  /**
-   * Used for administrative purposes, not shown to customers. This is populated by default.
-   */
-  title?: string | null;
-  product: string | Product;
-  options: (string | VariantOption)[];
-  inventory?: number | null;
-  priceInBDTEnabled?: boolean | null;
-  priceInBDT?: number | null;
-  updatedAt: string;
-  createdAt: string;
-  deletedAt?: string | null;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "coupons".
  */
 export interface Coupon {
@@ -585,6 +750,147 @@ export interface Coupon {
    */
   applicableProducts?: (string | Product)[] | null;
   applicableCategories?: (string | Category)[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posts".
+ */
+export interface Post {
+  id: string;
+  title: string;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  /**
+   * Brief summary displayed in post cards, feeds, and search listings.
+   */
+  excerpt?: string | null;
+  /**
+   * Main cover image for the post and social sharing cards.
+   */
+  featuredImage?: (string | null) | Media;
+  /**
+   * Primary topic or category for this post.
+   */
+  category?: (string | null) | BlogCategory;
+  /**
+   * Descriptive tags to group related articles.
+   */
+  tags?: (string | BlogTag)[] | null;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  /**
+   * Custom SEO title tag (falls back to post title if blank).
+   */
+  seoTitle?: string | null;
+  /**
+   * Custom SEO description (falls back to excerpt if blank).
+   */
+  seoDescription?: string | null;
+  /**
+   * Comma-separated keywords for search engines.
+   */
+  seoKeywords?: string | null;
+  /**
+   * Custom canonical URL if this article was syndicated from another origin.
+   */
+  canonicalUrl?: string | null;
+  /**
+   * Dedicated Open Graph image (falls back to featured image if omitted).
+   */
+  ogImage?: (string | null) | Media;
+  /**
+   * Only published articles are live to the public.
+   */
+  status: 'draft' | 'published';
+  /**
+   * Public: in listing & search. Private: requires member sign-in. Unlisted: direct link only.
+   */
+  visibility: 'public' | 'private' | 'unlisted';
+  /**
+   * Scheduled or original publication timestamp.
+   */
+  publishDate?: string | null;
+  /**
+   * Author credited for this post.
+   */
+  author?: (string | null) | User;
+  /**
+   * Estimated reading time in minutes (auto-calculated).
+   */
+  readingTime?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blog-categories".
+ */
+export interface BlogCategory {
+  id: string;
+  title: string;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  /**
+   * Brief description of this category for category archive pages and SEO.
+   */
+  description?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blog-tags".
+ */
+export interface BlogTag {
+  id: string;
+  title: string;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Audience and newsletter email subscriber list.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "newsletter".
+ */
+export interface Newsletter {
+  id: string;
+  email: string;
+  /**
+   * Optional subscriber name.
+   */
+  name?: string | null;
+  status: 'subscribed' | 'unsubscribed';
+  /**
+   * Where this subscription was submitted from.
+   */
+  source?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -641,163 +947,6 @@ export interface Verification {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "addresses".
- */
-export interface Address {
-  id: string;
-  customer?: (string | null) | User;
-  title?: string | null;
-  firstName?: string | null;
-  lastName?: string | null;
-  company?: string | null;
-  addressLine1?: string | null;
-  addressLine2?: string | null;
-  city?: string | null;
-  state?: string | null;
-  postalCode?: string | null;
-  country:
-    | 'US'
-    | 'GB'
-    | 'CA'
-    | 'AU'
-    | 'AT'
-    | 'BE'
-    | 'BR'
-    | 'BG'
-    | 'CY'
-    | 'CZ'
-    | 'DK'
-    | 'EE'
-    | 'FI'
-    | 'FR'
-    | 'DE'
-    | 'GR'
-    | 'HK'
-    | 'HU'
-    | 'IN'
-    | 'IE'
-    | 'IT'
-    | 'JP'
-    | 'LV'
-    | 'LT'
-    | 'LU'
-    | 'MY'
-    | 'MT'
-    | 'MX'
-    | 'NL'
-    | 'NZ'
-    | 'NO'
-    | 'PL'
-    | 'PT'
-    | 'RO'
-    | 'SG'
-    | 'SK'
-    | 'SI'
-    | 'ES'
-    | 'SE'
-    | 'CH';
-  phone?: string | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "carts".
- */
-export interface Cart {
-  id: string;
-  items?:
-    | {
-        product?: (string | null) | Product;
-        variant?: (string | null) | Variant;
-        quantity: number;
-        id?: string | null;
-      }[]
-    | null;
-  secret?: string | null;
-  customer?: (string | null) | User;
-  purchasedAt?: string | null;
-  status?: ('active' | 'purchased' | 'abandoned') | null;
-  subtotal?: number | null;
-  currency?: 'BDT' | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "orders".
- */
-export interface Order {
-  id: string;
-  items?:
-    | {
-        product?: (string | null) | Product;
-        variant?: (string | null) | Variant;
-        quantity: number;
-        id?: string | null;
-      }[]
-    | null;
-  shippingAddress?: {
-    title?: string | null;
-    firstName?: string | null;
-    lastName?: string | null;
-    company?: string | null;
-    addressLine1?: string | null;
-    addressLine2?: string | null;
-    city?: string | null;
-    state?: string | null;
-    postalCode?: string | null;
-    country?: string | null;
-    phone?: string | null;
-  };
-  customer?: (string | null) | User;
-  customerEmail?: string | null;
-  transactions?: (string | Transaction)[] | null;
-  status?: OrderStatus;
-  amount?: number | null;
-  currency?: 'BDT' | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "transactions".
- */
-export interface Transaction {
-  id: string;
-  items?:
-    | {
-        product?: (string | null) | Product;
-        variant?: (string | null) | Variant;
-        quantity: number;
-        id?: string | null;
-      }[]
-    | null;
-  billingAddress?: {
-    title?: string | null;
-    firstName?: string | null;
-    lastName?: string | null;
-    company?: string | null;
-    addressLine1?: string | null;
-    addressLine2?: string | null;
-    city?: string | null;
-    state?: string | null;
-    postalCode?: string | null;
-    country?: string | null;
-    phone?: string | null;
-  };
-  status: 'pending' | 'processing' | 'succeeded' | 'failed' | 'cancelled' | 'expired' | 'refunded';
-  customer?: (string | null) | User;
-  customerEmail?: string | null;
-  order?: (string | null) | Order;
-  cart?: (string | null) | Cart;
-  amount?: number | null;
-  currency?: 'BDT' | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -847,6 +996,22 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'coupons';
         value: string | Coupon;
+      } | null)
+    | ({
+        relationTo: 'posts';
+        value: string | Post;
+      } | null)
+    | ({
+        relationTo: 'blog-categories';
+        value: string | BlogCategory;
+      } | null)
+    | ({
+        relationTo: 'newsletter';
+        value: string | Newsletter;
+      } | null)
+    | ({
+        relationTo: 'blog-tags';
+        value: string | BlogTag;
       } | null)
     | ({
         relationTo: 'sessions';
@@ -944,6 +1109,9 @@ export interface UsersSelect<T extends boolean = true> {
   name?: T;
   image?: T;
   role?: T;
+  orders?: T;
+  cart?: T;
+  addresses?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1074,6 +1242,67 @@ export interface CouponsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posts_select".
+ */
+export interface PostsSelect<T extends boolean = true> {
+  title?: T;
+  generateSlug?: T;
+  slug?: T;
+  excerpt?: T;
+  featuredImage?: T;
+  category?: T;
+  tags?: T;
+  content?: T;
+  seoTitle?: T;
+  seoDescription?: T;
+  seoKeywords?: T;
+  canonicalUrl?: T;
+  ogImage?: T;
+  status?: T;
+  visibility?: T;
+  publishDate?: T;
+  author?: T;
+  readingTime?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blog-categories_select".
+ */
+export interface BlogCategoriesSelect<T extends boolean = true> {
+  title?: T;
+  generateSlug?: T;
+  slug?: T;
+  description?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "newsletter_select".
+ */
+export interface NewsletterSelect<T extends boolean = true> {
+  email?: T;
+  name?: T;
+  status?: T;
+  source?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blog-tags_select".
+ */
+export interface BlogTagsSelect<T extends boolean = true> {
+  title?: T;
+  generateSlug?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "sessions_select".
  */
 export interface SessionsSelect<T extends boolean = true> {
@@ -1181,45 +1410,31 @@ export interface VariantOptionsSelect<T extends boolean = true> {
  */
 export interface ProductsSelect<T extends boolean = true> {
   title?: T;
-  slug?: T;
   description?: T;
-  richDescription?: T;
-  price?: T;
-  salePrice?: T;
-  category?: T;
-  tags?:
-    | T
-    | {
-        tag?: T;
-        id?: T;
-      };
-  image?: T;
   gallery?:
     | T
     | {
         image?: T;
-        alt?: T;
+        variantOption?: T;
         id?: T;
       };
-  isNew?: T;
-  isBestSeller?: T;
-  isFeatured?: T;
-  stockStatus?: T;
-  shippingInfo?:
-    | T
-    | {
-        weight?: T;
-        freeShipping?: T;
-        estimatedDelivery?: T;
-      };
-  seoTitle?: T;
-  seoDescription?: T;
   inventory?: T;
   enableVariants?: T;
   variantTypes?: T;
   variants?: T;
   priceInBDTEnabled?: T;
   priceInBDT?: T;
+  relatedProducts?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
+  categories?: T;
+  generateSlug?: T;
+  slug?: T;
   updatedAt?: T;
   createdAt?: T;
   deletedAt?: T;
@@ -1398,6 +1613,116 @@ export interface SiteSetting {
    * Upload a square icon for the browser tab favicon.
    */
   favicon?: (string | null) | Media;
+  /**
+   * Select from top 50 networks powered by react-social-icons.
+   */
+  socialLinks?:
+    | {
+        platform:
+          | 'github'
+          | 'x'
+          | 'linkedin'
+          | 'youtube'
+          | 'facebook'
+          | 'instagram'
+          | 'tiktok'
+          | 'discord'
+          | 'telegram'
+          | 'whatsapp'
+          | 'reddit'
+          | 'threads'
+          | 'twitch'
+          | 'pinterest'
+          | 'snapchat'
+          | 'medium'
+          | 'spotify'
+          | 'dribbble'
+          | 'behance'
+          | 'slack'
+          | 'gitlab'
+          | 'stackoverflow'
+          | 'substack'
+          | 'mastodon'
+          | 'bsky.app'
+          | 'patreon'
+          | 'soundcloud'
+          | 'vimeo'
+          | 'codepen'
+          | 'dev.to'
+          | 'hashnode'
+          | 'leetcode'
+          | 'linktree'
+          | 'tumblr'
+          | 'wechat'
+          | 'line.me'
+          | 'upwork'
+          | 'goodreads'
+          | 'letterboxd'
+          | 'meetup'
+          | 'flickr'
+          | 'dropbox'
+          | 'google_play'
+          | 'itunes'
+          | 'vk'
+          | 'rss'
+          | 'mailto'
+          | 'itch.io'
+          | 'xing'
+          | 'yelp';
+        url: string;
+        enabled?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Text shown at the bottom of the footer. Use {year} for dynamic current year.
+   */
+  copyright?: string | null;
+  /**
+   * Short brand description displayed under the logo in the footer.
+   */
+  footerTagline?: string | null;
+  /**
+   * Configure accepted payment badges shown in the footer.
+   */
+  paymentMethods?: {
+    showPaymentMethods?: boolean | null;
+    /**
+     * Select which standard payment icons to display.
+     */
+    enabledMethods?:
+      | (
+          'visa' | 'mastercard' | 'amex' | 'paypal' | 'discover' | 'jcb' | 'unionpay' | 'maestro' | 'diners' | 'alipay'
+        )[]
+      | null;
+    /**
+     * Upload additional custom payment badges or local gateways.
+     */
+    customMethods?:
+      | {
+          name: string;
+          icon: string | Media;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  /**
+   * Configure content for Privacy Policy and Terms of Service pages.
+   */
+  legal?: {
+    privacyTitle?: string | null;
+    privacyLastUpdated?: string | null;
+    /**
+     * Supports markdown headings (##) and paragraphs.
+     */
+    privacyContent?: string | null;
+    termsTitle?: string | null;
+    termsLastUpdated?: string | null;
+    /**
+     * Supports markdown headings (##) and paragraphs.
+     */
+    termsContent?: string | null;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1519,6 +1844,39 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   logo?: T;
   logoDark?: T;
   favicon?: T;
+  socialLinks?:
+    | T
+    | {
+        platform?: T;
+        url?: T;
+        enabled?: T;
+        id?: T;
+      };
+  copyright?: T;
+  footerTagline?: T;
+  paymentMethods?:
+    | T
+    | {
+        showPaymentMethods?: T;
+        enabledMethods?: T;
+        customMethods?:
+          | T
+          | {
+              name?: T;
+              icon?: T;
+              id?: T;
+            };
+      };
+  legal?:
+    | T
+    | {
+        privacyTitle?: T;
+        privacyLastUpdated?: T;
+        privacyContent?: T;
+        termsTitle?: T;
+        termsLastUpdated?: T;
+        termsContent?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
