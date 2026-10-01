@@ -6,7 +6,7 @@ import { computeBannerStyles } from "@/config/bannerPresets"
 import {
   Megaphone,
   Bell,
-  Sparkles,
+  Zap,
   AlertTriangle,
   Info,
   CheckCircle2,
@@ -25,7 +25,8 @@ function renderBannerIcon(icon?: string) {
     case "bell":
       return <Bell className={iconClass} />
     case "sparkles":
-      return <Sparkles className={iconClass} />
+    case "zap":
+      return <Zap className={iconClass} />
     case "alert":
       return <AlertTriangle className={iconClass} />
     case "info":

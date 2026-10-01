@@ -25,7 +25,7 @@ export interface CustomAdminViewConfig {
   componentPath: string
   /** 
    * Name of the Lucide icon to display in the Admin Sidebar.
-   * Examples: 'BarChart3', 'Mail', 'HardDrive', 'Activity', 'Shield', 'Settings', 'Database', 'Users', 'Sparkles'
+   * Examples: 'BarChart3', 'Mail', 'HardDrive', 'Activity', 'Shield', 'Settings', 'Database', 'Users', 'Zap'
    */
   icon?: string
   /** Optional badge text displayed next to the link (e.g., 'Live', 'Pro', 'New') */

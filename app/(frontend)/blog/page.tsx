@@ -10,7 +10,7 @@ import {
   BlogPagination,
   BlogPost,
   BlogCategory,
-} from '@/components/blog'
+} from '@/components/basic/blog'
 import { BookOpen } from 'lucide-react'
 
 export const revalidate = 60 // ISR revalidation

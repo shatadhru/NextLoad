@@ -31,6 +31,8 @@ import { PriceCell as PriceCell_e27bf7b8cc50640dcdd584767b8eac3c } from '@payloa
 import { PriceInput as PriceInput_b91672ccd6e8b071c11142ab941fedfb } from '@payloadcms/plugin-ecommerce/rsc'
 import { SocialLinksPreview as SocialLinksPreview_25c2278ad51baf6656c46215b31c6fc5 } from '../../../payload/admin/components/SocialLinksPreview'
 import { PaymentMethodsPreview as PaymentMethodsPreview_3380ceee677aec7389c82552b00ed06a } from '../../../payload/admin/components/PaymentMethodsPreview'
+import { ThemeLivePreview as ThemeLivePreview_d12bf8a4e1cf4b74afe2e616df591cd9 } from '../../../payload/admin/components/ThemeLivePreview'
+import { ColorPickerField as ColorPickerField_fc211943d8e5176c28d7a2c0ba811806 } from '../../../payload/admin/components/ColorPickerField'
 import { CookieLivePreview as CookieLivePreview_db2ed534e8338df45e147f0547ecbd2f } from '../../../payload/admin/components/CookieLivePreview'
 import { NotificationBroadcastView as NotificationBroadcastView_7945e368d16ef9b83be2507961167f3a } from '../../../payload/admin/views/NotificationBroadcastView'
 import { ApiReferenceView as ApiReferenceView_6105eb571f706495dc4f37fffd3eadf3 } from '../../../payload/admin/views/ApiReferenceView'
@@ -83,6 +85,8 @@ export const importMap = {
   "@payloadcms/plugin-ecommerce/rsc#PriceInput": PriceInput_b91672ccd6e8b071c11142ab941fedfb,
   "./admin/components/SocialLinksPreview#SocialLinksPreview": SocialLinksPreview_25c2278ad51baf6656c46215b31c6fc5,
   "./admin/components/PaymentMethodsPreview#PaymentMethodsPreview": PaymentMethodsPreview_3380ceee677aec7389c82552b00ed06a,
+  "./admin/components/ThemeLivePreview#ThemeLivePreview": ThemeLivePreview_d12bf8a4e1cf4b74afe2e616df591cd9,
+  "./admin/components/ColorPickerField#ColorPickerField": ColorPickerField_fc211943d8e5176c28d7a2c0ba811806,
   "./admin/components/CookieLivePreview#CookieLivePreview": CookieLivePreview_db2ed534e8338df45e147f0547ecbd2f,
   "./admin/views/NotificationBroadcastView#NotificationBroadcastView": NotificationBroadcastView_7945e368d16ef9b83be2507961167f3a,
   "./admin/views/ApiReferenceView#ApiReferenceView": ApiReferenceView_6105eb571f706495dc4f37fffd3eadf3,

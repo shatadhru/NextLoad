@@ -19,7 +19,7 @@ import {
   BlogCategory,
   BlogTag,
   BlogAuthor,
-} from '@/components/blog'
+} from '@/components/basic/blog'
 import { Badge } from '@/components/ui/badge'
 import { buttonVariants } from '@/components/ui/button'
 import { Lock, LogIn, ArrowLeft } from 'lucide-react'

@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useMemo } from 'react'
-import Link from 'next/link'
 import { useCart, useCurrency } from '@payloadcms/plugin-ecommerce/client/react'
 import {
   Sheet,
@@ -22,10 +21,14 @@ import {
   X,
   Lock,
 } from 'lucide-react'
-import { useCartDrawer } from './cart-drawer-context'
-import { CartDrawerItem } from './CartDrawerItem'
-import { formatPrice } from './cart-utils'
 import { cn } from '@/lib/utils'
+import { useRouter } from 'next/navigation'
+import { CartDrawerItem, formatPrice, useCartDrawer } from '../basic/cart'
+
+
+CartDrawerItem
+
+useCartDrawer
 
 export interface CartDrawerProps {
   checkoutUrl?: string
@@ -79,6 +82,8 @@ export function CartDrawer({
   const currencySymbol = currency?.symbol || '৳'
   const formattedSubtotal = formatPrice(subtotal, currencySymbol, currency?.decimals || 0)
 
+
+  const router = useRouter()
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetContent
@@ -125,14 +130,16 @@ export function CartDrawer({
             )}
 
             {/* Custom Close Button */}
-            <button
+            <Button
               type="button"
+              variant="ghost"
+              size="icon-sm"
               onClick={closeDrawer}
-              className="size-8 rounded-lg flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors cursor-pointer"
+              className="rounded-lg text-muted-foreground hover:text-foreground cursor-pointer"
               aria-label="Close cart drawer"
             >
               <X className="size-4" />
-            </button>
+            </Button>
           </div>
         </SheetHeader>
 
@@ -150,14 +157,14 @@ export function CartDrawer({
               <Button
                 variant="outline"
                 size="sm"
-                onClick={closeDrawer}
                 className="mt-6 rounded-xl text-xs font-semibold gap-1.5"
-                
+                onClick={() => {
+                  closeDrawer()
+                  router.push(shoppingUrl)
+                }}
               >
-                <Link href={shoppingUrl}>
-                  <span>Start Exploring</span>
+                  Start Exploring
                   <ArrowRight className="size-3.5" />
-                </Link>
               </Button>
             </div>
           ) : (
@@ -202,24 +209,30 @@ export function CartDrawer({
             {/* Checkout Button */}
             <Button
               size="lg"
-              onClick={closeDrawer}
+              onClick={() => {
+                closeDrawer()
+                router.push(checkoutUrl)
+              }}
               className="w-full gap-2 rounded-xl font-semibold bg-teal-600 hover:bg-teal-700 text-white shadow-md transition-all hover:shadow-lg cursor-pointer"
             >
-              <Link href={checkoutUrl}>
-                <Lock className="size-4" />
-                <span>Proceed to Checkout</span>
-                <ArrowRight className="size-4 ml-auto" />
-              </Link>
+              <Lock className="size-4" />
+              <span>Proceed to Checkout</span>
+              <ArrowRight className="size-4 ml-auto" />
             </Button>
 
             {/* Continue Shopping Button */}
-            <button
+            <Button
               type="button"
-              onClick={closeDrawer}
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                closeDrawer()
+                router.push(shoppingUrl)
+              }}
               className="w-full py-1 text-center text-xs text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
             >
               Continue Shopping
-            </button>
+            </Button>
           </SheetFooter>
         )}
       </SheetContent>

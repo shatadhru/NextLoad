@@ -13,7 +13,7 @@ import {
   Settings,
   Database,
   Users,
-  Sparkles,
+  Zap,
   Layers,
   Code2,
   FileText,
@@ -36,7 +36,7 @@ const ICON_MAP: Record<string, LucideIcon> = {
   Settings,
   Database,
   Users,
-  Sparkles,
+  Zap,
   Layers,
   Code2,
   FileText,
@@ -112,7 +112,7 @@ export function CustomAdminNavLinks() {
               gap: "6px",
             }}
           >
-            <Sparkles size={11} style={{ opacity: 0.7 }} />
+            <Zap size={11} style={{ opacity: 0.7 }} />
             <span>{groupTitle}</span>
           </div>
 

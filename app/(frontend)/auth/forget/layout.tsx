@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation"
 import React, { ReactNode } from "react"
 import { Spinner } from "@/components/ui/spinner"
 import { Logo } from "@/components/ui/Logo"
-import { AuthTopNav } from "@/components/auth/AuthTopNav"
+import { AuthTopNav } from "@/components/basic/auth/AuthTopNav"
 
 export default function ForgetLayout({ children }: { children: ReactNode }) {
   const { data: session, isPending } = authClient.useSession()

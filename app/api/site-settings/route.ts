@@ -48,25 +48,37 @@ export async function GET() {
     const socialLinks = settings?.socialLinks || null
     const legal = settings?.legal || null
 
-    return NextResponse.json({
-      success: true,
-      globalType: "site-settings",
-      siteName,
-      siteTitle,
-      siteDescription,
-      copyright,
-      footerTagline,
-      paymentMethods,
-      socialLinks,
-      legal,
-      logoText,
-      logoUrl,
-      logoDarkUrl,
-      faviconUrl,
-      logo: settings?.logo || null,
-      logoDark: settings?.logoDark || null,
-      favicon: settings?.favicon || null,
-    })
+    const themeConfig = settings?.themeConfig?.themeEnabled ? settings.themeConfig : null
+    const security = settings?.security || null
+
+    return NextResponse.json(
+      {
+        success: true,
+        globalType: "site-settings",
+        siteName,
+        siteTitle,
+        siteDescription,
+        copyright,
+        footerTagline,
+        paymentMethods,
+        socialLinks,
+        legal,
+        logoText,
+        logoUrl,
+        logoDarkUrl,
+        faviconUrl,
+        logo: settings?.logo || null,
+        logoDark: settings?.logoDark || null,
+        favicon: settings?.favicon || null,
+        themeConfig,
+        security,
+      },
+      {
+        headers: {
+          "Cache-Control": "public, max-age=18000, s-maxage=18000, stale-while-revalidate=36000",
+        },
+      }
+    )
   } catch (error: any) {
     console.error("GET /api/site-settings error:", error)
     return NextResponse.json({

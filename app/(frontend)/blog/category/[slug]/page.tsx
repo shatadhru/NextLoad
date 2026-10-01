@@ -11,7 +11,7 @@ import {
   BlogPagination,
   BlogPost,
   BlogCategory,
-} from '@/components/blog'
+} from '@/components/basic/blog'
 import { Badge } from '@/components/ui/badge'
 import { BookOpen, ArrowLeft } from 'lucide-react'
 import { buttonVariants } from '@/components/ui/button'

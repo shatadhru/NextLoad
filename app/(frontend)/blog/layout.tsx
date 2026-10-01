@@ -1,6 +1,6 @@
 import React from 'react'
-import { BlogHeader } from '@/components/blog/BlogHeader'
-import { BlogFooter } from '@/components/blog/BlogFooter'
+import { BlogHeader } from '@/components/basic/blog/BlogHeader'
+import { BlogFooter } from '@/components/basic/blog/BlogFooter'
 
 export default function BlogLayout({ children }: { children: React.ReactNode }) {
   return (

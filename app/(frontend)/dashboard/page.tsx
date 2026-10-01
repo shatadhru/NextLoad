@@ -31,7 +31,7 @@ import {
 import { sidebarConfig } from "@/config/sidebar"
 import { authClient } from "@/payload/auth/client"
 import { useActivities } from "@/lib/activity/activity-service"
-import { ActivityTimeline } from "@/components/activity/ActivityTimeline"
+import { ActivityTimeline } from "@/components/basic/activity/ActivityTimeline"
 
 export default function DashboardPage() {
   const { data: session } = authClient.useSession()

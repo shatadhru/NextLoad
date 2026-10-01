@@ -79,7 +79,7 @@ export const Banners: CollectionConfig = {
           options: [
             { label: 'Megaphone (Announcement)', value: 'megaphone' },
             { label: 'Bell (Notification)', value: 'bell' },
-            { label: 'Sparkles (Feature / New)', value: 'sparkles' },
+            { label: 'Zap (Feature / New)', value: 'zap' },
             { label: 'Alert Triangle (Warning)', value: 'alert' },
             { label: 'Info (Information)', value: 'info' },
             { label: 'Check Circle (Success)', value: 'check' },
@@ -342,4 +342,22 @@ export const Banners: CollectionConfig = {
       ],
     },
   ],
+  hooks: {
+    afterChange: [
+      async () => {
+        try {
+          const { cache } = await import('@/lib/cache')
+          await cache.del('banners:active')
+        } catch {}
+      },
+    ],
+    afterDelete: [
+      async () => {
+        try {
+          const { cache } = await import('@/lib/cache')
+          await cache.del('banners:active')
+        } catch {}
+      },
+    ],
+  },
 }

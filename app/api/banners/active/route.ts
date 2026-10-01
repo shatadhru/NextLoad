@@ -1,15 +1,18 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getPayload } from "payload"
 import config from "@payload-config"
+import { cache } from "@/lib/cache"
+
+const CACHE_KEY = "banners:active"
 
 export async function GET(request: NextRequest) {
   try {
-    const payload = await getPayload({ config })
     const { searchParams } = new URL(request.url)
     const previewId = searchParams.get("id")
 
-    // If a specific banner ID is requested for previewing
+    // If a specific banner ID is requested for previewing, bypass cache
     if (previewId) {
+      const payload = await getPayload({ config })
       try {
         const previewDoc = await payload.findByID({
           collection: "banners",
@@ -27,7 +30,24 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    // Otherwise, fetch the active banner with highest priority
+    // Check hybrid cache (Redis / In-Memory)
+    const cachedBanner = await cache.get<any>(CACHE_KEY)
+    if (cachedBanner !== null) {
+      return NextResponse.json(
+        {
+          success: true,
+          banner: cachedBanner?.id ? cachedBanner : null,
+        },
+        {
+          headers: {
+            "Cache-Control": "public, max-age=300, s-maxage=300, stale-while-revalidate=600",
+          },
+        }
+      )
+    }
+
+    // Otherwise, fetch active banner from database
+    const payload = await getPayload({ config })
     const now = new Date()
     const result = await payload.find({
       collection: "banners",
@@ -47,10 +67,20 @@ export async function GET(request: NextRequest) {
       return true
     })
 
-    return NextResponse.json({
-      success: true,
-      banner: validBanner || null,
-    })
+    // Cache result in Redis / In-Memory for 5 minutes (300 seconds)
+    await cache.set(CACHE_KEY, validBanner || { _empty: true }, 300)
+
+    return NextResponse.json(
+      {
+        success: true,
+        banner: validBanner || null,
+      },
+      {
+        headers: {
+          "Cache-Control": "public, max-age=300, s-maxage=300, stale-while-revalidate=600",
+        },
+      }
+    )
   } catch (error: any) {
     console.error("GET /api/banners/active error:", error)
     return NextResponse.json(

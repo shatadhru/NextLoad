@@ -3,7 +3,7 @@
 import React from 'react'
 import { useFormFields } from '@payloadcms/ui'
 import { PaymentIcon } from 'react-svg-credit-card-payment-icons'
-import { CreditCard, Sparkles, Smartphone, Monitor } from 'lucide-react'
+import { CreditCard, Smartphone, Monitor } from 'lucide-react'
 
 export function PaymentMethodsPreview() {
   const formState = useFormFields(([fields]) => {
@@ -55,21 +55,21 @@ export function PaymentMethodsPreview() {
   }
 
   return (
-    <div className="my-4 rounded-xl border border-border/80 bg-background/80 p-4 shadow-xs">
-      <div className="flex items-center justify-between mb-3 border-b pb-2">
+    <div className="my-3 rounded-lg border border-border/80 bg-background/80 p-3 shadow-xs">
+      <div className="flex items-center justify-between mb-2.5 border-b pb-2">
         <div className="flex items-center gap-2">
-          <CreditCard className="size-4 text-teal-600" />
+          <CreditCard className="size-3.5 text-primary" />
           <span className="text-xs font-bold text-foreground uppercase tracking-wider">
             Live Payment Badges Preview
           </span>
         </div>
-        <span className="text-[11px] text-muted-foreground">
+        <span className="text-[10px] text-muted-foreground">
           {showPayments ? 'Enabled on Footer' : 'Hidden on Footer'}
         </span>
       </div>
 
       {showPayments ? (
-        <div className="space-y-3">
+        <div className="space-y-2.5">
           <div className="flex items-center gap-2 flex-wrap">
             {selectedMethods.map((methodKey) => {
               const iconType = methodTypeMap[methodKey] || 'Generic'
@@ -87,7 +87,7 @@ export function PaymentMethodsPreview() {
             {customMethods.map((cm, idx) => (
               <div
                 key={idx}
-                className="h-6 px-2 rounded-md border border-dashed border-teal-500/40 bg-teal-500/5 text-[10px] font-semibold text-teal-600 flex items-center justify-center"
+                className="h-6 px-2 rounded-md border border-dashed border-primary/40 bg-primary/5 text-[10px] font-semibold text-primary flex items-center justify-center"
               >
                 {cm.name || 'Custom Card'}
               </div>

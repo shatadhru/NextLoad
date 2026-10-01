@@ -6,7 +6,7 @@ import { authClient } from "@/payload/auth/client"
 import {
   Bell,
   CheckCheck,
-  Sparkles,
+  Megaphone,
   ShieldAlert,
   AlertTriangle,
   Info,
@@ -125,7 +125,7 @@ export default function NotificationsPage() {
     switch (priority) {
       case "announcement":
         return {
-          icon: <Sparkles className="size-3.5" />,
+          icon: <Megaphone className="size-3.5" />,
           label: "Announcement",
           className: "bg-teal-500/10 text-teal-600 dark:text-teal-400 border-teal-500/20",
         }

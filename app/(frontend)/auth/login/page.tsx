@@ -2,7 +2,7 @@
 
 import { LoginForm } from "@/app/(frontend)/auth/login/login-form"
 import { Logo } from "@/components/ui/Logo"
-import { AuthTopNav } from "@/components/auth/AuthTopNav"
+import { AuthTopNav } from "@/components/basic/auth/AuthTopNav"
 
 export default function LoginPage() {
   return (

@@ -11,7 +11,8 @@ import {
   Users,
   ListPlus,
   Info,
-  Sparkles,
+  Megaphone,
+  Eye,
   ShieldAlert,
   AlertTriangle,
   CheckCircle,
@@ -323,7 +324,7 @@ export function NotificationBroadcastView() {
       bg: "rgba(13, 148, 136, 0.1)",
       border: "#14b8a6",
       label: "Announcement",
-      icon: Sparkles,
+      icon: Megaphone,
     },
     security: {
       color: "#d97706",
@@ -972,7 +973,7 @@ export function NotificationBroadcastView() {
                   {(["info", "announcement", "security", "urgent"] as PriorityType[]).map((p) => {
                     const cfg = {
                       info: { label: "Info", color: "#2563eb", icon: Info },
-                      announcement: { label: "Announcement", color: "#0d9488", icon: Sparkles },
+                      announcement: { label: "Announcement", color: "#0d9488", icon: Megaphone },
                       security: { label: "Security", color: "#d97706", icon: ShieldAlert },
                       urgent: { label: "Urgent", color: "#dc2626", icon: AlertTriangle },
                     }[p]
@@ -1307,7 +1308,7 @@ export function NotificationBroadcastView() {
           >
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px" }}>
               <h3 style={{ margin: 0, fontSize: "15px", fontWeight: 600, display: "flex", alignItems: "center", gap: "6px" }}>
-                <Sparkles size={16} style={{ color: "#0d9488" }} />
+                <Eye size={16} style={{ color: "#0d9488" }} />
                 <span>Live Interactive Preview</span>
               </h3>
 

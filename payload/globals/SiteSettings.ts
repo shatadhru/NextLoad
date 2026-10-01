@@ -345,6 +345,232 @@ export const SiteSettings: GlobalConfig = {
         },
       ],
     },
+    {
+      name: "themeConfig",
+      type: "group",
+      label: "Theme & Appearance (shadcn)",
+      admin: {
+        description:
+          "Control your site's visual theme. Pick a predefined palette, adjust border radius, and optionally override individual colors with the color picker.",
+      },
+      fields: [
+        {
+          name: "themeEnabled",
+          type: "checkbox",
+          label: "Enable Admin Theme Overrides",
+          defaultValue: false,
+          admin: {
+            description:
+              "When enabled, the preset and/or custom colors below will override the default CSS theme. When disabled, the built-in globals.css theme is used.",
+          },
+        },
+        {
+          name: "themeLivePreview",
+          type: "ui",
+          admin: {
+            components: {
+              Field: "./admin/components/ThemeLivePreview#ThemeLivePreview",
+            },
+          },
+        },
+        {
+          type: "row",
+          fields: [
+            {
+              name: "preset",
+              type: "select",
+              label: "Color Palette Preset",
+              defaultValue: "zinc",
+              options: [
+                { label: "Zinc (Default)", value: "zinc" },
+                { label: "Slate", value: "slate" },
+                { label: "Stone", value: "stone" },
+                { label: "Rose", value: "rose" },
+                { label: "Blue", value: "blue" },
+                { label: "Green", value: "green" },
+                { label: "Orange", value: "orange" },
+                { label: "Violet", value: "violet" },
+                { label: "Red", value: "red" },
+                { label: "Yellow", value: "yellow" },
+              ],
+              admin: {
+                width: "50%",
+                description: "Quickly apply a complete shadcn color theme.",
+              },
+            },
+            {
+              name: "radius",
+              type: "select",
+              label: "Border Radius",
+              defaultValue: "default",
+              options: [
+                { label: "None (0)", value: "none" },
+                { label: "XS (0.25rem)", value: "xs" },
+                { label: "SM (0.375rem)", value: "sm" },
+                { label: "MD (0.5rem)", value: "md" },
+                { label: "Default (0.625rem)", value: "default" },
+                { label: "LG (0.75rem)", value: "lg" },
+                { label: "XL (1rem)", value: "xl" },
+                { label: "2XL (1.5rem)", value: "2xl" },
+              ],
+              admin: {
+                width: "50%",
+                description: "Controls roundness of all UI components.",
+              },
+            },
+          ],
+        },
+        {
+          name: "lightMode",
+          type: "group",
+          label: "Light Mode Overrides (Optional)",
+          admin: {
+            description: "Override individual light mode colors. Leave empty to use the selected preset values.",
+            condition: (_data: any, siblingData: any) => siblingData?.themeEnabled === true,
+          },
+          fields: [
+            { type: "row", fields: [
+              { name: "background", type: "text", label: "Background", defaultValue: "", admin: { placeholder: "#ffffff", width: "50%", components: { Field: "./admin/components/ColorPickerField#ColorPickerField" } } },
+              { name: "foreground", type: "text", label: "Foreground", defaultValue: "", admin: { placeholder: "#09090b", width: "50%", components: { Field: "./admin/components/ColorPickerField#ColorPickerField" } } },
+            ] },
+            { type: "row", fields: [
+              { name: "primary", type: "text", label: "Primary", defaultValue: "", admin: { placeholder: "#18181b", width: "50%", components: { Field: "./admin/components/ColorPickerField#ColorPickerField" } } },
+              { name: "primaryForeground", type: "text", label: "Primary Foreground", defaultValue: "", admin: { placeholder: "#fafafa", width: "50%", components: { Field: "./admin/components/ColorPickerField#ColorPickerField" } } },
+            ] },
+            { type: "row", fields: [
+              { name: "secondary", type: "text", label: "Secondary", defaultValue: "", admin: { placeholder: "#f4f4f5", width: "50%", components: { Field: "./admin/components/ColorPickerField#ColorPickerField" } } },
+              { name: "secondaryForeground", type: "text", label: "Secondary Foreground", defaultValue: "", admin: { placeholder: "#18181b", width: "50%", components: { Field: "./admin/components/ColorPickerField#ColorPickerField" } } },
+            ] },
+            { type: "row", fields: [
+              { name: "muted", type: "text", label: "Muted", defaultValue: "", admin: { placeholder: "#f4f4f5", width: "50%", components: { Field: "./admin/components/ColorPickerField#ColorPickerField" } } },
+              { name: "mutedForeground", type: "text", label: "Muted Foreground", defaultValue: "", admin: { placeholder: "#71717a", width: "50%", components: { Field: "./admin/components/ColorPickerField#ColorPickerField" } } },
+            ] },
+            { type: "row", fields: [
+              { name: "accent", type: "text", label: "Accent", defaultValue: "", admin: { placeholder: "#f4f4f5", width: "50%", components: { Field: "./admin/components/ColorPickerField#ColorPickerField" } } },
+              { name: "accentForeground", type: "text", label: "Accent Foreground", defaultValue: "", admin: { placeholder: "#18181b", width: "50%", components: { Field: "./admin/components/ColorPickerField#ColorPickerField" } } },
+            ] },
+            { type: "row", fields: [
+              { name: "card", type: "text", label: "Card", defaultValue: "", admin: { placeholder: "#ffffff", width: "50%", components: { Field: "./admin/components/ColorPickerField#ColorPickerField" } } },
+              { name: "cardForeground", type: "text", label: "Card Foreground", defaultValue: "", admin: { placeholder: "#09090b", width: "50%", components: { Field: "./admin/components/ColorPickerField#ColorPickerField" } } },
+            ] },
+            { type: "row", fields: [
+              { name: "popover", type: "text", label: "Popover", defaultValue: "", admin: { placeholder: "#ffffff", width: "50%", components: { Field: "./admin/components/ColorPickerField#ColorPickerField" } } },
+              { name: "popoverForeground", type: "text", label: "Popover Foreground", defaultValue: "", admin: { placeholder: "#09090b", width: "50%", components: { Field: "./admin/components/ColorPickerField#ColorPickerField" } } },
+            ] },
+            { type: "row", fields: [
+              { name: "destructive", type: "text", label: "Destructive", defaultValue: "", admin: { placeholder: "#ef4444", width: "50%", components: { Field: "./admin/components/ColorPickerField#ColorPickerField" } } },
+              { name: "border", type: "text", label: "Border", defaultValue: "", admin: { placeholder: "#e4e4e7", width: "50%", components: { Field: "./admin/components/ColorPickerField#ColorPickerField" } } },
+            ] },
+            { type: "row", fields: [
+              { name: "input", type: "text", label: "Input", defaultValue: "", admin: { placeholder: "#e4e4e7", width: "50%", components: { Field: "./admin/components/ColorPickerField#ColorPickerField" } } },
+              { name: "ring", type: "text", label: "Ring", defaultValue: "", admin: { placeholder: "#18181b", width: "50%", components: { Field: "./admin/components/ColorPickerField#ColorPickerField" } } },
+            ] },
+          ],
+        },
+        {
+          name: "darkMode",
+          type: "group",
+          label: "Dark Mode Overrides (Optional)",
+          admin: {
+            description: "Override individual dark mode colors. Leave empty to use the selected preset values.",
+            condition: (_data: any, siblingData: any) => siblingData?.themeEnabled === true,
+          },
+          fields: [
+            { type: "row", fields: [
+              { name: "background", type: "text", label: "Background", defaultValue: "", admin: { placeholder: "#09090b", width: "50%", components: { Field: "./admin/components/ColorPickerField#ColorPickerField" } } },
+              { name: "foreground", type: "text", label: "Foreground", defaultValue: "", admin: { placeholder: "#fafafa", width: "50%", components: { Field: "./admin/components/ColorPickerField#ColorPickerField" } } },
+            ] },
+            { type: "row", fields: [
+              { name: "primary", type: "text", label: "Primary", defaultValue: "", admin: { placeholder: "#fafafa", width: "50%", components: { Field: "./admin/components/ColorPickerField#ColorPickerField" } } },
+              { name: "primaryForeground", type: "text", label: "Primary Foreground", defaultValue: "", admin: { placeholder: "#18181b", width: "50%", components: { Field: "./admin/components/ColorPickerField#ColorPickerField" } } },
+            ] },
+            { type: "row", fields: [
+              { name: "secondary", type: "text", label: "Secondary", defaultValue: "", admin: { placeholder: "#27272a", width: "50%", components: { Field: "./admin/components/ColorPickerField#ColorPickerField" } } },
+              { name: "secondaryForeground", type: "text", label: "Secondary Foreground", defaultValue: "", admin: { placeholder: "#fafafa", width: "50%", components: { Field: "./admin/components/ColorPickerField#ColorPickerField" } } },
+            ] },
+            { type: "row", fields: [
+              { name: "muted", type: "text", label: "Muted", defaultValue: "", admin: { placeholder: "#27272a", width: "50%", components: { Field: "./admin/components/ColorPickerField#ColorPickerField" } } },
+              { name: "mutedForeground", type: "text", label: "Muted Foreground", defaultValue: "", admin: { placeholder: "#a1a1aa", width: "50%", components: { Field: "./admin/components/ColorPickerField#ColorPickerField" } } },
+            ] },
+            { type: "row", fields: [
+              { name: "accent", type: "text", label: "Accent", defaultValue: "", admin: { placeholder: "#27272a", width: "50%", components: { Field: "./admin/components/ColorPickerField#ColorPickerField" } } },
+              { name: "accentForeground", type: "text", label: "Accent Foreground", defaultValue: "", admin: { placeholder: "#fafafa", width: "50%", components: { Field: "./admin/components/ColorPickerField#ColorPickerField" } } },
+            ] },
+            { type: "row", fields: [
+              { name: "card", type: "text", label: "Card", defaultValue: "", admin: { placeholder: "#09090b", width: "50%", components: { Field: "./admin/components/ColorPickerField#ColorPickerField" } } },
+              { name: "cardForeground", type: "text", label: "Card Foreground", defaultValue: "", admin: { placeholder: "#fafafa", width: "50%", components: { Field: "./admin/components/ColorPickerField#ColorPickerField" } } },
+            ] },
+            { type: "row", fields: [
+              { name: "popover", type: "text", label: "Popover", defaultValue: "", admin: { placeholder: "#09090b", width: "50%", components: { Field: "./admin/components/ColorPickerField#ColorPickerField" } } },
+              { name: "popoverForeground", type: "text", label: "Popover Foreground", defaultValue: "", admin: { placeholder: "#fafafa", width: "50%", components: { Field: "./admin/components/ColorPickerField#ColorPickerField" } } },
+            ] },
+            { type: "row", fields: [
+              { name: "destructive", type: "text", label: "Destructive", defaultValue: "", admin: { placeholder: "#7f1d1d", width: "50%", components: { Field: "./admin/components/ColorPickerField#ColorPickerField" } } },
+              { name: "border", type: "text", label: "Border", defaultValue: "", admin: { placeholder: "#27272a", width: "50%", components: { Field: "./admin/components/ColorPickerField#ColorPickerField" } } },
+            ] },
+            { type: "row", fields: [
+              { name: "input", type: "text", label: "Input", defaultValue: "", admin: { placeholder: "#27272a", width: "50%", components: { Field: "./admin/components/ColorPickerField#ColorPickerField" } } },
+              { name: "ring", type: "text", label: "Ring", defaultValue: "", admin: { placeholder: "#d4d4d8", width: "50%", components: { Field: "./admin/components/ColorPickerField#ColorPickerField" } } },
+            ] },
+          ],
+        },
+      ],
+    },
+    {
+      name: "security",
+      type: "group",
+      label: "Content & DevTools Protection",
+      admin: {
+        description: "Control developer tools inspection, right-click, and content protection safely.",
+      },
+      fields: [
+        {
+          name: "disableDevTools",
+          type: "checkbox",
+          label: "Disable DevTools Shortcuts (F12, Ctrl+Shift+I/J/C, Ctrl+U)",
+          defaultValue: false,
+          admin: {
+            description: "Blocks keyboard shortcuts that open developer tools or view source.",
+          },
+        },
+        {
+          name: "disableRightClick",
+          type: "checkbox",
+          label: "Disable Right-Click Context Menu",
+          defaultValue: false,
+          admin: {
+            description: "Prevents right-click 'Inspect Element' on the public site (preserves normal input copy/paste).",
+          },
+        },
+        {
+          name: "disableTextSelection",
+          type: "checkbox",
+          label: "Disable Text Selection & Copy",
+          defaultValue: false,
+          admin: {
+            description: "Prevents visitors from selecting or highlighting text to copy content.",
+          },
+        },
+        {
+          name: "exemptAdmins",
+          type: "checkbox",
+          label: "Exempt Logged-In Administrators",
+          defaultValue: true,
+          admin: {
+            description: "When enabled, logged-in admins can still use DevTools and right-click freely without restrictions.",
+          },
+        },
+        {
+          name: "showProtectionNotice",
+          type: "checkbox",
+          label: "Show Subtle Toast Notice on Blocked Actions",
+          defaultValue: false,
+          admin: {
+            description: "Displays a polite notification when a blocked shortcut or right-click is intercepted.",
+          },
+        },
+      ],
+    },
   ],
   hooks: {
     afterChange: [

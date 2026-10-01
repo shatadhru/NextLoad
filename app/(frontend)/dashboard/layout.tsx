@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { getServerSession } from '@delmaredigital/payload-better-auth'
-import DashboardShell from '@/components/dashboard/DashboardShell'
+import DashboardShell from '@/components/basic/dashboard/DashboardShell'
 import { getPageTitle, SiteConfig } from '@/config/site'
 
 export const metadata: Metadata = {

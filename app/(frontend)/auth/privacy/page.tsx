@@ -1,5 +1,5 @@
 import { Metadata } from 'next'
-import { LegalPageContent } from '@/components/legal/LegalPageContent'
+import { LegalPageContent } from '@/components/basic/legal/LegalPageContent'
 import { SiteConfig } from '@/config/site'
 
 export const metadata: Metadata = {

@@ -39,6 +39,8 @@ let cachedSettings: {
   logoDarkUrl: string | null;
 } | null = null;
 
+import { useSiteSettings } from "@/components/basic/context/SiteSettingsContext";
+
 export function Logo({
   variant = "full",
   size = "md",
@@ -50,6 +52,9 @@ export function Logo({
   siteName: customSiteName,
   logoText: customLogoText,
 }: LogoProps) {
+  const context = useSiteSettings();
+  const contextSettings = context?.settings;
+
   const [settings, setSettings] = useState(
     cachedSettings || {
       siteName: customSiteName || SiteConfig.site.name,
@@ -58,10 +63,30 @@ export function Logo({
       logoDarkUrl: null,
     },
   );
-  const [isLoading, setIsLoading] = useState(!cachedSettings);
+  const [isLoading, setIsLoading] = useState(!cachedSettings && !contextSettings);
   const [imageError, setImageError] = useState(false);
 
   useEffect(() => {
+    if (contextSettings) {
+      const light =
+        extractCloudinarySecureUrl(contextSettings.logo) ||
+        extractCloudinarySecureUrl(contextSettings.logoUrl);
+      const dark =
+        extractCloudinarySecureUrl(contextSettings.logoDark) ||
+        extractCloudinarySecureUrl(contextSettings.logoDarkUrl);
+
+      const newSettings = {
+        siteName: contextSettings.siteName || SiteConfig.site.name,
+        logoText: contextSettings.logoText || SiteConfig.site.logoText,
+        logoUrl: light || null,
+        logoDarkUrl: dark || null,
+      };
+      cachedSettings = newSettings;
+      setSettings(newSettings);
+      setIsLoading(false);
+      return;
+    }
+
     if (!cachedSettings) {
       fetch("/api/site-settings")
         .then((res) => res.json())
@@ -89,7 +114,7 @@ export function Logo({
         )
         .finally(() => setIsLoading(false));
     }
-  }, []);
+  }, [contextSettings]);
 
   const siteName = customSiteName || settings.siteName || SiteConfig.site.name;
   const logoText =
@@ -190,7 +215,7 @@ export function Logo({
         <span
           aria-hidden="true"
           className={cn(
-            "bg-gradient-to-br from-teal-600 via-teal-500 to-sky-600 text-white flex shrink-0 items-center justify-center font-extrabold tracking-wider shadow-sm select-none transition-transform duration-200",
+            "bg-primary text-primary-foreground flex shrink-0 items-center justify-center font-extrabold tracking-wider shadow-sm select-none transition-transform duration-200",
             sizeMap.badge,
             badgeClassName,
           )}
@@ -293,7 +318,7 @@ export function Logo({
         <span
           aria-hidden="true"
           className={cn(
-            "bg-gradient-to-br from-teal-600 via-teal-500 to-sky-600 text-white flex shrink-0 items-center justify-center font-extrabold tracking-wider shadow-sm select-none transition-transform duration-200",
+            "bg-primary text-primary-foreground flex shrink-0 items-center justify-center font-extrabold tracking-wider shadow-sm select-none transition-transform duration-200",
             sizeMap.badge,
             badgeClassName,
           )}

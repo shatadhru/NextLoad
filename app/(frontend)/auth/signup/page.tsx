@@ -2,7 +2,7 @@
 
 import { SignUpForm } from "@/app/(frontend)/auth/signup/signup-form"
 import { Logo } from "@/components/ui/Logo"
-import { AuthTopNav } from "@/components/auth/AuthTopNav"
+import { AuthTopNav } from "@/components/basic/auth/AuthTopNav"
 
 export default function SignUpPage() {
   return (

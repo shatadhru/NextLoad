@@ -616,7 +616,7 @@ export interface Banner {
    * Optional small badge pill (e.g. "Notice", "New", "Important", "Offer", "Alert").
    */
   badge?: string | null;
-  icon?: ('megaphone' | 'bell' | 'sparkles' | 'alert' | 'info' | 'check' | 'none') | null;
+  icon?: ('megaphone' | 'bell' | 'zap' | 'alert' | 'info' | 'check' | 'none') | null;
   /**
    * Select how you want to style the banner background.
    */
@@ -1723,6 +1723,94 @@ export interface SiteSetting {
      */
     termsContent?: string | null;
   };
+  /**
+   * Control your site's visual theme. Pick a predefined palette, adjust border radius, and optionally override individual colors with the color picker.
+   */
+  themeConfig?: {
+    /**
+     * When enabled, the preset and/or custom colors below will override the default CSS theme. When disabled, the built-in globals.css theme is used.
+     */
+    themeEnabled?: boolean | null;
+    /**
+     * Quickly apply a complete shadcn color theme.
+     */
+    preset?: ('zinc' | 'slate' | 'stone' | 'rose' | 'blue' | 'green' | 'orange' | 'violet' | 'red' | 'yellow') | null;
+    /**
+     * Controls roundness of all UI components.
+     */
+    radius?: ('none' | 'xs' | 'sm' | 'md' | 'default' | 'lg' | 'xl' | '2xl') | null;
+    /**
+     * Override individual light mode colors. Leave empty to use the selected preset values.
+     */
+    lightMode?: {
+      background?: string | null;
+      foreground?: string | null;
+      primary?: string | null;
+      primaryForeground?: string | null;
+      secondary?: string | null;
+      secondaryForeground?: string | null;
+      muted?: string | null;
+      mutedForeground?: string | null;
+      accent?: string | null;
+      accentForeground?: string | null;
+      card?: string | null;
+      cardForeground?: string | null;
+      popover?: string | null;
+      popoverForeground?: string | null;
+      destructive?: string | null;
+      border?: string | null;
+      input?: string | null;
+      ring?: string | null;
+    };
+    /**
+     * Override individual dark mode colors. Leave empty to use the selected preset values.
+     */
+    darkMode?: {
+      background?: string | null;
+      foreground?: string | null;
+      primary?: string | null;
+      primaryForeground?: string | null;
+      secondary?: string | null;
+      secondaryForeground?: string | null;
+      muted?: string | null;
+      mutedForeground?: string | null;
+      accent?: string | null;
+      accentForeground?: string | null;
+      card?: string | null;
+      cardForeground?: string | null;
+      popover?: string | null;
+      popoverForeground?: string | null;
+      destructive?: string | null;
+      border?: string | null;
+      input?: string | null;
+      ring?: string | null;
+    };
+  };
+  /**
+   * Control developer tools inspection, right-click, and content protection safely.
+   */
+  security?: {
+    /**
+     * Blocks keyboard shortcuts that open developer tools or view source.
+     */
+    disableDevTools?: boolean | null;
+    /**
+     * Prevents right-click 'Inspect Element' on the public site (preserves normal input copy/paste).
+     */
+    disableRightClick?: boolean | null;
+    /**
+     * Prevents visitors from selecting or highlighting text to copy content.
+     */
+    disableTextSelection?: boolean | null;
+    /**
+     * When enabled, logged-in admins can still use DevTools and right-click freely without restrictions.
+     */
+    exemptAdmins?: boolean | null;
+    /**
+     * Displays a polite notification when a blocked shortcut or right-click is intercepted.
+     */
+    showProtectionNotice?: boolean | null;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1876,6 +1964,66 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         termsTitle?: T;
         termsLastUpdated?: T;
         termsContent?: T;
+      };
+  themeConfig?:
+    | T
+    | {
+        themeEnabled?: T;
+        preset?: T;
+        radius?: T;
+        lightMode?:
+          | T
+          | {
+              background?: T;
+              foreground?: T;
+              primary?: T;
+              primaryForeground?: T;
+              secondary?: T;
+              secondaryForeground?: T;
+              muted?: T;
+              mutedForeground?: T;
+              accent?: T;
+              accentForeground?: T;
+              card?: T;
+              cardForeground?: T;
+              popover?: T;
+              popoverForeground?: T;
+              destructive?: T;
+              border?: T;
+              input?: T;
+              ring?: T;
+            };
+        darkMode?:
+          | T
+          | {
+              background?: T;
+              foreground?: T;
+              primary?: T;
+              primaryForeground?: T;
+              secondary?: T;
+              secondaryForeground?: T;
+              muted?: T;
+              mutedForeground?: T;
+              accent?: T;
+              accentForeground?: T;
+              card?: T;
+              cardForeground?: T;
+              popover?: T;
+              popoverForeground?: T;
+              destructive?: T;
+              border?: T;
+              input?: T;
+              ring?: T;
+            };
+      };
+  security?:
+    | T
+    | {
+        disableDevTools?: T;
+        disableRightClick?: T;
+        disableTextSelection?: T;
+        exemptAdmins?: T;
+        showProtectionNotice?: T;
       };
   updatedAt?: T;
   createdAt?: T;

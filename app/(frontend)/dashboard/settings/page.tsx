@@ -1,7 +1,7 @@
 import React from "react"
 import { Metadata } from "next"
 import { getPageTitle, SiteConfig } from "@/config/site"
-import { SettingsView } from "@/components/dashboard/settings/SettingsView"
+import { SettingsView } from "@/components/basic/dashboard/settings/SettingsView"
 
 export const metadata: Metadata = {
   title: getPageTitle("settings"),

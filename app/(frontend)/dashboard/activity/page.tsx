@@ -1,7 +1,7 @@
 import React from "react"
 import { Metadata } from "next"
 import { getPageTitle } from "@/config/site"
-import { ActivitySystemView } from "@/components/activity/ActivitySystemView"
+import { ActivitySystemView } from "@/components/basic/activity/ActivitySystemView"
 
 export const metadata: Metadata = {
   title: getPageTitle("activity"),
