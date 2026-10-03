@@ -83,11 +83,6 @@
     "pnpm": "^9 || ^10 || ^11"
   },
   "pnpm": {
-    "onlyBuiltDependencies": [
-      "sharp",
-      "esbuild",
-      "unrs-resolver"
-    ],
     "patchedDependencies": {
       "payload-theme": "patches/payload-theme.patch"
     },
