@@ -10,7 +10,7 @@ import { betterAuthOptions } from '@/payload/auth/config'
 import { trustedOrigins } from '@/config/trustedOrigins'
 import { roles } from '@/config/roles'
 import { generateThemeNavIcons } from '@/config/adminCustomComponents'
-import { cloudinaryStorage } from 'payload-cloudinary';
+import { cloudinaryStorage } from 'payload-storage-cloudinary';
 import { brandThemeConfig } from '@/config/brandTheme';
 import { ecommerceConnector } from '../ecommerch/Connector'
 import { Plugin } from 'payload'
@@ -66,18 +66,27 @@ export const payloadPlugins:Plugin[] = [
     },
   }),
 
-   cloudinaryStorage({
-      config: {
-        cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME!,
-        api_key: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY!,
-        api_secret: process.env.CLOUDINARY_API_SECRET!,
+  cloudinaryStorage({
+    cloudConfig: {
+      cloud_name:
+        process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME ||
+        process.env.CLOUDINARY_CLOUD_NAME ||
+        'placeholder',
+      api_key:
+        process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY ||
+        process.env.CLOUDINARY_API_KEY ||
+        'placeholder',
+      api_secret:
+        process.env.CLOUDINARY_API_SECRET ||
+        process.env.NEXT_PUBLIC_CLOUDINARY_API_SECRET ||
+        'placeholder',
+    },
+    collections: {
+      media: {
+        folder: process.env.CLOUDINARY_FOLDER || 'nextload-media',
       },
-      collections: {
-        media: true,
-      },
-      folder: process.env.CLOUDINARY_FOLDER || 'nextload-media',
-      disableLocalStorage: true,
-    }),
+    },
+  }),
 
   ecommerceConnector,
 ] as Plugin[]

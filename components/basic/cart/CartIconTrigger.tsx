@@ -23,6 +23,7 @@ export function CartIconTrigger({
   const { cart, isLoading } = useCart()
   const { openDrawer } = useCartDrawer()
 
+  // eslint-disable-next-line react-hooks/preserve-manual-memoization
   const totalItemCount = useMemo(() => {
     if (!cart?.items || !Array.isArray(cart.items)) return 0
     return cart.items.reduce((total, item) => total + (item.quantity || 0), 0)

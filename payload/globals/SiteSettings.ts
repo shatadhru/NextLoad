@@ -584,7 +584,7 @@ export const SiteSettings: GlobalConfig = {
             if (typeof field === "object") {
               return (
                 field.cloudinary?.secure_url ||
-                (typeof field.thumbnailURL === "string" && field.thumbnailURL.includes("res.cloudinary.com") ? field.thumbnailURL : null) ||
+                (typeof field.cloudinaryUrl === "string" && field.cloudinaryUrl.includes("res.cloudinary.com") ? field.cloudinaryUrl : null) ||
                 (typeof field.url === "string" && field.url.includes("res.cloudinary.com") ? field.url : null) ||
                 null
               )
@@ -594,8 +594,8 @@ export const SiteSettings: GlobalConfig = {
               try {
                 const mediaDoc = await req.payload.findByID({ collection: "media", id: field })
                 return (
-                  mediaDoc?.cloudinary?.secure_url ||
-                  (typeof mediaDoc?.thumbnailURL === "string" && mediaDoc.thumbnailURL.includes("res.cloudinary.com") ? mediaDoc.thumbnailURL : null) ||
+                  mediaDoc?.cloudinaryUrl ||
+                  (typeof mediaDoc?.cloudinaryUrl === "string" && mediaDoc.cloudinaryUrl.includes("res.cloudinary.com") ? mediaDoc.cloudinaryUrl : null) ||
                   (typeof mediaDoc?.url === "string" && mediaDoc.url.includes("res.cloudinary.com") ? mediaDoc.url : null) ||
                   null
                 )

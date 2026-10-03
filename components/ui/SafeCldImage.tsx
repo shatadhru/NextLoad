@@ -21,6 +21,10 @@ export function isCloudinarySrc(src: string | null | undefined): boolean {
 
   // Direct Cloudinary URL
   if (trimmed.includes("res.cloudinary.com") || trimmed.includes("cloudinary.com")) {
+    const cleanPath = trimmed.split("?")[0].replace(/\/+$/, "")
+    if (cleanPath.endsWith("/image/upload") || cleanPath.endsWith("/image/authenticated")) {
+      return false
+    }
     return true
   }
 

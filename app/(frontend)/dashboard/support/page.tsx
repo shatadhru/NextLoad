@@ -28,7 +28,7 @@ export default function SupportPage() {
     },
     {
       q: "How does Cloudinary media storage integrate with Payload?",
-      a: "Media uploads are automatically processed via payload-cloudinary and sharp, delivering optimized assets through the Cloudinary CDN with automatic face cropping and format selection.",
+      a: "Media uploads are automatically processed via payload-storage-cloudinary and sharp, delivering optimized assets through the Cloudinary CDN with automatic face cropping and format selection.",
     },
     {
       q: "How do in-app and email notifications work?",
