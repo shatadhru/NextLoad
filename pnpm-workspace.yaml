@@ -1,3 +1,10 @@
-onlyBuiltDependencies:
-  - esbuild
-  - unrs-resolver
+allowBuilds:
+  esbuild: true
+  unrs-resolver: true
+
+patchedDependencies:
+  payload-theme: patches/payload-theme.patch
+
+peerDependencyRules:
+  allowedVersions:
+    payload: ">=2.0.0"
