@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "init:project": "node payload/scripts/init.mjs",
-    "build": "cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=8000\" next build",
+    "build": "cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=2000\" next build",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
     "devsafe": "node -e \"try{fs.rmSync('.next',{recursive:true,force:true})}catch(e){}\" && cross-env NODE_OPTIONS=--no-deprecation next dev",
     "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
